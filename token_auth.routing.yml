@@ -60,3 +60,87 @@ access_token.settings:
   options:
     _admin_route: TRUE
 
+
+# AccessTokenResource routing definition
+entity.access_token_resource.collection:
+  path: '/admin/structure/access_token_resource'
+  defaults:
+    _entity_list: 'access_token_resource'
+    _title: 'Access Token Resource'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+entity.access_token_resource.add_form:
+  path: '/admin/structure/access_token_resource/add'
+  defaults:
+    _entity_form: 'access_token_resource.add'
+    _title: 'Add Access Token Resource'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+entity.access_token_resource.edit_form:
+  path: '/admin/structure/access_token_resource/{access_token_resource}'
+  defaults:
+    _entity_form: 'access_token_resource.edit'
+    _title: 'Edit Access Token Resource'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+entity.access_token_resource.delete_form:
+  path: '/admin/structure/access_token_resource/{access_token_resource}/delete'
+  defaults:
+    _entity_form: 'access_token_resource.delete'
+    _title: 'Delete Access Token Resource'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+
+# AccessTokenScope routing definition
+entity.access_token_scope.collection:
+  path: '/admin/structure/access_token_scope'
+  defaults:
+    _entity_list: 'access_token_scope'
+    _title: 'Access Token Scope'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+entity.access_token_scope.add_form:
+  path: '/admin/structure/access_token_scope/add'
+  defaults:
+    _entity_form: 'access_token_scope.add'
+    _title: 'Add Access Token Scope'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+entity.access_token_scope.edit_form:
+  path: '/admin/structure/access_token_scope/{access_token_scope}'
+  defaults:
+    _entity_form: 'access_token_scope.edit'
+    _title: 'Edit Access Token Scope'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+entity.access_token_scope.delete_form:
+  path: '/admin/structure/access_token_scope/{access_token_scope}/delete'
+  defaults:
+    _entity_form: 'access_token_scope.delete'
+    _title: 'Delete Access Token Scope'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+

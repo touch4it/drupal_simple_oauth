@@ -1,0 +1,12 @@
+token_auth.access_token_scope.*:
+  type: config_entity
+  label: 'Access Token Scope config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    uuid:
+      type: string

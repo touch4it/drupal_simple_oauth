@@ -1,0 +1,12 @@
+token_auth.access_token_resource.*:
+  type: config_entity
+  label: 'Access Token Resource config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    uuid:
+      type: string

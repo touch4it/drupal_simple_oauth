@@ -5,3 +5,15 @@ entity.access_token.add_form:
     - entity.access_token.collection
     - entity.access_token.canonical
 
+entity.access_token_resource.add_form:
+  route_name: 'entity.access_token_resource.add_form'
+  title: 'Add Access Token Resource'
+  appears_on:
+    - entity.access_token_resource.collection
+
+entity.access_token_scope.add_form:
+  route_name: 'entity.access_token_scope.add_form'
+  title: 'Add Access Token Scope'
+  appears_on:
+    - entity.access_token_scope.collection
+
