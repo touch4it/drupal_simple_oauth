@@ -66,43 +66,6 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
   /**
    * {@inheritdoc}
    */
-  public function getCreatedTime() {
-    return $this->get('created')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getOwner() {
-    return $this->get('user_id')->entity;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getOwnerId() {
-    return $this->get('user_id')->target_id;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setOwnerId($uid) {
-    $this->set('user_id', $uid);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setOwner(UserInterface $account) {
-    $this->set('user_id', $account->id());
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields['id'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('ID'))
@@ -140,16 +103,38 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Access Token entity.'))
+    $fields['resource_id'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Resource'))
+      ->setDescription(t('The resource for this Access Token.'))
+      ->setRevisionable(TRUE)
+      ->setSetting('target_type', 'access_token_resource')
+      ->setSetting('handler', 'default')
+      // TODO: Set a callback to default to the global resource.
+      // ->setDefaultValueCallback('Drupal\node\Entity\Node::getCurrentUserId')
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'weight' => 5,
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => '60',
+          'autocomplete_type' => 'tags',
+          'placeholder' => '',
+        ),
+      ))
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['value'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Value'))
+      ->setDescription(t('The token value.'))
       ->setSettings(array(
-        'max_length' => 50,
+        'max_length' => 128,
         'text_processing' => 0,
       ))
       ->setDefaultValue('')
       ->setDisplayOptions('view', array(
-        'label' => 'above',
+        'label' => 'hidden',
         'type' => 'string',
         'weight' => -4,
       ))
@@ -157,22 +142,71 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
         'type' => 'string_textfield',
         'weight' => -4,
       ))
-      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
-
-    $fields['langcode'] = BaseFieldDefinition::create('language')
-      ->setLabel(t('Language code'))
-      ->setDescription(t('The language code for the Access Token entity.'));
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))
       ->setDescription(t('The time that the entity was created.'));
 
-    $fields['changed'] = BaseFieldDefinition::create('changed')
-      ->setLabel(t('Changed'))
-      ->setDescription(t('The time that the entity was last edited.'));
+    $fields['expire'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('Expire'))
+      ->setSettings(array(
+        'unsigned' => TRUE,
+        'min' => 0,
+      ))
+      ->setDefaultValue(120)
+      ->setDescription(t('The time while the token is valid after its creation, expressed in seconds.'))
+      ->setDisplayOptions('view', array(
+        'label' => 'hidden',
+        'type' => 'integer',
+        'weight' => 0,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'number',
+        'weight' => 0,
+      ))
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCreatedTime() {
+    return $this->get('created')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOwner() {
+    return $this->get('user_id')->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOwnerId() {
+    return $this->get('user_id')->target_id;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOwnerId($uid) {
+    $this->set('user_id', $uid);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOwner(UserInterface $account) {
+    $this->set('user_id', $account->id());
+    return $this;
   }
 
 }

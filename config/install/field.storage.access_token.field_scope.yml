@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - token_auth
+id: access_token.field_scope
+field_name: field_scope
+entity_type: access_token
+type: entity_reference
+settings:
+  target_type: access_token_resource
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
