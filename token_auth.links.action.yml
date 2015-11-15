@@ -1,0 +1,7 @@
+entity.access_token.add_form:
+  route_name: entity.access_token.add_form
+  title: 'Add Access Token'
+  appears_on:
+    - entity.access_token.collection
+    - entity.access_token.canonical
+

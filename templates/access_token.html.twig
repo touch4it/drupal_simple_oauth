@@ -1,0 +1,22 @@
+{#
+/**
+ * @file access_token.html.twig
+ * Default theme implementation to present Access Token data.
+ *
+ * This template is used when viewing Access Token pages.
+ *
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ * - attributes: HTML attributes for the container element.
+ *
+ * @see template_preprocess_access_token()
+ *
+ * @ingroup themeable
+ */
+#}
+<div{{ attributes.addClass('access_token') }}>
+  {% if content %}
+    {{- content -}}
+  {% endif %}
+</div>

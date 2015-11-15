@@ -1,0 +1,5 @@
+name: Token Bearer Auhentication
+type: module
+description: The OAuth 2.0 Authorization Framework: Bearer Token Usage
+core: 8.x
+package: Authentication

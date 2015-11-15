@@ -1,0 +1,7 @@
+services:
+  authentication.token_auth:
+    class: Drupal\token_auth\Authentication\Provider\OAuth2TokenBearerAuthenticationProvider
+    arguments: ["@config.factory", "@entity.manager"]
+    tags:
+      - { name: authentication_provider, provider_id: token_bearer, priority: 100 }
+

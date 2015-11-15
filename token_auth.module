@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Contains token_auth.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function token_auth_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the token_auth module.
+    case 'help.page.token_auth':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The OAuth 2.0 Authorization Framework: Bearer Token Usage') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function token_auth_theme() {
+  $theme = [];
+
+  return $theme;
+}

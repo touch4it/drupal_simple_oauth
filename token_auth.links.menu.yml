@@ -1,0 +1,12 @@
+# Access Token menu items definition
+entity.access_token.collection:
+  title: 'Access Token list'
+  route_name: entity.access_token.collection
+  description: 'List Access Token entities'
+
+access_token.admin.structure.settings:
+  title: Access Token settings
+  description: 'Configure Access Token entities'
+  route_name: access_token.settings
+  parent: system.admin_structure
+

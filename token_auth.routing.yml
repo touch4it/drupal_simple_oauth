@@ -1,0 +1,62 @@
+
+# AccessToken routing definition
+entity.access_token.canonical:
+  path: '/admin/access_token/{access_token}'
+  defaults:
+    _entity_view: 'access_token'
+    _title: 'Access Token'
+  requirements:
+    _entity_access: 'access_token.view'
+  options:
+    _admin_route: TRUE
+
+entity.access_token.collection:
+  path: '/admin/access_token'
+  defaults:
+    _entity_list: 'access_token'
+    _title: 'Access Token list'
+  requirements:
+    _permission: 'view access token entities'
+  options:
+    _admin_route: TRUE
+
+entity.access_token.add_form:
+  path: '/admin/access_token/add'
+  defaults:
+    _entity_form: access_token.add
+    _title: 'Add Access Token'
+  requirements:
+    _permission: 'add access token entities'
+  options:
+    _admin_route: TRUE
+
+entity.access_token.edit_form:
+  path: '/admin/access_token/{access_token}/edit'
+  defaults:
+    _entity_form: access_token.edit
+    _title: 'Edit Access Token'
+  requirements:
+    _permission: 'edit access token entities'
+  options:
+    _admin_route: TRUE
+
+entity.access_token.delete_form:
+  path: '/admin/access_token/{access_token}/delete'
+  defaults:
+    _entity_form: access_token.delete
+    _title: 'Delete Access Token'
+  requirements:
+    _permission: 'delete access token entities'
+  options:
+    _admin_route: TRUE
+
+access_token.settings:
+  path: 'admin/structure/access_token'
+  defaults:
+   _form: '\Drupal\token_auth\Entity\Form\AccessTokenSettingsForm'
+   _title: 'Access Token settings'
+  requirements:
+    _permission: 'administer access token entities'
+  options:
+    _admin_route: TRUE
+

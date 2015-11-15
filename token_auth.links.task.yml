@@ -1,0 +1,22 @@
+# Access Token routing definition
+access_token.settings_tab:
+  route_name: access_token.settings
+  title: 'Settings'
+  base_route: access_token.settings
+
+entity.access_token.canonical:
+  route_name: entity.access_token.canonical
+  base_route: entity.access_token.canonical
+  title: 'View'
+
+entity.access_token.edit_form:
+  route_name: entity.access_token.edit_form
+  base_route: entity.access_token.canonical
+  title: Edit
+
+entity.access_token.delete_form:
+  route_name:  entity.access_token.delete_form
+  base_route:  entity.access_token.canonical
+  title: Delete
+  weight: 10
+
