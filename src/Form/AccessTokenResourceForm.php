@@ -7,7 +7,6 @@
 
 namespace Drupal\token_auth\Form;
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -17,12 +16,14 @@ use Drupal\Core\Form\FormStateInterface;
  * @package Drupal\token_auth\Form
  */
 class AccessTokenResourceForm extends EntityForm {
+
   /**
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
+    /* @var \Drupal\token_auth\AccessTokenResourceInterface $access_token_resource */
     $access_token_resource = $this->entity;
     $form['label'] = array(
       '#type' => 'textfield',
@@ -33,6 +34,14 @@ class AccessTokenResourceForm extends EntityForm {
       '#required' => TRUE,
     );
 
+    $form['description'] = array(
+      '#type' => 'textarea',
+      '#title' => $this->t('Description'),
+      '#default_value' => $access_token_resource->getDescription(),
+      '#description' => $this->t("Description for the Access Token Resource."),
+      '#required' => FALSE,
+    );
+
     $form['id'] = array(
       '#type' => 'machine_name',
       '#default_value' => $access_token_resource->id(),
@@ -41,8 +50,6 @@ class AccessTokenResourceForm extends EntityForm {
       ),
       '#disabled' => !$access_token_resource->isNew(),
     );
-
-    /* You will need additional form elements for your custom properties. */
 
     return $form;
   }

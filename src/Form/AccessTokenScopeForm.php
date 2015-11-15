@@ -23,6 +23,7 @@ class AccessTokenScopeForm extends EntityForm {
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
+    /* @var \Drupal\token_auth\AccessTokenScopeInterface $access_token_resource */
     $access_token_scope = $this->entity;
     $form['label'] = array(
       '#type' => 'textfield',
@@ -33,6 +34,14 @@ class AccessTokenScopeForm extends EntityForm {
       '#required' => TRUE,
     );
 
+    $form['description'] = array(
+      '#type' => 'textarea',
+      '#title' => $this->t('Description'),
+      '#default_value' => $access_token_scope->getDescription(),
+      '#description' => $this->t("Description for the Access Token Scope."),
+      '#required' => FALSE,
+    );
+
     $form['id'] = array(
       '#type' => 'machine_name',
       '#default_value' => $access_token_scope->id(),
@@ -41,8 +50,6 @@ class AccessTokenScopeForm extends EntityForm {
       ),
       '#disabled' => !$access_token_scope->isNew(),
     );
-
-    /* You will need additional form elements for your custom properties. */
 
     return $form;
   }

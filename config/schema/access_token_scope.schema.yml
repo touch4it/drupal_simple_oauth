@@ -8,5 +8,11 @@ token_auth.access_token_scope.*:
     label:
       type: label
       label: 'Label'
+    description:
+      type: text
+      label: 'Description'
+    locked:
+      type: boolean
+      label: 'Locked'
     uuid:
       type: string

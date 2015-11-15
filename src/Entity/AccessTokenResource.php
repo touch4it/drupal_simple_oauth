@@ -22,7 +22,8 @@ use Drupal\token_auth\AccessTokenResourceInterface;
  *       "add" = "Drupal\token_auth\Form\AccessTokenResourceForm",
  *       "edit" = "Drupal\token_auth\Form\AccessTokenResourceForm",
  *       "delete" = "Drupal\token_auth\Form\AccessTokenResourceDeleteForm"
- *     }
+ *     },
+ *     "access" = "Drupal\token_auth\LockableConfigEntityAccessControlHandler"
  *   },
  *   config_prefix = "access_token_resource",
  *   admin_permission = "administer site configuration",
@@ -40,6 +41,7 @@ use Drupal\token_auth\AccessTokenResourceInterface;
  * )
  */
 class AccessTokenResource extends ConfigEntityBase implements AccessTokenResourceInterface {
+
   /**
    * The Access Token Resource ID.
    *
@@ -53,5 +55,54 @@ class AccessTokenResource extends ConfigEntityBase implements AccessTokenResourc
    * @var string
    */
   protected $label;
+
+  /**
+   * The Access Token Resource label.
+   *
+   * @var string
+   */
+  protected $description = '';
+
+  /**
+   * Locked status.
+   *
+   * @var bool
+   */
+  protected $locked = FALSE;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDescription() {
+    return $this->description;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setDescription($description) {
+    $this->description = $description;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isLocked() {
+    return $this->locked;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function lock() {
+    $this->locked = TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function unlock() {
+    $this->locked = FALSE;
+  }
 
 }

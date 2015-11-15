@@ -22,7 +22,8 @@ use Drupal\token_auth\AccessTokenScopeInterface;
  *       "add" = "Drupal\token_auth\Form\AccessTokenScopeForm",
  *       "edit" = "Drupal\token_auth\Form\AccessTokenScopeForm",
  *       "delete" = "Drupal\token_auth\Form\AccessTokenScopeDeleteForm"
- *     }
+ *     },
+ *     "access" = "Drupal\token_auth\LockableConfigEntityAccessControlHandler"
  *   },
  *   config_prefix = "access_token_scope",
  *   admin_permission = "administer site configuration",
@@ -53,5 +54,54 @@ class AccessTokenScope extends ConfigEntityBase implements AccessTokenScopeInter
    * @var string
    */
   protected $label;
+
+  /**
+   * The Access Token Resource label.
+   *
+   * @var string
+   */
+  protected $description = '';
+
+  /**
+   * Locked status.
+   *
+   * @var bool
+   */
+  protected $locked = FALSE;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDescription() {
+    return $this->description;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setDescription($description) {
+    $this->description = $description;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isLocked() {
+    return $this->locked;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function lock() {
+    $this->locked = TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function unlock() {
+    $this->locked = FALSE;
+  }
 
 }

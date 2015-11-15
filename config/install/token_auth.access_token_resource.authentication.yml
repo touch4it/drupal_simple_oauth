@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: authentication
+label: Authentication
+description: 'Tokens that grant access to this resource will have access to generate new access tokens.'
+locked: true
