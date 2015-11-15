@@ -91,6 +91,25 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
         'weight' => 0,
       ))
       ->setDisplayOptions('form', array(
+        'type' => 'hidden',
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['auth_user_id'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('User'))
+      ->setDescription(t('The user ID of the user this access token is authenticating.'))
+      ->setRevisionable(TRUE)
+      ->setSetting('target_type', 'user')
+      ->setSetting('handler', 'default')
+      ->setDefaultValueCallback('Drupal\node\Entity\Node::getCurrentUserId')
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('view', array(
+        'label' => 'hidden',
+        'type' => 'user',
+        'weight' => 0,
+      ))
+      ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 5,
         'settings' => array(
@@ -125,6 +144,21 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
 
+    $fields['refresh_id'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Refresh Token'))
+      ->setDescription(t('The Refresh Token to re-create an Access Token.'))
+      ->setRevisionable(TRUE)
+      ->setSetting('target_type', 'access_token')
+      ->setSetting('handler', 'default')
+      // TODO: Only allow referencing tokens to the auth resource.
+      // ->setDefaultValueCallback('Drupal\node\Entity\Node::getCurrentUserId')
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', array(
+        'type' => 'hidden',
+      ))
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
+
     $fields['value'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Value'))
       ->setDescription(t('The token value.'))
@@ -139,8 +173,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
         'weight' => -4,
       ))
       ->setDisplayOptions('form', array(
-        'type' => 'string_textfield',
-        'weight' => -4,
+        'type' => 'hidden',
       ))
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
