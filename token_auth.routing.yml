@@ -19,6 +19,7 @@ entity.access_token.collection:
     _permission: 'view access token entities'
   options:
     _admin_route: TRUE
+  base_route: system.admin_content
 
 entity.access_token.add_form:
   path: '/admin/access_token/add'
@@ -51,19 +52,19 @@ entity.access_token.delete_form:
     _admin_route: TRUE
 
 access_token.settings:
-  path: 'admin/structure/access_token'
+  path: '/admin/config/people/access_token'
   defaults:
    _form: '\Drupal\token_auth\Entity\Form\AccessTokenSettingsForm'
-   _title: 'Access Token settings'
+   _title: 'Token Auth Settings'
   requirements:
     _permission: 'administer access token entities'
   options:
     _admin_route: TRUE
-
+  base_route: entity.user.admin_form
 
 # AccessTokenResource routing definition
 entity.access_token_resource.collection:
-  path: '/admin/structure/access_token_resource'
+  path: '/admin/config/people/access_token/access_token_resource'
   defaults:
     _entity_list: 'access_token_resource'
     _title: 'Access Token Resource'
@@ -73,7 +74,7 @@ entity.access_token_resource.collection:
     _admin_route: TRUE
 
 entity.access_token_resource.add_form:
-  path: '/admin/structure/access_token_resource/add'
+  path: '/admin/config/people/access_token/access_token_resource/add'
   defaults:
     _entity_form: 'access_token_resource.add'
     _title: 'Add Access Token Resource'
@@ -83,7 +84,7 @@ entity.access_token_resource.add_form:
     _admin_route: TRUE
 
 entity.access_token_resource.edit_form:
-  path: '/admin/structure/access_token_resource/{access_token_resource}'
+  path: '/admin/config/people/access_token/access_token_resource/{access_token_resource}'
   defaults:
     _entity_form: 'access_token_resource.edit'
     _title: 'Edit Access Token Resource'
@@ -93,7 +94,7 @@ entity.access_token_resource.edit_form:
     _admin_route: TRUE
 
 entity.access_token_resource.delete_form:
-  path: '/admin/structure/access_token_resource/{access_token_resource}/delete'
+  path: '/admin/config/people/access_token/access_token_resource/{access_token_resource}/delete'
   defaults:
     _entity_form: 'access_token_resource.delete'
     _title: 'Delete Access Token Resource'
@@ -102,10 +103,9 @@ entity.access_token_resource.delete_form:
   options:
     _admin_route: TRUE
 
-
 # AccessTokenScope routing definition
 entity.access_token_scope.collection:
-  path: '/admin/structure/access_token_scope'
+  path: '/admin/config/people/access_token/access_token_scope'
   defaults:
     _entity_list: 'access_token_scope'
     _title: 'Access Token Scope'
@@ -115,7 +115,7 @@ entity.access_token_scope.collection:
     _admin_route: TRUE
 
 entity.access_token_scope.add_form:
-  path: '/admin/structure/access_token_scope/add'
+  path: '/admin/config/people/access_token/access_token_scope/add'
   defaults:
     _entity_form: 'access_token_scope.add'
     _title: 'Add Access Token Scope'
@@ -125,7 +125,7 @@ entity.access_token_scope.add_form:
     _admin_route: TRUE
 
 entity.access_token_scope.edit_form:
-  path: '/admin/structure/access_token_scope/{access_token_scope}'
+  path: '/admin/config/people/access_token/access_token_scope/{access_token_scope}'
   defaults:
     _entity_form: 'access_token_scope.edit'
     _title: 'Edit Access Token Scope'
@@ -135,7 +135,7 @@ entity.access_token_scope.edit_form:
     _admin_route: TRUE
 
 entity.access_token_scope.delete_form:
-  path: '/admin/structure/access_token_scope/{access_token_scope}/delete'
+  path: '/admin/config/people/access_token/access_token_scope/{access_token_scope}/delete'
   defaults:
     _entity_form: 'access_token_scope.delete'
     _title: 'Delete Access Token Scope'

@@ -1,26 +1,12 @@
 # Access Token menu items definition
 entity.access_token.collection:
-  title: 'Access Token list'
+  title: 'OAuth2 Tokens'
   route_name: entity.access_token.collection
+  parent: system.admin_content
   description: 'List Access Token entities'
 
-access_token.admin.structure.settings:
-  title: Access Token settings
+access_token.admin.config.people.settings:
+  title: Token Auth Settings
   description: 'Configure Access Token entities'
   route_name: access_token.settings
-  parent: system.admin_structure
-
-# Access Token Resource menu items definition
-entity.access_token_resource.collection:
-  title: 'Access Token Resource'
-  route_name: entity.access_token_resource.collection
-  description: 'List Access Token Resource'
-  parent: system.admin_structure
-
-# Access Token Scope menu items definition
-entity.access_token_scope.collection:
-  title: 'Access Token Scope'
-  route_name: entity.access_token_scope.collection
-  description: 'List Access Token Scope'
-  parent: system.admin_structure
-
+  parent: user.admin_index

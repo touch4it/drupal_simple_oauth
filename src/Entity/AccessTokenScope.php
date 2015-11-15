@@ -33,10 +33,10 @@ use Drupal\token_auth\AccessTokenScopeInterface;
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "canonical" = "/admin/structure/access_token_scope/{access_token_scope}",
- *     "edit-form" = "/admin/structure/access_token_scope/{access_token_scope}/edit",
- *     "delete-form" = "/admin/structure/access_token_scope/{access_token_scope}/delete",
- *     "collection" = "/admin/structure/visibility_group"
+ *     "canonical" = "/admin/config/people/accounts/access_token_scope/{access_token_scope}",
+ *     "edit-form" = "/admin/config/people/accounts/access_token_scope/{access_token_scope}/edit",
+ *     "delete-form" = "/admin/config/people/accounts/access_token_scope/{access_token_scope}/delete",
+ *     "collection" = "/admin/config/people/accounts/visibility_group"
  *   }
  * )
  */

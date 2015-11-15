@@ -47,8 +47,7 @@ use Drupal\user\UserInterface;
  *     "canonical" = "/admin/access_token/{access_token}",
  *     "edit-form" = "/admin/access_token/{access_token}/edit",
  *     "delete-form" = "/admin/access_token/{access_token}/delete"
- *   },
- *   field_ui_base_route = "access_token.settings"
+ *   }
  * )
  */
 class AccessToken extends ContentEntityBase implements AccessTokenInterface {

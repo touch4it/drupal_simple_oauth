@@ -10,10 +10,11 @@ entity.access_token_resource.add_form:
   title: 'Add Access Token Resource'
   appears_on:
     - entity.access_token_resource.collection
+    - access_token.settings
 
 entity.access_token_scope.add_form:
   route_name: 'entity.access_token_scope.add_form'
   title: 'Add Access Token Scope'
   appears_on:
     - entity.access_token_scope.collection
-
+    - access_token.settings

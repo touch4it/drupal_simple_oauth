@@ -33,10 +33,10 @@ use Drupal\token_auth\AccessTokenResourceInterface;
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "canonical" = "/admin/structure/access_token_resource/{access_token_resource}",
- *     "edit-form" = "/admin/structure/access_token_resource/{access_token_resource}/edit",
- *     "delete-form" = "/admin/structure/access_token_resource/{access_token_resource}/delete",
- *     "collection" = "/admin/structure/visibility_group"
+ *     "canonical" = "/admin/config/people/accounts/access_token_resource/{access_token_resource}",
+ *     "edit-form" = "/admin/config/people/accounts/access_token_resource/{access_token_resource}/edit",
+ *     "delete-form" = "/admin/config/people/accounts/access_token_resource/{access_token_resource}/delete",
+ *     "collection" = "/admin/config/people/accounts/visibility_group"
  *   }
  * )
  */
