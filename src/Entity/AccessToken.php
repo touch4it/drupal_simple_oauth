@@ -7,11 +7,13 @@
 
 namespace Drupal\token_auth\Entity;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\TypedData\DataDefinition;
 use Drupal\token_auth\AccessTokenInterface;
 use Drupal\token_auth\AccessTokenValue;
 use Drupal\user\UserInterface;
@@ -54,6 +56,13 @@ use Drupal\user\UserInterface;
  */
 class AccessToken extends ContentEntityBase implements AccessTokenInterface {
   use EntityChangedTrait;
+
+  /**
+   * The default time while the token is valid.
+   *
+   * @var int
+   */
+  const DEFAULT_EXPIRATION_PERIOD = 120;
 
   /**
    * {@inheritdoc}
@@ -147,7 +156,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['scopes'] = BaseFieldDefinition::create('entity_reference')
@@ -174,10 +183,10 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
         'type' => 'entity',
         'weight' => 0,
       ))
-      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['refresh_id'] = BaseFieldDefinition::create('entity_reference')
+    $fields['access_token_id'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Refresh Token'))
       ->setDescription(t('The Refresh Token to re-create an Access Token.'))
       ->setRevisionable(TRUE)
@@ -189,7 +198,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setDisplayOptions('form', array(
         'type' => 'hidden',
       ))
-      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['value'] = BaseFieldDefinition::create('string')
@@ -226,25 +235,20 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setLabel(t('Changed'))
       ->setDescription(t('The time that the entity was last edited.'));
 
-    $fields['expire'] = BaseFieldDefinition::create('integer')
+    $fields['expire'] = BaseFieldDefinition::create('timestamp')
       ->setLabel(t('Expire'))
-      ->setSettings(array(
-        'unsigned' => TRUE,
-        'min' => 0,
-        'suffix' => t(' seconds'),
+      ->setDefaultValue(DrupalDateTime::createFromTimestamp(REQUEST_TIME + static::DEFAULT_EXPIRATION_PERIOD))
+      ->setDescription(t('The time when the token expires.'))
+      ->setDisplayOptions('form', array(
+        'type' => 'datetime_default',
+        'weight' => 0,
       ))
-      ->setDefaultValue(120)
-      ->setDescription(t('The time while the token is valid after its creation, expressed in seconds.'))
       ->setDisplayOptions('view', array(
         'label' => 'above',
-        'type' => 'integer',
+        'type' => 'timestamp',
         'weight' => 0,
       ))
-      ->setDisplayOptions('form', array(
-        'type' => 'number',
-        'weight' => 0,
-      ))
-      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
@@ -298,6 +302,46 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       $value = AccessTokenValue::createFromValues($this->normalize())->digest();
       $this->set('value', $value);
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function postSave(EntityStorageInterface $storage, $update = TRUE) {
+    parent::postSave($storage, $update);
+    // If this is not a refresh token then create one.
+    if (!$this->isRefreshToken()) {
+      $this->addRefreshToken();
+    }
+  }
+
+  /**
+   * Helper function that indicates if a token is a refresh token.
+   *
+   * @return bool
+   *   TRUE if this is a refresh token. FALSE otherwise.
+   */
+  protected function isRefreshToken() {
+    return !$this->get('access_token_id')->isEmpty() && $this->get('resource')->value == 'authentication';
+  }
+
+  /**
+   * Adds a refresh token and links it to this entity.
+   */
+  protected function addRefreshToken() {
+    $values = [
+      'expire' => $this->get('expire')->value,
+      'auth_user_id' => $this->get('auth_user_id')->target_id,
+      'resource' => 'authentication',
+      'scopes' => [],
+      'created' => $this->getCreatedTime(),
+      'changed' => $this->getChangedTime(),
+      'access_id' => $this->id(),
+    ];
+    $this
+      ->entityManager()
+      ->getStorage($this->getEntityType()->id())
+      ->create($values);
   }
 
   /**

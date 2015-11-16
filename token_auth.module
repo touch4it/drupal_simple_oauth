@@ -24,10 +24,16 @@ function token_auth_help($route_name, RouteMatchInterface $route_match) {
 }
 
 /**
- * Implements hook_theme().
+ * Implements hook_cron().
  */
-function token_auth_theme() {
-  $theme = [];
-
-  return $theme;
+function token_auth_cron() {
+  /* @var \Drupal\Core\Entity\EntityManagerInterface $manager */
+  $manager = \Drupal::service('entity.manager');
+  $query = $manager->getStorage('access_token')->getQuery();
+  $results = $query
+    ->condition('expire', REQUEST_TIME, '>')
+    ->execute();
+  foreach ($results as $result) {
+    $result;
+  }
 }
