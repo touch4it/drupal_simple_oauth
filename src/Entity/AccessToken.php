@@ -214,7 +214,13 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))
-      ->setDescription(t('The time that the entity was created.'));
+      ->setDescription(t('The time that the entity was created.'))
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'timestamp',
+        'weight' => -4,
+      ))
+      ->setDisplayConfigurable('view', TRUE);
 
     $fields['changed'] = BaseFieldDefinition::create('changed')
       ->setLabel(t('Changed'))
