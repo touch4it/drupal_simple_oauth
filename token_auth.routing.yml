@@ -1,7 +1,7 @@
 
 # AccessToken routing definition
 entity.access_token.canonical:
-  path: '/admin/access_token/{access_token}'
+  path: '/admin/content/access_token/{access_token}'
   defaults:
     _entity_view: 'access_token'
     _title: 'Access Token'
@@ -11,7 +11,7 @@ entity.access_token.canonical:
     _admin_route: TRUE
 
 entity.access_token.collection:
-  path: '/admin/access_token'
+  path: '/admin/content/access_token'
   defaults:
     _entity_list: 'access_token'
     _title: 'Access Token list'
@@ -22,7 +22,7 @@ entity.access_token.collection:
   base_route: system.admin_content
 
 entity.access_token.add_form:
-  path: '/admin/access_token/add'
+  path: '/admin/content/access_token/add'
   defaults:
     _entity_form: access_token.add
     _title: 'Add Access Token'
@@ -32,7 +32,7 @@ entity.access_token.add_form:
     _admin_route: TRUE
 
 entity.access_token.edit_form:
-  path: '/admin/access_token/{access_token}/edit'
+  path: '/admin/content/access_token/{access_token}/edit'
   defaults:
     _entity_form: access_token.edit
     _title: 'Edit Access Token'
@@ -42,7 +42,7 @@ entity.access_token.edit_form:
     _admin_route: TRUE
 
 entity.access_token.delete_form:
-  path: '/admin/access_token/{access_token}/delete'
+  path: '/admin/content/access_token/{access_token}/delete'
   defaults:
     _entity_form: access_token.delete
     _title: 'Delete Access Token'

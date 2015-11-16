@@ -35,7 +35,7 @@ class AccessTokenListBuilder extends EntityListBuilder {
     /* @var $entity \Drupal\token_auth\Entity\AccessToken */
     $row['id'] = $entity->id();
     $row['name'] = $this->l(
-      $this->getLabel($entity),
+      $entity->label(),
       new Url(
         'entity.access_token.edit_form', array(
           'access_token' => $entity->id(),

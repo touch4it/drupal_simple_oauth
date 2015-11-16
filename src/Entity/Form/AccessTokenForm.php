@@ -64,7 +64,7 @@ class AccessTokenForm extends ContentEntityForm {
           '%label' => $entity->label(),
         ]));
     }
-    $form_state->setRedirect('entity.access_token.edit_form', ['access_token' => $entity->id()]);
+    $form_state->setRedirect('entity.access_token.canonical', ['access_token' => $entity->id()]);
   }
 
 }
