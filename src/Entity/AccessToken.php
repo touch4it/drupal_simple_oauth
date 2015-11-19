@@ -7,13 +7,11 @@
 
 namespace Drupal\token_auth\Entity;
 
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\TypedData\DataDefinition;
 use Drupal\token_auth\AccessTokenInterface;
 use Drupal\token_auth\AccessTokenValue;
 use Drupal\user\UserInterface;
@@ -122,7 +120,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
-        'weight' => 5,
+        'weight' => 0,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => '60',
@@ -144,11 +142,11 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setDisplayOptions('view', array(
         'label' => 'above',
         'type' => 'entity',
-        'weight' => 0,
+        'weight' => 4,
       ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
-        'weight' => 5,
+        'weight' => 4,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => '60',
@@ -181,7 +179,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setDisplayOptions('view', array(
         'label' => 'above',
         'type' => 'entity',
-        'weight' => 0,
+        'weight' => 5,
       ))
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
@@ -237,16 +235,16 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
 
     $fields['expire'] = BaseFieldDefinition::create('timestamp')
       ->setLabel(t('Expire'))
-      ->setDefaultValue(DrupalDateTime::createFromTimestamp(REQUEST_TIME + static::DEFAULT_EXPIRATION_PERIOD))
+      ->setDefaultValueCallback(__CLASS__ . '::defaultExpiration')
       ->setDescription(t('The time when the token expires.'))
       ->setDisplayOptions('form', array(
         'type' => 'datetime_default',
-        'weight' => 0,
+        'weight' => 1,
       ))
       ->setDisplayOptions('view', array(
         'label' => 'above',
         'type' => 'timestamp',
-        'weight' => 0,
+        'weight' => 1,
       ))
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
@@ -322,7 +320,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
    *   TRUE if this is a refresh token. FALSE otherwise.
    */
   protected function isRefreshToken() {
-    return !$this->get('access_token_id')->isEmpty() && $this->get('resource')->value == 'authentication';
+    return !$this->get('access_token_id')->isEmpty() && $this->get('resource')->target_id == 'authentication';
   }
 
   /**
@@ -332,16 +330,18 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
     $values = [
       'expire' => $this->get('expire')->value,
       'auth_user_id' => $this->get('auth_user_id')->target_id,
+      'access_token_id' => $this->id(),
       'resource' => 'authentication',
       'scopes' => [],
       'created' => $this->getCreatedTime(),
       'changed' => $this->getChangedTime(),
       'access_id' => $this->id(),
     ];
-    $this
+    $refresh_token = $this
       ->entityManager()
       ->getStorage($this->getEntityType()->id())
       ->create($values);
+    $refresh_token->save();
   }
 
   /**
@@ -356,6 +356,16 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       return $this->get($item)->getValue();
     }, $keys);
     return $values;
+  }
+
+  /**
+   * Returns the defaul expiration.
+   *
+   * @return array
+   *   The default expiration timestamp.
+   */
+  public static function defaultExpiration() {
+    return REQUEST_TIME + static::DEFAULT_EXPIRATION_PERIOD;
   }
 
 }
