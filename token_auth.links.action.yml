@@ -4,6 +4,7 @@ entity.access_token.add_form:
   appears_on:
     - entity.access_token.collection
     - entity.access_token.canonical
+    - user.access_token.collection
 
 entity.access_token_resource.add_form:
   route_name: 'entity.access_token_resource.add_form'

@@ -144,3 +144,10 @@ entity.access_token_scope.delete_form:
   options:
     _admin_route: TRUE
 
+user.access_token.collection:
+  path: '/user/{user}/oauth2-tokens'
+  defaults:
+    _controller: 'Drupal\token_auth\Controller\AccessTokenUserList::tokenList'
+    _title: 'OAuth2 Tokens'
+  requirements:
+    _permission: 'view access token entities'
