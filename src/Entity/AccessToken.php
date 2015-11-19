@@ -328,7 +328,10 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
    */
   protected function addRefreshToken() {
     // Only add the refresh token of there is none associated.
-    $has_refresh_token = (bool) \Drupal::entityQuery($this->getEntityTypeId())
+    $has_refresh_token = (bool) $this
+      ->entityManager()
+      ->getStorage($this->getEntityTypeId())
+      ->getQuery()
       ->condition('access_token_id', $this->id())
       ->count()
       ->execute();
