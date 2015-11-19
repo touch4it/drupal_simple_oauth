@@ -327,6 +327,14 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
    * Adds a refresh token and links it to this entity.
    */
   protected function addRefreshToken() {
+    // Only add the refresh token of there is none associated.
+    $has_refresh_token = (bool) \Drupal::entityQuery($this->getEntityTypeId())
+      ->condition('access_token_id', $this->id())
+      ->count()
+      ->execute();
+    if ($has_refresh_token) {
+      return;
+    }
     $values = [
       'expire' => $this->get('expire')->value,
       'auth_user_id' => $this->get('auth_user_id')->target_id,
