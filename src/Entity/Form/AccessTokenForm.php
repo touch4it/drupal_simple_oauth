@@ -42,6 +42,7 @@ class AccessTokenForm extends ContentEntityForm {
     // Build the entity object from the submitted values.
     $entity = parent::submit($form, $form_state);
 
+    $form_state->setRedirect('entity.access_token.collection');
     return $entity;
   }
 
