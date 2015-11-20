@@ -1,0 +1,9 @@
+.access_token {
+    clear: both;
+}
+.access_token .dropbutton-wrapper.dropbutton-multiple .dropbutton-widget {
+    width: 20%;
+    max-width: 150px;
+    min-width: 80px;
+    float: right;
+}
