@@ -7,7 +7,6 @@
 
 namespace Drupal\token_auth\Entity;
 
-use Drupal\Core\Database\Query\Condition;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
@@ -226,7 +225,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setDisplayOptions('view', array(
         'label' => 'inline',
         'type' => 'timestamp',
-        'weight' => -4,
+        'weight' => 1,
       ))
       ->setDisplayConfigurable('view', TRUE);
 
@@ -439,13 +438,8 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
     $query->condition('auth_user_id', $this->get('auth_user_id')->target_id);
     $query->condition('resource', $this->get('resource')->target_id);
     // Add the scopes if there are any.
-    if (!$this->get('scopes')->isEmpty()) {
-      $scopes_condition = new Condition('AND');
-      foreach ($this->get('scopes')->getValue() as $scope) {
-        $scopes_condition->condition('scopes', $scope['target_id']);
-      }
-      $query->condition($scopes_condition);
-      return $query;
+    foreach ($this->get('scopes')->getValue() as $scope) {
+      $query->condition('scopes', $scope['target_id']);
     }
     return $query;
   }

@@ -29,11 +29,12 @@ function token_auth_help($route_name, RouteMatchInterface $route_match) {
 function token_auth_cron() {
   /* @var \Drupal\Core\Entity\EntityManagerInterface $manager */
   $manager = \Drupal::service('entity.manager');
-  $query = $manager->getStorage('access_token')->getQuery();
-  $results = $query
+  $storage = $manager->getStorage('access_token');
+  $query = $storage->getQuery();
+  $ids = $query
     ->condition('expire', REQUEST_TIME, '>')
     ->execute();
-  foreach ($results as $result) {
-    $result;
+  if (!empty($ids)) {
+    $storage->delete($storage->loadMultiple($ids));
   }
 }
