@@ -350,7 +350,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       'auth_user_id' => $this->get('auth_user_id')->target_id,
       'access_token_id' => $this->id(),
       'resource' => 'authentication',
-      'scopes' => [],
+      'scopes' => $this->get('scopes')->getValue(),
       'created' => $this->getCreatedTime(),
       'changed' => $this->getChangedTime(),
       'access_id' => $this->id(),
@@ -414,14 +414,19 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->entityManager()
       ->getStorage($this->getEntityTypeId())
       ->loadMultiple(array_keys($results));
-    // Delete every token in the list.
-    array_walk($tokens, function ($token) {
+    $deleted = 0;
+    // Delete every token in the list if the scope is the same.
+    foreach ($tokens as $token) {
+      if ($this->get('scopes')->getValue() != $token->get('scopes')->getValue()) {
+        continue;
+      }
       drupal_set_message(t('Token @token was deleted as a duplicate.', [
         '@token' => $token->label(),
       ]));
       $token->delete();
-    });
-    return count($results);
+      $deleted++;
+    }
+    return $deleted;
   }
 
   /**
@@ -437,10 +442,6 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
     $query->condition('id', $this->id(), '<>');
     $query->condition('auth_user_id', $this->get('auth_user_id')->target_id);
     $query->condition('resource', $this->get('resource')->target_id);
-    // Add the scopes if there are any.
-    foreach ($this->get('scopes')->getValue() as $scope) {
-      $query->condition('scopes', $scope['target_id']);
-    }
     return $query;
   }
 
