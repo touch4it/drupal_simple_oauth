@@ -7,6 +7,7 @@
 
 namespace Drupal\token_auth\Entity;
 
+use Drupal\Core\Database\Query\Condition;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
@@ -312,6 +313,11 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
     if (!$this->isRefreshToken()) {
       $this->addRefreshToken();
     }
+    // If there is an access token for those conditions (resource + scope +
+    // user) then delete it.
+    if ($this->isDuplicated()) {
+      $this->deleteDuplicates();
+    }
   }
 
   /**
@@ -321,7 +327,8 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
    *   TRUE if this is a refresh token. FALSE otherwise.
    */
   protected function isRefreshToken() {
-    return !$this->get('access_token_id')->isEmpty() && $this->get('resource')->target_id == 'authentication';
+    return !$this->get('access_token_id')
+      ->isEmpty() && $this->get('resource')->target_id == 'authentication';
   }
 
   /**
@@ -378,6 +385,69 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
    */
   public static function defaultExpiration() {
     return [REQUEST_TIME + static::DEFAULT_EXPIRATION_PERIOD];
+  }
+
+  /**
+   * Checks if there is already a token for the conditions of the current one.
+   *
+   * @return bool
+   *   TRUE if there is at least one toke for the same conditions. FALSE
+   *   otherwise.
+   */
+  protected function isDuplicated() {
+    $query = $this->queryForDuplicates();
+    return (bool) $query->count()->execute();
+  }
+
+  /**
+   * Deletes the duplicated access tokens.
+   *
+   * @return int
+   *   The number of deleted duplicates.
+   */
+  protected function deleteDuplicates() {
+    $query = $this->queryForDuplicates();
+    $results = $query->execute();
+    if (empty($results)) {
+      return 0;
+    }
+    $tokens = $this
+      ->entityManager()
+      ->getStorage($this->getEntityTypeId())
+      ->loadMultiple(array_keys($results));
+    // Delete every token in the list.
+    array_walk($tokens, function ($token) {
+      drupal_set_message(t('Token @token was deleted as a duplicate.', [
+        '@token' => $token->label(),
+      ]));
+      $token->delete();
+    });
+    return count($results);
+  }
+
+  /**
+   * Get the query to detect the duplicates for this token.
+   *
+   * @return \Drupal\Core\Entity\Query\QueryInterface
+   */
+  protected function queryForDuplicates() {
+    $query = $this
+      ->entityManager()
+      ->getStorage($this->getEntityTypeId())
+      ->getQuery('AND');
+    $query->condition('id', $this->id(), '<>');
+    $query->condition('auth_user_id', $this->get('auth_user_id')->target_id);
+    $query->condition('resource', $this->get('resource')->target_id);
+    // Add the scopes if there are any.
+    if (!$this->get('scopes')->isEmpty()) {
+      $scopes_condition = new Condition('AND');
+      foreach ($this->get('scopes')->getValue() as $scope) {
+        $scopes_condition->condition('scopes', $scope['target_id']);
+      }
+      $query->condition($scopes_condition);
+      return $query;
+    }
+    return $query;
   }
 
 }
