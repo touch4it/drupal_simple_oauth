@@ -7,6 +7,7 @@
 namespace Drupal\token_auth\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Render\Element;
 use Drupal\user\Entity\User;
 
 class AccessTokenUserList extends ControllerBase {
@@ -30,7 +31,28 @@ class AccessTokenUserList extends ControllerBase {
     }
     $view_controller = $this->entityManager()->getViewBuilder($entity_type);
     $tokens = $storage->loadMultiple($ids);
-    return $view_controller->viewMultiple($tokens);
+    $elements = $view_controller->viewMultiple($tokens);
+    $children = Element::children($elements);
+    foreach ($children as $delta) {
+      $elements[$delta]['operations'] = [
+        '#type' => 'operations',
+        '#links' => [
+          'edit' => [
+            'title' => $this->t('Edit'),
+            'weight' => 10,
+            'url' => $elements[$delta]['#access_token']->urlInfo('edit-form'),
+          ],
+          'delete' => [
+            'title' => $this->t('Delete'),
+            'weight' => 100,
+            'url' => $elements[$delta]['#access_token']->urlInfo('delete-form'),
+          ],
+        ],
+        '#weight' => -100,
+      ];
+    }
+
+    return $elements;
   }
 
 }

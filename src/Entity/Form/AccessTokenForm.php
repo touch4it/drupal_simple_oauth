@@ -38,17 +38,6 @@ class AccessTokenForm extends ContentEntityForm {
   /**
    * {@inheritdoc}
    */
-  public function submit(array $form, FormStateInterface $form_state) {
-    // Build the entity object from the submitted values.
-    $entity = parent::submit($form, $form_state);
-
-    $form_state->setRedirect('entity.access_token.collection');
-    return $entity;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function save(array $form, FormStateInterface $form_state) {
     $entity = $this->entity;
     $status = $entity->save();
@@ -65,7 +54,7 @@ class AccessTokenForm extends ContentEntityForm {
           '%label' => $entity->label(),
         ]));
     }
-    $form_state->setRedirect('entity.access_token.canonical', ['access_token' => $entity->id()]);
+    $form_state->setRedirect('user.access_token.collection', ['user' => $entity->get('auth_user_id')->target_id]);
   }
 
 }

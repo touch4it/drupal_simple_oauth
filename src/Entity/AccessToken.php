@@ -87,7 +87,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setReadOnly(TRUE);
 
     $fields['user_id'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Authored by'))
+      ->setLabel(t('Creator'))
       ->setDescription(t('The user ID of author of the Access Token entity.'))
       ->setRevisionable(TRUE)
       ->setSetting('target_type', 'user')
@@ -95,7 +95,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setDefaultValueCallback('Drupal\node\Entity\Node::getCurrentUserId')
       ->setTranslatable(TRUE)
       ->setDisplayOptions('view', array(
-        'label' => 'above',
+        'label' => 'inline',
         'type' => 'author',
         'weight' => 0,
       ))
@@ -114,8 +114,8 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setDefaultValueCallback('Drupal\node\Entity\Node::getCurrentUserId')
       ->setTranslatable(FALSE)
       ->setDisplayOptions('view', array(
-        'label' => 'above',
-        'type' => 'entity',
+        'label' => 'inline',
+        'type' => 'author',
         'weight' => 0,
       ))
       ->setDisplayOptions('form', array(
@@ -140,8 +140,8 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setDefaultValue('global')
       ->setTranslatable(FALSE)
       ->setDisplayOptions('view', array(
-        'label' => 'above',
-        'type' => 'entity',
+        'label' => 'inline',
+        'type' => 'entity_reference_label',
         'weight' => 4,
       ))
       ->setDisplayOptions('form', array(
@@ -177,8 +177,8 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
         ),
       ))
       ->setDisplayOptions('view', array(
-        'label' => 'above',
-        'type' => 'entity',
+        'label' => 'inline',
+        'type' => 'entity_reference_label',
         'weight' => 5,
       ))
       ->setDisplayConfigurable('form', TRUE)
@@ -200,7 +200,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['value'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Value'))
+      ->setLabel(t('Token'))
       ->setDescription(t('The token value.'))
       ->setSettings(array(
         'max_length' => 128,
@@ -209,7 +209,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setRequired(TRUE)
       ->setDefaultValue('')
       ->setDisplayOptions('view', array(
-        'label' => 'hidden',
+        'label' => 'inline',
         'type' => 'string',
         'weight' => -4,
       ))
@@ -223,7 +223,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setLabel(t('Created'))
       ->setDescription(t('The time that the entity was created.'))
       ->setDisplayOptions('view', array(
-        'label' => 'above',
+        'label' => 'inline',
         'type' => 'timestamp',
         'weight' => -4,
       ))
@@ -238,14 +238,15 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setDefaultValueCallback(__CLASS__ . '::defaultExpiration')
       ->setDescription(t('The time when the token expires.'))
       ->setDisplayOptions('form', array(
-        'type' => 'datetime_default',
+        'type' => 'datetime_timestamp',
         'weight' => 1,
       ))
       ->setDisplayOptions('view', array(
-        'label' => 'above',
+        'label' => 'inline',
         'type' => 'timestamp',
         'weight' => 1,
       ))
+      ->setRequired(TRUE)
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
@@ -376,7 +377,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
    *   The default expiration timestamp.
    */
   public static function defaultExpiration() {
-    return REQUEST_TIME + static::DEFAULT_EXPIRATION_PERIOD;
+    return [REQUEST_TIME + static::DEFAULT_EXPIRATION_PERIOD];
   }
 
 }

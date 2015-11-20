@@ -28,7 +28,9 @@ class AccessTokenDeleteForm extends ContentEntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return new Url('entity.access_token.collection');
+    return new Url('user.access_token.collection', [
+      'user' => $this->getEntity()->get('auth_user_id')->target_id,
+    ]);
   }
 
   /**
