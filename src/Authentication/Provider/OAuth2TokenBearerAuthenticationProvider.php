@@ -11,9 +11,6 @@ use Drupal\Core\Authentication\AuthenticationProviderInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Class OAuth2TokenBearerAuthenticationProvider.
@@ -33,6 +30,7 @@ class OAuth2TokenBearerAuthenticationProvider implements AuthenticationProviderI
    * @var \Drupal\Core\Entity\EntityManagerInterface
    */
   protected $entityManager;
+
   /**
    * Constructs a HTTP basic authentication provider object.
    *
@@ -45,6 +43,7 @@ class OAuth2TokenBearerAuthenticationProvider implements AuthenticationProviderI
     $this->configFactory = $config_factory;
     $this->entityManager = $entity_manager;
   }
+
   /**
    * Checks whether suitable authentication credentials are on the request.
    *
@@ -56,37 +55,58 @@ class OAuth2TokenBearerAuthenticationProvider implements AuthenticationProviderI
    *   request, FALSE otherwise.
    */
   public function applies(Request $request) {
-    // If you return TRUE and the method Authentication logic fails,
-    // you will get out from Drupal navigation if you are logged in.
-    return FALSE;
+    // Check for the presence of the token.
+    return (bool) $this::getToken($request);
   }
+
+  /**
+   * Gets the access token from the request.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The request object.
+   *
+   * @return string
+   *   The access token.
+   *
+   * @see http://tools.ietf.org/html/rfc6750
+   */
+  protected static function getToken(Request $request) {
+    // Check the header. See: http://tools.ietf.org/html/rfc6750#section-2.1
+    $auth_header = $request->headers->get('Authorization', '', TRUE);
+    $prefix = 'Bearer ';
+    if (strpos($auth_header, $prefix) === 0) {
+      return substr($auth_header, strlen($prefix));
+    }
+    // Form encoded parameter. See:
+    // http://tools.ietf.org/html/rfc6750#section-2.2
+    $ct_header = $request->headers->get('Content-Type', '', TRUE);
+    $is_get = $request->getMethod() == Request::METHOD_GET;
+    $token = $request->request->get('access_token');
+    if (!$is_get && $ct_header == 'application/x-www-form-urlencoded' && $token) {
+      return $token;
+    }
+    // This module purposely refuses to implement
+    // http://tools.ietf.org/html/rfc6750#section-2.3 for security resons.
+    return NULL;
+  }
+
   /**
    * {@inheritdoc}
    */
   public function authenticate(Request $request) {
-    $consumer_ip = $request->getClientIp(TRUE);
-    if (in_array($consumer_ip, $ips)) {
-      // Return Anonymous user.
-      return $this->entityManager->getStorage('user')->load(0);
+    $token_storage = $this->entityManager->getStorage('access_token');
+    $ids = $token_storage
+      ->getQuery()
+      ->condition('value', $this::getToken($request))
+      ->range(0, 1)
+      ->execute();
+    if (!empty($ids)) {
+      $token = $token_storage->load(reset($ids));
+      if ($user = $token->get('auth_user_id')->entity) {
+        return $user;
+      }
     }
-    else {
-      throw new AccessDeniedHttpException();
-    }
-  }
-  /**
-   * {@inheritdoc}
-   */
-  public function cleanup(Request $request) {}
-  /**
-   * {@inheritdoc}
-   */
-  public function handleException(GetResponseForExceptionEvent $event) {
-    $exception = $event->getException();
-    if ($exception instanceof AccessDeniedHttpException) {
-      $event->setException(new UnauthorizedHttpException('Invalid consumer origin.', $exception));
-      return TRUE;
-    }
-    return FALSE;
+    return [];
   }
 
 }
