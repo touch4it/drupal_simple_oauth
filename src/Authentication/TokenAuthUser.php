@@ -1,11 +1,11 @@
 <?php
+
 /**
  * @file
  * Contains \Drupal\token_auth\Authentication\TokenAuthUser
  */
 
 namespace Drupal\token_auth\Authentication;
-
 
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -17,7 +17,7 @@ use Drupal\user\UserInterface;
  * Class TokenAuthUser
  * @package Drupal\token_auth\Authentication
  */
-class TokenAuthUser implements UserInterface {
+class TokenAuthUser implements TokenAuthUserInterface {
 
   /**
    * The decorator subject.
@@ -776,6 +776,13 @@ class TokenAuthUser implements UserInterface {
    */
   public function checkExistingPassword(UserInterface $account_unchanged) {
     return $this->subject->checkExistingPassword($account_unchanged);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getIterator() {
+    throw new \Exception('Invalid use of getIterator in token authentication.');
   }
 
 }

@@ -10,6 +10,7 @@ namespace Drupal\token_auth\Authentication\Provider;
 use Drupal\Core\Authentication\AuthenticationProviderInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\token_auth\Authentication\TokenAuthUser;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -103,10 +104,10 @@ class OAuth2TokenBearerAuthenticationProvider implements AuthenticationProviderI
     if (!empty($ids)) {
       $token = $token_storage->load(reset($ids));
       if ($user = $token->get('auth_user_id')->entity) {
-        return $user;
+        return new TokenAuthUser($user);
       }
     }
-    return [];
+    return NULL;
   }
 
 }
