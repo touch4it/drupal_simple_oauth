@@ -355,7 +355,8 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
    *   The default expiration timestamp.
    */
   public static function defaultExpiration() {
-    return [REQUEST_TIME + static::DEFAULT_EXPIRATION_PERIOD];
+    $expiration = \Drupal::config('token_auth.settings')->get('expiration') || static::DEFAULT_EXPIRATION_PERIOD;
+    return [REQUEST_TIME + $expiration];
   }
 
   /**

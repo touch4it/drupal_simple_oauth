@@ -25,7 +25,7 @@ class AccessTokenSettingsForm extends FormBase {
    *   The unique string identifying the form.
    */
   public function getFormId() {
-    return 'AccessToken_settings';
+    return 'access_token_settings';
   }
 
   /**
@@ -37,9 +37,16 @@ class AccessTokenSettingsForm extends FormBase {
    *   The current state of the form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Empty implementation of the abstract submit class.
+    $save = FALSE;
+    $settings = $this->configFactory()->getEditable('token_auth.settings');
+    if ($expiration = $form_state->getValue('expiration')) {
+      $settings->set('expiration', $expiration);
+      $save = TRUE;
+    }
+    if ($save) {
+      $settings->save();
+    }
   }
-
 
   /**
    * Defines the settings form for Access Token entities.
@@ -53,7 +60,17 @@ class AccessTokenSettingsForm extends FormBase {
    *   Form definition array.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['AccessToken_settings']['#markup'] = 'Settings form for Access Token entities. Manage field settings here.';
+    $form['expiration'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Expiration time'),
+      '#description' => $this->t('The default value, in seconds, to be used as expiration time when creating new tokens. This value may be overridden in the token generation form.'),
+      '#default_value' => $this->config('token_auth.settings')->get('expiration'),
+      '#validate'
+    ];
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Save'),
+    ];
     return $form;
   }
 

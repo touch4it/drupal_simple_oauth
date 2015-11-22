@@ -21,3 +21,12 @@ token_auth.access_token_resource.*:
           type: string
     uuid:
       type: string
+
+token_auth.settings:
+  type: mapping
+  label: 'Token Auth Settings'
+  mapping:
+    expiration:
+      type: integer
+      label: 'Expiration Time'
+      description: 'The default period in seconds while a token is valid'
