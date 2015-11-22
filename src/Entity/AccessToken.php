@@ -157,33 +157,6 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['scopes'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Scope'))
-      ->setDescription(t('The scope for this Access Token.'))
-      ->setRevisionable(TRUE)
-      ->setSetting('target_type', 'access_token_scope')
-      ->setSetting('handler', 'default')
-      ->setDefaultValue('')
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setTranslatable(FALSE)
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete_tags',
-        'weight' => 5,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => '60',
-          'autocomplete_type' => 'tags',
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayOptions('view', array(
-        'label' => 'inline',
-        'type' => 'entity_reference_label',
-        'weight' => 5,
-      ))
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
-
     $fields['access_token_id'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Refresh Token'))
       ->setDescription(t('The Refresh Token to re-create an Access Token.'))
@@ -312,8 +285,8 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
     if (!$this->isRefreshToken()) {
       $this->addRefreshToken();
     }
-    // If there is an access token for those conditions (resource + scope +
-    // user) then delete it.
+    // If there is an access token for those conditions (resource + user) then
+    // delete it.
     if ($this->isDuplicated()) {
       $this->deleteDuplicates();
     }
@@ -350,7 +323,6 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       'auth_user_id' => $this->get('auth_user_id')->target_id,
       'access_token_id' => $this->id(),
       'resource' => 'authentication',
-      'scopes' => $this->get('scopes')->getValue(),
       'created' => $this->getCreatedTime(),
       'changed' => $this->getChangedTime(),
       'access_id' => $this->id(),
@@ -369,7 +341,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
    *   The normalized entity.
    */
   protected function normalize() {
-    $keys = ['auth_user_id', 'expire', 'created', 'resource', 'scopes'];
+    $keys = ['auth_user_id', 'expire', 'created', 'resource'];
     $values = array_map(function ($item) {
       return $this->get($item)->getValue();
     }, $keys);
@@ -410,23 +382,10 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
     if (empty($results)) {
       return 0;
     }
-    $tokens = $this
-      ->entityManager()
-      ->getStorage($this->getEntityTypeId())
-      ->loadMultiple(array_keys($results));
-    $deleted = 0;
-    // Delete every token in the list if the scope is the same.
-    foreach ($tokens as $token) {
-      if ($this->get('scopes')->getValue() != $token->get('scopes')->getValue()) {
-        continue;
-      }
-      drupal_set_message(t('Token @token was deleted as a duplicate.', [
-        '@token' => $token->label(),
-      ]));
-      $token->delete();
-      $deleted++;
-    }
-    return $deleted;
+    $storage = $this->entityManager()->getStorage($this->getEntityTypeId());
+    $tokens = $storage->loadMultiple(array_keys($results));
+    $storage->delete($tokens);
+    return count($results);
   }
 
   /**

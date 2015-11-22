@@ -29,7 +29,6 @@ class AccessTokenListBuilder extends EntityListBuilder {
     $header['id'] = $this->t('ID');
     $header['name'] = $this->t('Token');
     $header['resource'] = $this->t('Resource');
-    $header['scopes'] = $this->t('Scopes');
     return $header + parent::buildHeader();
   }
 
@@ -68,11 +67,6 @@ class AccessTokenListBuilder extends EntityListBuilder {
       )
     );
     $row['resource'] = $entity->get('resource')->entity->label();
-    $scopes = [];
-    foreach ($entity->get('scopes') as $scope) {
-      $scopes[] = $scope->entity->label();
-    }
-    $row['scopes'] = empty($scope) ? t('- None -') : implode(', ', $scopes);
 
     return $row + parent::buildRow($entity);
   }

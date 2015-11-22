@@ -32,13 +32,6 @@ entity.access_token_resource.collection:
   description: 'List Access Token Resource'
   base_route: access_token.settings
 
-# Access Token Scope menu items definition
-entity.access_token_scope.collection:
-  title: 'Scopes'
-  route_name: entity.access_token_scope.collection
-  description: 'List Access Token Scope'
-  base_route: access_token.settings
-
 user.access_token.collection:
   title: 'OAuth2 Tokens'
   route_name: user.access_token.collection

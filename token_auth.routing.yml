@@ -103,47 +103,6 @@ entity.access_token_resource.delete_form:
   options:
     _admin_route: TRUE
 
-# AccessTokenScope routing definition
-entity.access_token_scope.collection:
-  path: '/admin/config/people/access_token/access_token_scope'
-  defaults:
-    _entity_list: 'access_token_scope'
-    _title: 'Access Token Scope'
-  requirements:
-    _permission: 'administer site configuration'
-  options:
-    _admin_route: TRUE
-
-entity.access_token_scope.add_form:
-  path: '/admin/config/people/access_token/access_token_scope/add'
-  defaults:
-    _entity_form: 'access_token_scope.add'
-    _title: 'Add Access Token Scope'
-  requirements:
-    _permission: 'administer site configuration'
-  options:
-    _admin_route: TRUE
-
-entity.access_token_scope.edit_form:
-  path: '/admin/config/people/access_token/access_token_scope/{access_token_scope}'
-  defaults:
-    _entity_form: 'access_token_scope.edit'
-    _title: 'Edit Access Token Scope'
-  requirements:
-    _permission: 'administer site configuration'
-  options:
-    _admin_route: TRUE
-
-entity.access_token_scope.delete_form:
-  path: '/admin/config/people/access_token/access_token_scope/{access_token_scope}/delete'
-  defaults:
-    _entity_form: 'access_token_scope.delete'
-    _title: 'Delete Access Token Scope'
-  requirements:
-    _permission: 'administer site configuration'
-  options:
-    _admin_route: TRUE
-
 user.access_token.collection:
   path: '/user/{user}/oauth2-tokens'
   defaults:
