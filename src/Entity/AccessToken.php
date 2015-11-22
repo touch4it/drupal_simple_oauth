@@ -349,14 +349,25 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
   }
 
   /**
-   * Returns the defaul expiration.
-   *
-   * @return array
-   *   The default expiration timestamp.
+   * {@inheritdoc}
    */
   public static function defaultExpiration() {
     $expiration = \Drupal::config('oauth2_token.settings')->get('expiration') || static::DEFAULT_EXPIRATION_PERIOD;
     return [REQUEST_TIME + $expiration];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasPermission($permission) {
+    if ($permission == 'refresh access token') {
+      // You can only refresh the access token with a refresh token.
+      return $this->isRefreshToken();
+    }
+    $token_permissions = $this->token->get('resource')->entity->get('permissions');
+    // If the selected permission is not included in the list of permissions
+    // for the resource attached to the token, then return FALSE.
+    return $this->token->id() == 'global' ? TRUE : in_array($permission, $token_permissions);
   }
 
   /**

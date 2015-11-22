@@ -18,6 +18,24 @@ use Drupal\user\EntityOwnerInterface;
  * @ingroup oauth2_token
  */
 interface AccessTokenInterface extends ContentEntityInterface, EntityChangedInterface, EntityOwnerInterface {
-  // Add get/set methods for your configuration properties here.
+
+  /**
+   * Returns the defaul expiration.
+   *
+   * @return array
+   *   The default expiration timestamp.
+   */
+  public static function defaultExpiration();
+
+  /**
+   * Checks if the current token allows the provided permission.
+   *
+   * @param string $permission
+   *   The requested permission.
+   *
+   * @return bool
+   *   TRUE if the permission is included. FALSE otherwise.
+   */
+  public function hasPermission($permission);
 
 }

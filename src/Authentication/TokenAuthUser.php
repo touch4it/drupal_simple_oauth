@@ -67,13 +67,7 @@ class TokenAuthUser implements TokenAuthUserInterface {
    * {@inheritdoc}
    */
   public function hasPermission($permission) {
-    $token_permissions = $this->token->get('resource')->entity->get('permissions');
-    if ($this->token->id() != 'global' && !in_array($permission, $token_permissions)) {
-      // If the selected permission is not included in the list of permissions
-      // for the resource attached to the token, then return FALSE.
-      return FALSE;
-    }
-    return $this->subject->hasPermission($permission);
+    return $this->token->hasPermission($permission) ? $this->subject->hasPermission($permission) : FALSE;
   }
 
   /**
