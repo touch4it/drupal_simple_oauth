@@ -23,6 +23,10 @@ class AccessTokenAccessControlHandler extends EntityAccessControlHandler {
    */
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
 
+    // Permissions only apply to own entities.
+    if ($account->id() != $entity->get('auth_user_id')->target_id) {
+      return AccessResult::forbidden();
+    }
     switch ($operation) {
       case 'view':
         return AccessResult::allowedIfHasPermission($account, 'view own access token entities');

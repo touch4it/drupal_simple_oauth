@@ -37,7 +37,7 @@ entity.access_token.edit_form:
     _entity_form: access_token.edit
     _title: 'Edit Access Token'
   requirements:
-    _permission: 'edit own access token entities'
+    _entity_access: 'access_token.edit'
   options:
     _admin_route: TRUE
 
@@ -47,7 +47,7 @@ entity.access_token.delete_form:
     _entity_form: access_token.delete
     _title: 'Delete Access Token'
   requirements:
-    _permission: 'delete own access token entities'
+    _entity_access: 'access_token.delete'
   options:
     _admin_route: TRUE
 
@@ -69,7 +69,7 @@ entity.access_token_resource.collection:
     _entity_list: 'access_token_resource'
     _title: 'Access Token Resource'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer access token entities'
   options:
     _admin_route: TRUE
 
@@ -79,7 +79,7 @@ entity.access_token_resource.add_form:
     _entity_form: 'access_token_resource.add'
     _title: 'Add Access Token Resource'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer access token entities'
   options:
     _admin_route: TRUE
 
@@ -89,7 +89,7 @@ entity.access_token_resource.edit_form:
     _entity_form: 'access_token_resource.edit'
     _title: 'Edit Access Token Resource'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer access token entities'
   options:
     _admin_route: TRUE
 
@@ -99,7 +99,7 @@ entity.access_token_resource.delete_form:
     _entity_form: 'access_token_resource.delete'
     _title: 'Delete Access Token Resource'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer access token entities'
   options:
     _admin_route: TRUE
 
@@ -109,4 +109,4 @@ user.access_token.collection:
     _controller: 'Drupal\oauth2_token\Controller\AccessTokenUserList::tokenList'
     _title: 'OAuth2 Tokens'
   requirements:
-    _permission: 'view own access token entities'
+    _entity_access: 'access_token.view'
