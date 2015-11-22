@@ -109,4 +109,4 @@ user.access_token.collection:
     _controller: 'Drupal\oauth2_token\Controller\AccessTokenUserList::tokenList'
     _title: 'OAuth2 Tokens'
   requirements:
-    _entity_access: 'view own access token entities'
+    _permission: 'view own access token entities'
