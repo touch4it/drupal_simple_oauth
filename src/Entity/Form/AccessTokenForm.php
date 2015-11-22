@@ -17,6 +17,7 @@ use Drupal\Core\Language\Language;
  * @ingroup oauth2_token
  */
 class AccessTokenForm extends ContentEntityForm {
+
   /**
    * {@inheritdoc}
    */

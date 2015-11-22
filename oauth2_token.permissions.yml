@@ -5,11 +5,11 @@ administer access token entities:
   title: 'Administer Access Token entities'
   description: 'Allow to access the administration form to configure Access Token entities.'
 
-delete access token entities:
+delete own access token entities:
   title: 'Delete Access Token entities'
 
-edit access token entities:
+edit own access token entities:
   title: 'Edit Access Token entities'
 
-view access token entities:
+view own access token entities:
   title: 'View Access Token entities'

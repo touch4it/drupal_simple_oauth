@@ -16,7 +16,7 @@ entity.access_token.collection:
     _entity_list: 'access_token'
     _title: 'Access Token list'
   requirements:
-    _permission: 'view access token entities'
+    _permission: 'administer access token entities'
   options:
     _admin_route: TRUE
   base_route: system.admin_content
@@ -37,7 +37,7 @@ entity.access_token.edit_form:
     _entity_form: access_token.edit
     _title: 'Edit Access Token'
   requirements:
-    _permission: 'edit access token entities'
+    _permission: 'edit own access token entities'
   options:
     _admin_route: TRUE
 
@@ -47,7 +47,7 @@ entity.access_token.delete_form:
     _entity_form: access_token.delete
     _title: 'Delete Access Token'
   requirements:
-    _permission: 'delete access token entities'
+    _permission: 'delete own access token entities'
   options:
     _admin_route: TRUE
 
@@ -109,4 +109,4 @@ user.access_token.collection:
     _controller: 'Drupal\oauth2_token\Controller\AccessTokenUserList::tokenList'
     _title: 'OAuth2 Tokens'
   requirements:
-    _permission: 'view access token entities'
+    _permission: 'view own access token entities'

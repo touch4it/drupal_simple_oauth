@@ -25,13 +25,13 @@ class AccessTokenAccessControlHandler extends EntityAccessControlHandler {
 
     switch ($operation) {
       case 'view':
-        return AccessResult::allowedIfHasPermission($account, 'view access token entities');
+        return AccessResult::allowedIfHasPermission($account, 'view own access token entities');
 
       case 'update':
-        return AccessResult::allowedIfHasPermission($account, 'edit access token entities');
+        return AccessResult::allowedIfHasPermission($account, 'edit own access token entities');
 
       case 'delete':
-        return AccessResult::allowedIfHasPermission($account, 'delete access token entities');
+        return AccessResult::allowedIfHasPermission($account, 'delete own access token entities');
     }
 
     return AccessResult::allowed();
