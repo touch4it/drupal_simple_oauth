@@ -19,9 +19,9 @@ use Drupal\token_auth\AccessTokenResourceInterface;
  *   handlers = {
  *     "list_builder" = "Drupal\token_auth\AccessTokenResourceListBuilder",
  *     "form" = {
- *       "add" = "Drupal\token_auth\Form\AccessTokenResourceForm",
- *       "edit" = "Drupal\token_auth\Form\AccessTokenResourceForm",
- *       "delete" = "Drupal\token_auth\Form\AccessTokenResourceDeleteForm"
+ *       "add" = "Drupal\token_auth\Entity\Form\AccessTokenResourceForm",
+ *       "edit" = "Drupal\token_auth\Entity\Form\AccessTokenResourceForm",
+ *       "delete" = "Drupal\token_auth\Entity\Form\AccessTokenResourceDeleteForm"
  *     },
  *     "access" = "Drupal\token_auth\LockableConfigEntityAccessControlHandler"
  *   },

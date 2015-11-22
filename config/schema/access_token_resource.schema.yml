@@ -14,5 +14,10 @@ token_auth.access_token_resource.*:
     locked:
       type: boolean
       label: 'Locked'
+    permissions:
+      type: sequence
+      label: 'Permissions'
+      sequence:
+          type: string
     uuid:
       type: string
