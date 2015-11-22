@@ -10,6 +10,7 @@ namespace Drupal\token_auth\Authentication;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\token_auth\AccessTokenInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
@@ -27,13 +28,25 @@ class TokenAuthUser implements TokenAuthUserInterface {
   protected $subject;
 
   /**
-   * Constructs a TokenAuthUser object.
-   * 
-   * @param UserInterface $subject
-   *   The underlying user 
+   * The decorator subject.
+   *
+   * @var AccessTokenInterface
    */
-  public function __construct(UserInterface $subject) {
-    $this->subject = $subject;
+  protected $token;
+
+  /**
+   * Constructs a TokenAuthUser object.
+   *
+   * @param AccessTokenInterface $token
+   *   The underlying token.
+   * @throws \Exception
+   *   When there is no user.
+   */
+  public function __construct(AccessTokenInterface $token) {
+    if (!$this->subject = $token->get('auth_user_id')->entity) {
+      throw new \Exception('The access token does not link to a user.');
+    }
+    $this->token = $token;
   }
 
   /**
@@ -54,6 +67,12 @@ class TokenAuthUser implements TokenAuthUserInterface {
    * {@inheritdoc}
    */
   public function hasPermission($permission) {
+    $token_permissions = $this->token->get('resource')->entity->get('permissions');
+    if (!in_array($permission, $token_permissions)) {
+      // If the selected permission is not included in the list of permissions
+      // for the resource attached to the token, then return FALSE.
+      return FALSE;
+    }
     return $this->subject->hasPermission($permission);
   }
 

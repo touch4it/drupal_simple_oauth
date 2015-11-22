@@ -99,12 +99,18 @@ class OAuth2TokenBearerAuthenticationProvider implements AuthenticationProviderI
     $ids = $token_storage
       ->getQuery()
       ->condition('value', $this::getToken($request))
+      ->condition('expire', REQUEST_TIME, '<')
       ->range(0, 1)
       ->execute();
     if (!empty($ids)) {
+      /* @var \Drupal\token_auth\AccessTokenInterface $token */
       $token = $token_storage->load(reset($ids));
-      if ($user = $token->get('auth_user_id')->entity) {
-        return new TokenAuthUser($user);
+      try {
+        return new TokenAuthUser($token);
+      }
+      catch (\Exception $e) {
+        // If no user could be found then return NULL.
+        return NULL;
       }
     }
     return NULL;
