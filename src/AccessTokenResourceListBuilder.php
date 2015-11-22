@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\token_auth\AccessTokenResourceListBuilder.
+ * Contains \Drupal\oauth2_token\AccessTokenResourceListBuilder.
  */
 
-namespace Drupal\token_auth;
+namespace Drupal\oauth2_token;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;

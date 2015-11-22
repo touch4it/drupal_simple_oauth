@@ -1,4 +1,4 @@
-token_auth.access_token_resource.*:
+oauth2_token.access_token_resource.*:
   type: config_entity
   label: 'Access Token Resource config'
   mapping:
@@ -22,7 +22,7 @@ token_auth.access_token_resource.*:
     uuid:
       type: string
 
-token_auth.settings:
+oauth2_token.settings:
   type: mapping
   label: 'Token Auth Settings'
   mapping:

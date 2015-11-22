@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\token_auth\Authentication\TokenAuthUserInterface.
+ * Contains \Drupal\oauth2_token\Authentication\TokenAuthUserInterface.
  */
 
-namespace Drupal\token_auth\Authentication;
+namespace Drupal\oauth2_token\Authentication;
 
 
 use Drupal\user\UserInterface;

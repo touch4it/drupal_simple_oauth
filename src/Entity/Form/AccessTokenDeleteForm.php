@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\token_auth\Entity\Form\AccessTokenDeleteForm.
+ * Contains \Drupal\oauth2_token\Entity\Form\AccessTokenDeleteForm.
  */
 
-namespace Drupal\token_auth\Entity\Form;
+namespace Drupal\oauth2_token\Entity\Form;
 
 use Drupal\Core\Entity\ContentEntityConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -14,7 +14,7 @@ use Drupal\Core\Url;
 /**
  * Provides a form for deleting Access Token entities.
  *
- * @ingroup token_auth
+ * @ingroup oauth2_token
  */
 class AccessTokenDeleteForm extends ContentEntityConfirmFormBase {
   /**

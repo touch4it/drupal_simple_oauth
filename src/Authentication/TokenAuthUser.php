@@ -2,21 +2,21 @@
 
 /**
  * @file
- * Contains \Drupal\token_auth\Authentication\TokenAuthUser
+ * Contains \Drupal\oauth2_token\Authentication\TokenAuthUser
  */
 
-namespace Drupal\token_auth\Authentication;
+namespace Drupal\oauth2_token\Authentication;
 
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\token_auth\AccessTokenInterface;
+use Drupal\oauth2_token\AccessTokenInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
 /**
  * Class TokenAuthUser
- * @package Drupal\token_auth\Authentication
+ * @package Drupal\oauth2_token\Authentication
  */
 class TokenAuthUser implements TokenAuthUserInterface {
 

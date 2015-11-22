@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\token_auth\Entity\Form\AccessTokenForm.
+ * Contains \Drupal\oauth2_token\Entity\Form\AccessTokenForm.
  */
 
-namespace Drupal\token_auth\Entity\Form;
+namespace Drupal\oauth2_token\Entity\Form;
 
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
@@ -14,14 +14,14 @@ use Drupal\Core\Language\Language;
 /**
  * Form controller for Access Token edit forms.
  *
- * @ingroup token_auth
+ * @ingroup oauth2_token
  */
 class AccessTokenForm extends ContentEntityForm {
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    /* @var $entity \Drupal\token_auth\Entity\AccessToken */
+    /* @var $entity \Drupal\oauth2_token\Entity\AccessToken */
     $form = parent::buildForm($form, $form_state);
     $entity = $this->entity;
 

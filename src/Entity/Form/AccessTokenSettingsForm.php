@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\token_auth\Entity\Form\AccessTokenSettingsForm.
+ * Contains \Drupal\oauth2_token\Entity\Form\AccessTokenSettingsForm.
  */
 
-namespace Drupal\token_auth\Entity\Form;
+namespace Drupal\oauth2_token\Entity\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -13,9 +13,9 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Class AccessTokenSettingsForm.
  *
- * @package Drupal\token_auth\Form
+ * @package Drupal\oauth2_token\Form
  *
- * @ingroup token_auth
+ * @ingroup oauth2_token
  */
 class AccessTokenSettingsForm extends FormBase {
   /**
@@ -38,7 +38,7 @@ class AccessTokenSettingsForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $save = FALSE;
-    $settings = $this->configFactory()->getEditable('token_auth.settings');
+    $settings = $this->configFactory()->getEditable('oauth2_token.settings');
     if ($expiration = $form_state->getValue('expiration')) {
       $settings->set('expiration', $expiration);
       $save = TRUE;
@@ -64,7 +64,7 @@ class AccessTokenSettingsForm extends FormBase {
       '#type' => 'number',
       '#title' => $this->t('Expiration time'),
       '#description' => $this->t('The default value, in seconds, to be used as expiration time when creating new tokens. This value may be overridden in the token generation form.'),
-      '#default_value' => $this->config('token_auth.settings')->get('expiration'),
+      '#default_value' => $this->config('oauth2_token.settings')->get('expiration'),
       '#validate'
     ];
     $form['submit'] = [

@@ -27,7 +27,7 @@ function template_preprocess_access_token(array &$variables) {
   foreach (Element::children($access_token) as $key) {
     $variables['content'][$key] = $access_token[$key];
     $variables['content']['#attached'] = [
-      'library' => ['token_auth/drupal.access_token'],
+      'library' => ['oauth2_token/drupal.access_token'],
     ];
   }
 }

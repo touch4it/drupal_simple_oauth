@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\token_auth\AccessTokenResourceInterface.
+ * Contains \Drupal\oauth2_token\AccessTokenResourceInterface.
  */
 
-namespace Drupal\token_auth;
+namespace Drupal\oauth2_token;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 

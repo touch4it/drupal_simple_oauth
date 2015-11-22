@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\token_auth\Entity\Form\AccessTokenResourceForm.
+ * Contains \Drupal\oauth2_token\Entity\Form\AccessTokenResourceForm.
  */
 
-namespace Drupal\token_auth\Entity\Form;
+namespace Drupal\oauth2_token\Entity\Form;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
@@ -15,7 +15,7 @@ use Drupal\user\PermissionHandler;
 /**
  * Class AccessTokenResourceForm.
  *
- * @package Drupal\token_auth\Entity\Form
+ * @package Drupal\oauth2_token\Entity\Form
  */
 class AccessTokenResourceForm extends EntityForm {
 
@@ -25,7 +25,7 @@ class AccessTokenResourceForm extends EntityForm {
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
-    /* @var \Drupal\token_auth\AccessTokenResourceInterface $access_token_resource */
+    /* @var \Drupal\oauth2_token\AccessTokenResourceInterface $access_token_resource */
     $access_token_resource = $this->entity;
     $form['label'] = array(
       '#type' => 'textfield',
@@ -48,7 +48,7 @@ class AccessTokenResourceForm extends EntityForm {
       '#type' => 'machine_name',
       '#default_value' => $access_token_resource->id(),
       '#machine_name' => array(
-        'exists' => '\Drupal\token_auth\Entity\AccessTokenResource::load',
+        'exists' => '\Drupal\oauth2_token\Entity\AccessTokenResource::load',
       ),
       '#disabled' => !$access_token_resource->isNew(),
     );
@@ -66,7 +66,7 @@ class AccessTokenResourceForm extends EntityForm {
       '#options' => $permissions_list,
       '#required' => TRUE,
       '#attached' => [
-        'library' => ['token_auth/drupal.access_token'],
+        'library' => ['oauth2_token/drupal.access_token'],
       ]
     );
 

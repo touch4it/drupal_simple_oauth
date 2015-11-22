@@ -54,7 +54,7 @@ entity.access_token.delete_form:
 access_token.settings:
   path: '/admin/config/people/access_token'
   defaults:
-   _form: '\Drupal\token_auth\Entity\Form\AccessTokenSettingsForm'
+   _form: '\Drupal\oauth2_token\Entity\Form\AccessTokenSettingsForm'
    _title: 'Token Auth Settings'
   requirements:
     _permission: 'administer access token entities'
@@ -106,7 +106,7 @@ entity.access_token_resource.delete_form:
 user.access_token.collection:
   path: '/user/{user}/oauth2-tokens'
   defaults:
-    _controller: 'Drupal\token_auth\Controller\AccessTokenUserList::tokenList'
+    _controller: 'Drupal\oauth2_token\Controller\AccessTokenUserList::tokenList'
     _title: 'OAuth2 Tokens'
   requirements:
     _permission: 'view access token entities'

@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\token_auth\AccessTokenListBuilder.
+ * Contains \Drupal\oauth2_token\AccessTokenListBuilder.
  */
 
-namespace Drupal\token_auth;
+namespace Drupal\oauth2_token;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
@@ -15,7 +15,7 @@ use Drupal\Core\Url;
 /**
  * Defines a class to build a listing of Access Token entities.
  *
- * @ingroup token_auth
+ * @ingroup oauth2_token
  */
 class AccessTokenListBuilder extends EntityListBuilder {
   use LinkGeneratorTrait;
@@ -36,7 +36,7 @@ class AccessTokenListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /* @var $entity \Drupal\token_auth\Entity\AccessToken */
+    /* @var $entity \Drupal\oauth2_token\Entity\AccessToken */
     $type = $entity->get('resource')->target_id == 'authentication' ? t('Refresh Token') : t('Access Token');
     $row['type'] = $type;
     $user = $entity->get('auth_user_id')->entity;

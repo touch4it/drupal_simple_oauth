@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\token_auth\AccessTokenValue.
+ * Contains \Drupal\oauth2_token\AccessTokenValue.
  */
 
-namespace Drupal\token_auth;
+namespace Drupal\oauth2_token;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Crypt;

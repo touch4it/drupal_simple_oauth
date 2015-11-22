@@ -1,6 +1,6 @@
 services:
-  authentication.token_auth:
-    class: Drupal\token_auth\Authentication\Provider\OAuth2TokenBearerAuthenticationProvider
+  authentication.oauth2_token:
+    class: Drupal\oauth2_token\Authentication\Provider\OAuth2TokenBearerAuthenticationProvider
     arguments: ["@config.factory", "@entity.manager"]
     tags:
       - { name: authentication_provider, provider_id: token_bearer, global: TRUE, priority: 35 }

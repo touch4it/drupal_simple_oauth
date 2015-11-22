@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\token_auth\AccessTokenValueInterface.
+ * Contains \Drupal\oauth2_token\AccessTokenValueInterface.
  */
 
-namespace Drupal\token_auth;
+namespace Drupal\oauth2_token;
 
 
 interface AccessTokenValueInterface {

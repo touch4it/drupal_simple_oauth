@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\token_auth\Entity\Form\AccessTokenResourceDeleteForm.
+ * Contains \Drupal\oauth2_token\Entity\Form\AccessTokenResourceDeleteForm.
  */
 
-namespace Drupal\token_auth\Entity\Form;
+namespace Drupal\oauth2_token\Entity\Form;
 
 use Drupal\Core\Entity\EntityConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;

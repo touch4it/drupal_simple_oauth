@@ -1,10 +1,10 @@
 <?php
 /**
  * @file
- * Contains \Drupal\token_auth\Controller\AccessTokenUserList.
+ * Contains \Drupal\oauth2_token\Controller\AccessTokenUserList.
  */
 
-namespace Drupal\token_auth\Controller;
+namespace Drupal\oauth2_token\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Render\Element;

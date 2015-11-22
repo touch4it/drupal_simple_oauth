@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\token_auth\AccessTokenAccessControlHandler.
+ * Contains \Drupal\oauth2_token\AccessTokenAccessControlHandler.
  */
 
-namespace Drupal\token_auth;
+namespace Drupal\oauth2_token;
 
 use Drupal\Core\Entity\EntityAccessControlHandler;
 use Drupal\Core\Entity\EntityInterface;
@@ -15,7 +15,7 @@ use Drupal\Core\Access\AccessResult;
 /**
  * Access controller for the Access Token entity.
  *
- * @see \Drupal\token_auth\Entity\AccessToken.
+ * @see \Drupal\oauth2_token\Entity\AccessToken.
  */
 class AccessTokenAccessControlHandler extends EntityAccessControlHandler {
   /**

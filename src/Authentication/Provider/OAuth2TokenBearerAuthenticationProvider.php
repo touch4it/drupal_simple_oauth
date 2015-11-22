@@ -2,21 +2,21 @@
 
 /**
  * @file
- * Contains \Drupal\token_auth\Authentication\Provider\OAuth2TokenBearerAuthenticationProvider.
+ * Contains \Drupal\oauth2_token\Authentication\Provider\OAuth2TokenBearerAuthenticationProvider.
  */
 
-namespace Drupal\token_auth\Authentication\Provider;
+namespace Drupal\oauth2_token\Authentication\Provider;
 
 use Drupal\Core\Authentication\AuthenticationProviderInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
-use Drupal\token_auth\Authentication\TokenAuthUser;
+use Drupal\oauth2_token\Authentication\TokenAuthUser;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class OAuth2TokenBearerAuthenticationProvider.
  *
- * @package Drupal\token_auth\Authentication\Provider
+ * @package Drupal\oauth2_token\Authentication\Provider
  */
 class OAuth2TokenBearerAuthenticationProvider implements AuthenticationProviderInterface {
   /**
@@ -103,7 +103,7 @@ class OAuth2TokenBearerAuthenticationProvider implements AuthenticationProviderI
       ->range(0, 1)
       ->execute();
     if (!empty($ids)) {
-      /* @var \Drupal\token_auth\AccessTokenInterface $token */
+      /* @var \Drupal\oauth2_token\AccessTokenInterface $token */
       $token = $token_storage->load(reset($ids));
       try {
         return new TokenAuthUser($token);
