@@ -32,7 +32,7 @@ function oauth2_token_cron() {
   $storage = $manager->getStorage('access_token');
   $query = $storage->getQuery();
   $ids = $query
-    ->condition('expire', REQUEST_TIME, '>')
+    ->condition('expire', REQUEST_TIME, '<')
     ->execute();
   if (!empty($ids)) {
     $storage->delete($storage->loadMultiple($ids));

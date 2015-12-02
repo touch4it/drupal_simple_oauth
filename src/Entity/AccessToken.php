@@ -293,12 +293,9 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
   }
 
   /**
-   * Helper function that indicates if a token is a refresh token.
-   *
-   * @return bool
-   *   TRUE if this is a refresh token. FALSE otherwise.
+   * {@inheritdoc}
    */
-  protected function isRefreshToken() {
+  public function isRefreshToken() {
     return !$this->get('access_token_id')
       ->isEmpty() && $this->get('resource')->target_id == 'authentication';
   }
@@ -325,7 +322,6 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       'resource' => 'authentication',
       'created' => $this->getCreatedTime(),
       'changed' => $this->getChangedTime(),
-      'access_id' => $this->id(),
     ];
     $refresh_token = $this
       ->entityManager()
@@ -352,7 +348,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
    * {@inheritdoc}
    */
   public static function defaultExpiration() {
-    $expiration = \Drupal::config('oauth2_token.settings')->get('expiration') || static::DEFAULT_EXPIRATION_PERIOD;
+    $expiration = \Drupal::config('oauth2_token.settings')->get('expiration') ?: static::DEFAULT_EXPIRATION_PERIOD;
     return [REQUEST_TIME + $expiration];
   }
 
@@ -364,10 +360,11 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       // You can only refresh the access token with a refresh token.
       return $this->isRefreshToken();
     }
-    $token_permissions = $this->token->get('resource')->entity->get('permissions');
+    $resource = $this->get('resource')->entity;
+    $token_permissions = $resource->get('permissions') ?: [];
     // If the selected permission is not included in the list of permissions
     // for the resource attached to the token, then return FALSE.
-    return $this->token->id() == 'global' ? TRUE : in_array($permission, $token_permissions);
+    return $resource->id() == 'global' || in_array($permission, $token_permissions);
   }
 
   /**

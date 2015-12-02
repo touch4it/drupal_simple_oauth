@@ -38,4 +38,12 @@ interface AccessTokenInterface extends ContentEntityInterface, EntityChangedInte
    */
   public function hasPermission($permission);
 
+  /**
+   * Helper function that indicates if a token is a refresh token.
+   *
+   * @return bool
+   *   TRUE if this is a refresh token. FALSE otherwise.
+   */
+  public function isRefreshToken();
+
 }

@@ -35,6 +35,13 @@ class TokenAuthUser implements TokenAuthUserInterface {
   protected $token;
 
   /**
+   * {@inheritdoc}
+   */
+  public function getToken() {
+    return $this->token;
+  }
+
+  /**
    * Constructs a TokenAuthUser object.
    *
    * @param AccessTokenInterface $token

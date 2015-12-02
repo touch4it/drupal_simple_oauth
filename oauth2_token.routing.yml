@@ -110,3 +110,10 @@ user.access_token.collection:
     _title: 'OAuth2 Tokens'
   requirements:
     _permission: 'view own access token entities'
+
+access_token.refresh:
+  path: '/oauth2-tokens/refresh'
+  defaults:
+    _controller: 'Drupal\oauth2_token\Controller\AccessTokenRefresh::refresh'
+  requirements:
+    _permission: 'refresh access token'

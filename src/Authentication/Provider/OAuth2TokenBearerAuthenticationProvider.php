@@ -57,7 +57,7 @@ class OAuth2TokenBearerAuthenticationProvider implements AuthenticationProviderI
    */
   public function applies(Request $request) {
     // Check for the presence of the token.
-    return (bool) $this::getToken($request);
+    return (bool) $this::getTokenValue($request);
   }
 
   /**
@@ -71,7 +71,7 @@ class OAuth2TokenBearerAuthenticationProvider implements AuthenticationProviderI
    *
    * @see http://tools.ietf.org/html/rfc6750
    */
-  protected static function getToken(Request $request) {
+  protected static function getTokenValue(Request $request) {
     // Check the header. See: http://tools.ietf.org/html/rfc6750#section-2.1
     $auth_header = $request->headers->get('Authorization', '', TRUE);
     $prefix = 'Bearer ';
@@ -98,8 +98,8 @@ class OAuth2TokenBearerAuthenticationProvider implements AuthenticationProviderI
     $token_storage = $this->entityManager->getStorage('access_token');
     $ids = $token_storage
       ->getQuery()
-      ->condition('value', $this::getToken($request))
-      ->condition('expire', REQUEST_TIME, '<')
+      ->condition('value', $this::getTokenValue($request))
+      ->condition('expire', REQUEST_TIME, '>')
       ->range(0, 1)
       ->execute();
     if (!empty($ids)) {
