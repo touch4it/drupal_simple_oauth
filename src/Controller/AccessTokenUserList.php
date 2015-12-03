@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Contains \Drupal\oauth2_token\Controller\AccessTokenUserList.
@@ -31,28 +32,8 @@ class AccessTokenUserList extends ControllerBase {
     }
     $view_controller = $this->entityManager()->getViewBuilder($entity_type);
     $tokens = $storage->loadMultiple($ids);
-    $elements = $view_controller->viewMultiple($tokens);
-    $children = Element::children($elements);
-    foreach ($children as $delta) {
-      $elements[$delta]['operations'] = [
-        '#type' => 'operations',
-        '#links' => [
-          'edit' => [
-            'title' => $this->t('Edit'),
-            'weight' => 10,
-            'url' => $elements[$delta]['#access_token']->urlInfo('edit-form'),
-          ],
-          'delete' => [
-            'title' => $this->t('Delete'),
-            'weight' => 100,
-            'url' => $elements[$delta]['#access_token']->urlInfo('delete-form'),
-          ],
-        ],
-        '#weight' => -100,
-      ];
-    }
 
-    return $elements;
+    return $view_controller->viewMultiple($tokens);
   }
 
 }

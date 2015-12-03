@@ -16,7 +16,9 @@
  */
 #}
 <article{{ attributes.addClass('access_token') }}>
-  {% if content %}
-    {{- content -}}
-  {% endif %}
+  {{ title_prefix }}
+  {{ title_suffix }}
+  <div{{ content_attributes }}>
+    {{ content }}
+  </div>
 </article>

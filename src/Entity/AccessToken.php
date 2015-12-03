@@ -25,7 +25,7 @@ use Drupal\user\UserInterface;
  *   id = "access_token",
  *   label = @Translation("Access Token"),
  *   handlers = {
- *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
+ *     "view_builder" = "Drupal\oauth2_token\AccessTokenViewBuilder",
  *     "list_builder" = "Drupal\oauth2_token\AccessTokenListBuilder",
  *     "views_data" = "Drupal\oauth2_token\Entity\AccessTokenViewsData",
  *

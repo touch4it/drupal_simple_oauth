@@ -19,6 +19,7 @@ use Drupal\Core\Url;
  */
 class AccessTokenListBuilder extends EntityListBuilder {
   use LinkGeneratorTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -40,32 +41,17 @@ class AccessTokenListBuilder extends EntityListBuilder {
     $type = $entity->get('resource')->target_id == 'authentication' ? t('Refresh Token') : t('Access Token');
     $row['type'] = $type;
     $user = $entity->get('auth_user_id')->entity;
-    $row['user'] = $this->l(
-      $user->label(),
-      new Url(
-        'entity.user.canonical', array(
-          'user' => $user->id(),
-        )
-      )
-    );
+    $row['user'] = $this->l($user->label(), new Url('entity.user.canonical', array(
+      'user' => $user->id(),
+    )));
     $owner = $entity->get('user_id')->entity;
-    $row['owner'] = $this->l(
-      $owner->label(),
-      new Url(
-        'entity.user.canonical', array(
-          'user' => $owner->id(),
-        )
-      )
-    );
+    $row['owner'] = $this->l($owner->label(), new Url('entity.user.canonical', array(
+      'user' => $owner->id(),
+    )));
     $row['id'] = $entity->id();
-    $row['name'] = $this->l(
-      $entity->label(),
-      new Url(
-        'entity.access_token.edit_form', array(
-          'access_token' => $entity->id(),
-        )
-      )
-    );
+    $row['name'] = $this->l($entity->label(), new Url('entity.access_token.edit_form', array(
+      'access_token' => $entity->id(),
+    )));
     $row['resource'] = $entity->get('resource')->entity->label();
 
     return $row + parent::buildRow($entity);
