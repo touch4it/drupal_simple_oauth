@@ -2,13 +2,13 @@
 
 /**
  * @file
- * Contains \Drupal\oauth2_token\Controller\AccessTokenRefresh.
+ * Contains \Drupal\simple_oauth\Controller\AccessTokenRefresh.
  */
-namespace Drupal\oauth2_token\Controller;
+namespace Drupal\simple_oauth\Controller;
 
 use Drupal\Component\Serialization\Json;
-use Drupal\oauth2_token\AccessTokenInterface;
-use Drupal\oauth2_token\Authentication\TokenAuthUserInterface;
+use Drupal\simple_oauth\AccessTokenInterface;
+use Drupal\simple_oauth\Authentication\TokenAuthUserInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class AccessTokenRefresh {

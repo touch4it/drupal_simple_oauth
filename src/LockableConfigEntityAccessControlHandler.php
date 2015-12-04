@@ -1,10 +1,10 @@
 <?php
 /**
  * @file
- * Contains \Drupal\oauth2_token\LockableConfigEntityAccessControlHandler.
+ * Contains \Drupal\simple_oauth\LockableConfigEntityAccessControlHandler.
  */
 
-namespace Drupal\oauth2_token;
+namespace Drupal\simple_oauth;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityAccessControlHandler;

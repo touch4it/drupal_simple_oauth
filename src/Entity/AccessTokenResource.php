@@ -2,13 +2,13 @@
 
 /**
  * @file
- * Contains \Drupal\oauth2_token\Entity\AccessTokenResource.
+ * Contains \Drupal\simple_oauth\Entity\AccessTokenResource.
  */
 
-namespace Drupal\oauth2_token\Entity;
+namespace Drupal\simple_oauth\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
-use Drupal\oauth2_token\AccessTokenResourceInterface;
+use Drupal\simple_oauth\AccessTokenResourceInterface;
 
 /**
  * Defines the Access Token Resource entity.
@@ -17,13 +17,13 @@ use Drupal\oauth2_token\AccessTokenResourceInterface;
  *   id = "access_token_resource",
  *   label = @Translation("Access Token Resource"),
  *   handlers = {
- *     "list_builder" = "Drupal\oauth2_token\AccessTokenResourceListBuilder",
+ *     "list_builder" = "Drupal\simple_oauth\AccessTokenResourceListBuilder",
  *     "form" = {
- *       "add" = "Drupal\oauth2_token\Entity\Form\AccessTokenResourceForm",
- *       "edit" = "Drupal\oauth2_token\Entity\Form\AccessTokenResourceForm",
- *       "delete" = "Drupal\oauth2_token\Entity\Form\AccessTokenResourceDeleteForm"
+ *       "add" = "Drupal\simple_oauth\Entity\Form\AccessTokenResourceForm",
+ *       "edit" = "Drupal\simple_oauth\Entity\Form\AccessTokenResourceForm",
+ *       "delete" = "Drupal\simple_oauth\Entity\Form\AccessTokenResourceDeleteForm"
  *     },
- *     "access" = "Drupal\oauth2_token\LockableConfigEntityAccessControlHandler"
+ *     "access" = "Drupal\simple_oauth\LockableConfigEntityAccessControlHandler"
  *   },
  *   config_prefix = "access_token_resource",
  *   admin_permission = "administer site configuration",

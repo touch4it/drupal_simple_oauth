@@ -2,13 +2,13 @@
 
 /**
  * @file
- * Contains \Drupal\oauth2_token\Authentication\TokenAuthUserInterface.
+ * Contains \Drupal\simple_oauth\Authentication\TokenAuthUserInterface.
  */
 
-namespace Drupal\oauth2_token\Authentication;
+namespace Drupal\simple_oauth\Authentication;
 
 
-use Drupal\oauth2_token\AccessTokenInterface;
+use Drupal\simple_oauth\AccessTokenInterface;
 use Drupal\user\UserInterface;
 
 interface TokenAuthUserInterface extends \IteratorAggregate, UserInterface {

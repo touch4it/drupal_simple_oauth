@@ -2,9 +2,9 @@
 
 /**
  * @file
- * Contains \Drupal\oauth2_token\AccessTokenViewBuilder.
+ * Contains \Drupal\simple_oauth\AccessTokenViewBuilder.
  */
-namespace Drupal\oauth2_token;
+namespace Drupal\simple_oauth;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityViewBuilder;
@@ -12,7 +12,7 @@ use Drupal\Core\Entity\EntityViewBuilder;
 /**
  * Class AccessTokenViewBuilder.
  *
- * @package Drupal\oauth2_token
+ * @package Drupal\simple_oauth
  */
 class AccessTokenViewBuilder extends EntityViewBuilder {
 

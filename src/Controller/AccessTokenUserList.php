@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\oauth2_token\Controller\AccessTokenUserList.
+ * Contains \Drupal\simple_oauth\Controller\AccessTokenUserList.
  */
 
-namespace Drupal\oauth2_token\Controller;
+namespace Drupal\simple_oauth\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Render\Element;

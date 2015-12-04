@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\oauth2_token\Entity\AccessToken.
+ * Contains \Drupal\simple_oauth\Entity\AccessToken.
  */
 
-namespace Drupal\oauth2_token\Entity;
+namespace Drupal\simple_oauth\Entity;
 
 use Drupal\views\EntityViewsData;
 use Drupal\views\EntityViewsDataInterface;

@@ -2,40 +2,40 @@
 
 /**
  * @file
- * Contains \Drupal\oauth2_token\Entity\AccessToken.
+ * Contains \Drupal\simple_oauth\Entity\AccessToken.
  */
 
-namespace Drupal\oauth2_token\Entity;
+namespace Drupal\simple_oauth\Entity;
 
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\oauth2_token\AccessTokenInterface;
-use Drupal\oauth2_token\AccessTokenValue;
+use Drupal\simple_oauth\AccessTokenInterface;
+use Drupal\simple_oauth\AccessTokenValue;
 use Drupal\user\UserInterface;
 
 /**
  * Defines the Access Token entity.
  *
- * @ingroup oauth2_token
+ * @ingroup simple_oauth
  *
  * @ContentEntityType(
  *   id = "access_token",
  *   label = @Translation("Access Token"),
  *   handlers = {
- *     "view_builder" = "Drupal\oauth2_token\AccessTokenViewBuilder",
- *     "list_builder" = "Drupal\oauth2_token\AccessTokenListBuilder",
- *     "views_data" = "Drupal\oauth2_token\Entity\AccessTokenViewsData",
+ *     "view_builder" = "Drupal\simple_oauth\AccessTokenViewBuilder",
+ *     "list_builder" = "Drupal\simple_oauth\AccessTokenListBuilder",
+ *     "views_data" = "Drupal\simple_oauth\Entity\AccessTokenViewsData",
  *
  *     "form" = {
- *       "default" = "Drupal\oauth2_token\Entity\Form\AccessTokenForm",
- *       "add" = "Drupal\oauth2_token\Entity\Form\AccessTokenForm",
- *       "edit" = "Drupal\oauth2_token\Entity\Form\AccessTokenForm",
- *       "delete" = "Drupal\oauth2_token\Entity\Form\AccessTokenDeleteForm",
+ *       "default" = "Drupal\simple_oauth\Entity\Form\AccessTokenForm",
+ *       "add" = "Drupal\simple_oauth\Entity\Form\AccessTokenForm",
+ *       "edit" = "Drupal\simple_oauth\Entity\Form\AccessTokenForm",
+ *       "delete" = "Drupal\simple_oauth\Entity\Form\AccessTokenDeleteForm",
  *     },
- *     "access" = "Drupal\oauth2_token\AccessTokenAccessControlHandler",
+ *     "access" = "Drupal\simple_oauth\AccessTokenAccessControlHandler",
  *   },
  *   base_table = "access_token",
  *   admin_permission = "administer AccessToken entity",
@@ -348,7 +348,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
    * {@inheritdoc}
    */
   public static function defaultExpiration() {
-    $expiration = \Drupal::config('oauth2_token.settings')->get('expiration') ?: static::DEFAULT_EXPIRATION_PERIOD;
+    $expiration = \Drupal::config('simple_oauth.settings')->get('expiration') ?: static::DEFAULT_EXPIRATION_PERIOD;
     return [REQUEST_TIME + $expiration];
   }
 

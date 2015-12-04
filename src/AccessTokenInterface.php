@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\oauth2_token\AccessTokenInterface.
+ * Contains \Drupal\simple_oauth\AccessTokenInterface.
  */
 
-namespace Drupal\oauth2_token;
+namespace Drupal\simple_oauth;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
@@ -15,7 +15,7 @@ use Drupal\user\EntityOwnerInterface;
 /**
  * Provides an interface for defining Access Token entities.
  *
- * @ingroup oauth2_token
+ * @ingroup simple_oauth
  */
 interface AccessTokenInterface extends ContentEntityInterface, EntityChangedInterface, EntityOwnerInterface {
 

@@ -2,19 +2,19 @@
 
 /**
  * @file
- * Contains \Drupal\oauth2_token\Authentication\Provider\OAuth2TokenBearerAuthenticationProviderInterface.
+ * Contains \Drupal\simple_oauth\Authentication\Provider\SimpleOauthAuthenticationProviderInterface.
  */
 
-namespace Drupal\oauth2_token\Authentication\Provider;
+namespace Drupal\simple_oauth\Authentication\Provider;
 use Drupal\Core\Authentication\AuthenticationProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class OAuth2TokenBearerAuthenticationProviderInterface.
+ * Class SimpleOauthAuthenticationProviderInterface.
  *
- * @package Drupal\oauth2_token\Authentication\Provider
+ * @package Drupal\simple_oauth\Authentication\Provider
  */
-interface OAuth2TokenBearerAuthenticationProviderInterface extends AuthenticationProviderInterface {
+interface SimpleOauthAuthenticationProviderInterface extends AuthenticationProviderInterface {
 
 
   /**

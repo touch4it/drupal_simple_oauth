@@ -2,27 +2,27 @@
 
 /**
  * @file
- * Contains \Drupal\oauth2_token\Authentication\TokenAuthUser
+ * Contains \Drupal\simple_oauth\Authentication\TokenAuthUser
  */
 
-namespace Drupal\oauth2_token\Authentication;
+namespace Drupal\simple_oauth\Authentication;
 
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\oauth2_token\AccessTokenInterface;
+use Drupal\simple_oauth\AccessTokenInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
 /**
  * Class TokenAuthUser
- * @package Drupal\oauth2_token\Authentication
+ * @package Drupal\simple_oauth\Authentication
  */
 class TokenAuthUser implements TokenAuthUserInterface {
 
   /**
    * The decorator subject.
-   * 
+   *
    * @var UserInterface
    */
   protected $subject;

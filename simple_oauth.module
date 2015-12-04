@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains oauth2_token.module..
+ * Contains simple_oauth.module..
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -10,10 +10,10 @@ use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Implements hook_help().
  */
-function oauth2_token_help($route_name, RouteMatchInterface $route_match) {
+function simple_oauth_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
-    // Main module help for the oauth2_token module.
-    case 'help.page.oauth2_token':
+    // Main module help for the simple_oauth module.
+    case 'help.page.simple_oauth':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('The OAuth 2.0 Authorization Framework: Bearer Token Usage') . '</p>';
@@ -26,7 +26,7 @@ function oauth2_token_help($route_name, RouteMatchInterface $route_match) {
 /**
  * Implements hook_cron().
  */
-function oauth2_token_cron() {
+function simple_oauth_cron() {
   /* @var \Drupal\Core\Entity\EntityManagerInterface $manager */
   $manager = \Drupal::service('entity.manager');
   $storage = $manager->getStorage('access_token');
@@ -42,7 +42,7 @@ function oauth2_token_cron() {
 /**
  * Implements hook_theme().
  */
-function oauth2_token_theme($existing, $type, $theme, $path) {
+function simple_oauth_theme($existing, $type, $theme, $path) {
   return [
     'access_token' => [
       'render element' => 'access_token',
