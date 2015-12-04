@@ -108,12 +108,9 @@ class OAuth2TokenBearerAuthenticationProvider implements AuthenticationProviderI
       try {
         return new TokenAuthUser($token);
       }
-      catch (\Exception $e) {
-        // If no user could be found then return NULL.
-        return NULL;
-      }
+      catch (\Exception $e) {}
     }
-    return NULL;
+    return [];
   }
 
 }
