@@ -7,7 +7,6 @@
 
 namespace Drupal\oauth2_token\Authentication\Provider;
 
-use Drupal\Core\Authentication\AuthenticationProviderInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\oauth2_token\Authentication\TokenAuthUser;
@@ -18,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Drupal\oauth2_token\Authentication\Provider
  */
-class OAuth2TokenBearerAuthenticationProvider implements AuthenticationProviderInterface {
+class OAuth2TokenBearerAuthenticationProvider implements OAuth2TokenBearerAuthenticationProviderInterface {
   /**
    * The config factory.
    *
@@ -61,17 +60,9 @@ class OAuth2TokenBearerAuthenticationProvider implements AuthenticationProviderI
   }
 
   /**
-   * Gets the access token from the request.
-   *
-   * @param \Symfony\Component\HttpFoundation\Request $request
-   *   The request object.
-   *
-   * @return string
-   *   The access token.
-   *
-   * @see http://tools.ietf.org/html/rfc6750
+   * {@inheritdoc}
    */
-  protected static function getTokenValue(Request $request) {
+  public static function getTokenValue(Request $request) {
     // Check the header. See: http://tools.ietf.org/html/rfc6750#section-2.1
     $auth_header = $request->headers->get('Authorization', '', TRUE);
     $prefix = 'Bearer ';
