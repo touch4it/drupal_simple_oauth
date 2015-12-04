@@ -118,6 +118,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
         'type' => 'author',
         'weight' => 0,
       ))
+      ->setCardinality(1)
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 0,
@@ -129,7 +130,13 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
         ),
       ))
       ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
+      ->setDisplayConfigurable('view', TRUE)
+      ->setPropertyConstraints('target_id', [
+        'OwnOrAdmin' => [
+          'account' => \Drupal::currentUser(),
+          'permission' => 'administer access token entities',
+        ],
+      ]);
 
     $fields['resource'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Resource'))

@@ -112,7 +112,7 @@ user.access_token.collection:
     _permission: 'view own access token entities'
 
 access_token.refresh:
-  path: '/oauth2-tokens/refresh'
+  path: '/simple-oauth/refresh'
   defaults:
     _controller: 'Drupal\simple_oauth\Controller\AccessTokenRefresh::refresh'
   requirements:
