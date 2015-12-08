@@ -43,6 +43,10 @@ class AccessTokenSettingsForm extends FormBase {
       $settings->set('expiration', $expiration);
       $save = TRUE;
     }
+    if ($refresh_extension = $form_state->getValue('refresh_extension')) {
+      $settings->set('refresh_extension', $refresh_extension);
+      $save = TRUE;
+    }
     if ($save) {
       $settings->save();
     }
@@ -65,7 +69,12 @@ class AccessTokenSettingsForm extends FormBase {
       '#title' => $this->t('Expiration time'),
       '#description' => $this->t('The default value, in seconds, to be used as expiration time when creating new tokens. This value may be overridden in the token generation form.'),
       '#default_value' => $this->config('simple_oauth.settings')->get('expiration'),
-      '#validate'
+    ];
+    $form['refresh_extension'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Refresh extension'),
+      '#description' => $this->t('The time a refresh token stays valid after the access token has expired.'),
+      '#default_value' => $this->config('simple_oauth.settings')->get('refresh_extension'),
     ];
     $form['submit'] = [
       '#type' => 'submit',

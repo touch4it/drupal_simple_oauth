@@ -23,6 +23,10 @@ function template_preprocess_access_token(array &$variables) {
   // Fetch AccessToken Entity Object.
   $access_token = $variables['access_token'];
 
+  $class = $access_token['#access_token']->isRefreshToken() ? 'access_token--refresh' : 'access_token--access';
+  $variables['attributes']['class'] = empty($variables['attributes']['class']) ? [] : $variables['attributes']['class'];
+  $variables['attributes']['class'][] = $class;
+
   // Helpful $content variable for templates.
   foreach (Element::children($access_token) as $key) {
     $variables['content'][$key] = $access_token[$key];

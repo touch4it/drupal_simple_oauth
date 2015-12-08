@@ -48,8 +48,7 @@ use Drupal\user\UserInterface;
  *     "canonical" = "/admin/content/access_token/{access_token}",
  *     "edit-form" = "/admin/content/access_token/{access_token}/edit",
  *     "delete-form" = "/admin/content/access_token/{access_token}/delete"
- *   },
- *   field_ui_base_route = "access_token.settings"
+ *   }
  * )
  */
 class AccessToken extends ContentEntityBase implements AccessTokenInterface {
@@ -60,7 +59,14 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
    *
    * @var int
    */
-  const DEFAULT_EXPIRATION_PERIOD = 120;
+  const DEFAULT_EXPIRATION_PERIOD = 300;
+
+  /**
+   * The time a refresh token stays valid after the access token expires.
+   *
+   * @var int
+   */
+  const REFRESH_EXTENSION_TIME = 86400;
 
   /**
    * {@inheritdoc}
@@ -71,6 +77,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       'user_id' => \Drupal::currentUser()->id(),
     );
   }
+
 
   /**
    * {@inheritdoc}
@@ -133,7 +140,6 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setDisplayConfigurable('view', TRUE)
       ->setPropertyConstraints('target_id', [
         'OwnOrAdmin' => [
-          'account' => \Drupal::currentUser(),
           'permission' => 'administer access token entities',
         ],
       ]);
@@ -294,7 +300,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
     }
     // If there is an access token for those conditions (resource + user) then
     // delete it.
-    if ($this->isDuplicated()) {
+    if (!$this->isNew() && $this->isDuplicated()) {
       $this->deleteDuplicates();
     }
   }
@@ -322,8 +328,9 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
     if ($has_refresh_token) {
       return;
     }
+    $extension = \Drupal::config('simple_oauth.settings')->get('refresh_extension') ?: static::REFRESH_EXTENSION_TIME;
     $values = [
-      'expire' => $this->get('expire')->value,
+      'expire' => $this->get('expire')->value + $extension,
       'auth_user_id' => $this->get('auth_user_id')->target_id,
       'access_token_id' => $this->id(),
       'resource' => 'authentication',

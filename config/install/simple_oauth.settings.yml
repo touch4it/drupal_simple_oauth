@@ -1,1 +1,2 @@
-expiration: 120
+expiration: 300
+refresh_extension: 86400

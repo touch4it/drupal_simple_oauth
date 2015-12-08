@@ -17,7 +17,11 @@ class LockableConfigEntityAccessControlHandler extends EntityAccessControlHandle
    * {@inheritdoc}
    */
   public function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
-    if ($operation != 'view' && $entity->isLocked()) {
+    if ($operation == 'view') {
+      // Allow viewing the configuration entity.
+      return AccessResult::allowed();
+    }
+    if ($entity->isLocked()) {
       return AccessResult::forbidden();
     }
     return parent::checkAccess($entity, $operation, $account);

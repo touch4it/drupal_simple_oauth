@@ -15,3 +15,10 @@
 #access-token-resource-add-form #edit-permissions--wrapper--description {
     clear: both;
 }
+
+article.access_token {
+    padding: 3px;
+}
+article.access_token--refresh {
+    background: rgba(0,0,0,0.05);
+}

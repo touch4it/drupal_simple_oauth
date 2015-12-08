@@ -31,11 +31,21 @@ function simple_oauth_cron() {
   $manager = \Drupal::service('entity.manager');
   $storage = $manager->getStorage('access_token');
   $query = $storage->getQuery();
+  // We only delete access tokens when deleting their expired refresh tokens.
   $ids = $query
     ->condition('expire', REQUEST_TIME, '<')
+    ->condition('resource', 'authentication')
     ->execute();
   if (!empty($ids)) {
-    $storage->delete($storage->loadMultiple($ids));
+    $refresh_tokens = $storage->loadMultiple($ids);
+    // Get the access tokens associated to this refresh token.
+    $access_tokens = array_map(function ($refresh_token) {
+      return $refresh_token->get('access_token_id')->entity;
+    }, $refresh_tokens);
+    // Delete the access tokens.
+    $storage->delete(array_filter($access_tokens));
+    // Delete the refresh tokens.
+    $storage->delete($refresh_tokens);
   }
 }
 

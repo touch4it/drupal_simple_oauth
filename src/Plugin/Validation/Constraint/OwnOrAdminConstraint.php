@@ -47,6 +47,6 @@ class OwnOrAdminConstraint extends Constraint implements OwnOrAdminConstraintInt
    * {@inheritdoc}
    */
   public function getAccount() {
-    return $this->account;
+    return $this->account ?: \Drupal::currentUser();
   }
 }

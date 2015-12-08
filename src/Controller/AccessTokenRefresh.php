@@ -35,13 +35,14 @@ class AccessTokenRefresh {
     }
     // Find / generate the access token for this refresh token.
     // TODO: Inject the entity manager service.
-    if (!$access_token = $refresh_token->get('access_token_id')->entity) {
+    $access_token = $refresh_token->get('access_token_id')->entity;
+    if ($access_token || $access_token->get('expire')->value > REQUEST_TIME) {
       // If there is no token to be found, refresh it by generating a new one.
       $values = [
         'expire' => $refresh_token::defaultExpiration(),
         'user_id' => $refresh_token->get('user_id')->target_id,
         'auth_user_id' => $refresh_token->get('auth_user_id')->target_id,
-        'resource' => $refresh_token->get('resource')->target_id,
+        'resource' => $access_token ? $access_token->get('resource')->target_id : 'global',
         'created' => REQUEST_TIME,
         'changed' => REQUEST_TIME,
       ];
@@ -54,7 +55,9 @@ class AccessTokenRefresh {
       // Saving this token will generate a refresh token for that one.
       $access_token->save();
     }
-    return Response::create($this->serialize($access_token));
+    $response = Response::create($this->serialize($access_token));
+    $response->headers->set('Content-Type', 'application/json');
+    return $response;
   }
 
   /**
