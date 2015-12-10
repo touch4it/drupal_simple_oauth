@@ -71,7 +71,7 @@ class AccessTokenRefresh extends ControllerBase {
     }
     // Find / generate the access token for this refresh token.
     $access_token = $refresh_token->get('access_token_id')->entity;
-    if (!$access_token || $access_token->get('expire')->value > REQUEST_TIME) {
+    if (!$access_token || $access_token->get('expire')->value < REQUEST_TIME) {
       // If there is no token to be found, refresh it by generating a new one.
       $values = [
         'expire' => $refresh_token::defaultExpiration(),
