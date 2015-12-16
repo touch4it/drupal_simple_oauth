@@ -54,21 +54,21 @@ class AccessTokenResourceForm extends EntityForm {
     );
 
     $permissions_list = [];
-    $ph = new PermissionHandler($this->moduleHandler, $this->stringTranslation, \Drupal::service('controller_resolver'));
-    foreach ($ph->getPermissions() as $permission => $permission_info) {
+    $permission_handler = new PermissionHandler($this->moduleHandler, $this->stringTranslation, \Drupal::service('controller_resolver'));
+    foreach ($permission_handler->getPermissions() as $permission => $permission_info) {
       $permissions_list[$permission] = $permission_info['title'];
     }
-    $form['permissions'] = array(
+    $form['permissions'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Permissions'),
-      '#default_value' => $access_token_resource->get('permissions'),
+      '#default_value' => $access_token_resource->get('permissions') ?: [],
       '#description' => $this->t('A collection of permissions around a given feature. If a user is authenticated with a token that grants access to this scope, that user will ony be granted access (at most) to the permissions in this list. This will not grant access to any permissions forbidden to the user by their roles.'),
       '#options' => $permissions_list,
       '#required' => TRUE,
       '#attached' => [
         'library' => ['simple_oauth/drupal.access_token'],
-      ]
-    );
+      ],
+    ];
 
     return $form;
   }
