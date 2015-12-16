@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\simple_oauth\Authentication\TokenAuthUser
+ * Contains \Drupal\simple_oauth\Authentication\TokenAuthUser.
  */
 
 namespace Drupal\simple_oauth\Authentication;
@@ -15,7 +15,8 @@ use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
 /**
- * Class TokenAuthUser
+ * Class TokenAuthUser.
+ *
  * @package Drupal\simple_oauth\Authentication
  */
 class TokenAuthUser implements TokenAuthUserInterface {
@@ -803,6 +804,27 @@ class TokenAuthUser implements TokenAuthUserInterface {
    */
   public function getIterator() {
     throw new \Exception('Invalid use of getIterator in token authentication.');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function toUrl($rel = 'canonical', array $options = array()) {
+    $this->subject->toUrl($rel, $options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function toLink($text = NULL, $rel = 'canonical', array $options = []) {
+    return $this->subject->toLink($text, $rel, $options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isNewTranslation() {
+    return $this->subject->isNewTranslation();
   }
 
 }
