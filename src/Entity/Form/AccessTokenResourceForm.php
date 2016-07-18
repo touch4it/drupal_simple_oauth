@@ -7,10 +7,12 @@
 
 namespace Drupal\simple_oauth\Entity\Form;
 
+use Drupal\Core\Controller\ControllerResolverInterface;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\Discovery\YamlDiscovery;
 use Drupal\user\PermissionHandler;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class AccessTokenResourceForm.
@@ -18,6 +20,28 @@ use Drupal\user\PermissionHandler;
  * @package Drupal\simple_oauth\Entity\Form
  */
 class AccessTokenResourceForm extends EntityForm {
+
+  /**
+   * @var \Drupal\Core\Controller\ControllerResolverInterface
+   */
+  protected $controllerResolver;
+
+  /**
+   * AccessTokenResourceForm constructor.
+   *
+   * @param \Drupal\Core\Controller\ControllerResolverInterface $controller_resolver
+   *   The controller resolver.
+   */
+  public function __construct(ControllerResolverInterface $controller_resolver) {
+    $this->controllerResolver = $controller_resolver;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static($container->get('controller_resolver'));
+  }
 
   /**
    * {@inheritdoc}
@@ -54,7 +78,7 @@ class AccessTokenResourceForm extends EntityForm {
     );
 
     $permissions_list = [];
-    $permission_handler = new PermissionHandler($this->moduleHandler, $this->stringTranslation, \Drupal::service('controller_resolver'));
+    $permission_handler = new PermissionHandler($this->moduleHandler, $this->stringTranslation, $this->controllerResolver);
     foreach ($permission_handler->getPermissions() as $permission => $permission_info) {
       $permissions_list[$permission] = $permission_info['title'];
     }
