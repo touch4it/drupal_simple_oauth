@@ -46,4 +46,12 @@ interface AccessTokenInterface extends ContentEntityInterface, EntityChangedInte
    */
   public function isRefreshToken();
 
+  /**
+   * Helper function that refreshes the access token
+   *
+   * @return \Drupal\simple_oauth\Entity\AccessToken
+   *   valid AccessToken if this is a valid refresh token. NULL otherwise.
+   */
+  public function refresh();
+
 }

@@ -427,4 +427,37 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
     return $query;
   }
 
+  /**
+   * If this is an refresh token, the refresh token will refresh and provide a new access token
+   *
+   * @return \Drupal\simple_oauth\Entity\AccessToken
+   */
+  public function refresh() {
+    if (!$this->isRefreshToken()) {
+      return NULL;
+    }
+
+    // Find / generate the access token for this refresh token.
+    $access_token = $this->get('access_token_id')->entity;
+    if (!$access_token || $access_token->get('expire')->value < REQUEST_TIME) {
+      // If there is no token to be found, refresh it by generating a new one.
+      $values = [
+        'expire' => static::defaultExpiration(),
+        'user_id' => $this->get('user_id')->target_id,
+        'auth_user_id' => $this->get('auth_user_id')->target_id,
+        'resource' => $access_token ? $access_token->get('resource')->target_id : 'global',
+        'created' => REQUEST_TIME,
+        'changed' => REQUEST_TIME,
+      ];
+      /* @var AccessTokenInterface $access_token */
+      $store = \Drupal::entityManager()->getStorage('access_token');
+      $access_token = $store->create($values);
+      // This refresh token is no longer needed.
+      $this->delete();
+      // Saving this token will generate a refresh token for that one.
+      $access_token->save();
+    }
+
+    return $access_token;
+  }
 }
