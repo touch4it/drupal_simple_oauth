@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\Authentication\Provider\SimpleOauthAuthenticationProvider.
- */
-
 namespace Drupal\simple_oauth\Authentication\Provider;
 
 use Drupal\Core\Config\ConfigFactoryInterface;

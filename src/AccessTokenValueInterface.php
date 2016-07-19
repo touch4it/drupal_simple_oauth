@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\AccessTokenValueInterface.
- */
-
 namespace Drupal\simple_oauth;
 
 

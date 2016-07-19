@@ -1,10 +1,7 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\AccessTokenViewBuilder.
- */
 namespace Drupal\simple_oauth;
+
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityViewBuilder;

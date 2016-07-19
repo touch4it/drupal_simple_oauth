@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\AccessTokenInterface.
- */
-
 namespace Drupal\simple_oauth;
 
 use Drupal\Core\Entity\ContentEntityInterface;

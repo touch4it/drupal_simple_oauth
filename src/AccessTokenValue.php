@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\AccessTokenValue.
- */
-
 namespace Drupal\simple_oauth;
 
 use Drupal\Component\Serialization\Json;

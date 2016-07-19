@@ -1,11 +1,7 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\Authentication\Provider\SimpleOauthAuthenticationProviderInterface.
- */
-
 namespace Drupal\simple_oauth\Authentication\Provider;
+
 use Drupal\Core\Authentication\AuthenticationProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 

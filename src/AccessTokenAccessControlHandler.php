@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\AccessTokenAccessControlHandler.
- */
-
 namespace Drupal\simple_oauth;
 
 use Drupal\Core\Entity\EntityAccessControlHandler;

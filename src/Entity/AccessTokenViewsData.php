@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\Entity\AccessToken.
- */
-
 namespace Drupal\simple_oauth\Entity;
 
 use Drupal\views\EntityViewsData;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\Entity\Form\AccessTokenSettingsForm.
- */
-
 namespace Drupal\simple_oauth\Entity\Form;
 
 use Drupal\Core\Form\FormBase;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\Entity\AccessTokenResource.
- */
-
 namespace Drupal\simple_oauth\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;

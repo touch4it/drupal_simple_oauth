@@ -1,11 +1,7 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\PageCache\DisallowSimpleOauthRequests.
- */
-
 namespace Drupal\simple_oauth\PageCache;
+
 use Drupal\Core\PageCache\RequestPolicyInterface;
 use Drupal\simple_oauth\Authentication\Provider\SimpleOauthAuthenticationProvider;
 use Symfony\Component\HttpFoundation\Request;

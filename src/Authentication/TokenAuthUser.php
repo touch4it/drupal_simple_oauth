@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\Authentication\TokenAuthUser.
- */
-
 namespace Drupal\simple_oauth\Authentication;
 
 use Drupal\Core\Entity\EntityStorageInterface;

@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains \Drupal\simple_oauth\LockableConfigEntityAccessControlHandler.
- */
 
 namespace Drupal\simple_oauth;
 

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\Controller\AccessTokenUserList.
- */
-
 namespace Drupal\simple_oauth\Controller;
 
 use Drupal\Core\Controller\ControllerBase;

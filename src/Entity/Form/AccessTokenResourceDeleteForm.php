@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\Entity\Form\AccessTokenResourceDeleteForm.
- */
-
 namespace Drupal\simple_oauth\Entity\Form;
 
 use Drupal\Core\Entity\EntityConfirmFormBase;

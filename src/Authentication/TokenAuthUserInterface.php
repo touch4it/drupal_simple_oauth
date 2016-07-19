@@ -1,12 +1,6 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\Authentication\TokenAuthUserInterface.
- */
-
 namespace Drupal\simple_oauth\Authentication;
-
 
 use Drupal\simple_oauth\AccessTokenInterface;
 use Drupal\user\UserInterface;

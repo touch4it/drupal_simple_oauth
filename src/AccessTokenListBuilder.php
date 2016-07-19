@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\AccessTokenListBuilder.
- */
-
 namespace Drupal\simple_oauth;
 
 use Drupal\Core\Entity\EntityInterface;

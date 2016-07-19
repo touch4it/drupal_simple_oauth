@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\Controller\AccessTokenRefresh.
- */
-
 namespace Drupal\simple_oauth\Controller;
 
 use Drupal\Component\Serialization\Json;

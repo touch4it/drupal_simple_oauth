@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\Entity\AccessToken.
- */
-
 namespace Drupal\simple_oauth\Entity;
 
 use Drupal\Core\Entity\EntityStorageInterface;
@@ -139,9 +134,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
       ->setPropertyConstraints('target_id', [
-        'OwnOrAdmin' => [
-          'permission' => 'administer access token entities',
-        ],
+        'OwnOrAdmin' => ['permission' => 'administer access token entities'],
       ]);
 
     $fields['resource'] = BaseFieldDefinition::create('entity_reference')

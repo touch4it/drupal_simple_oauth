@@ -1,11 +1,7 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\Plugin\Validation\Constraint\OwnOrAdminConstraintValidator.
- */
-
 namespace Drupal\simple_oauth\Plugin\Validation\Constraint;
+
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

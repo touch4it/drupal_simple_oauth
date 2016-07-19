@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\Plugin\Validation\Constraint\OwnOrAdminConstraintInterface.
- */
-
 namespace Drupal\simple_oauth\Plugin\Validation\Constraint;
 
 /**

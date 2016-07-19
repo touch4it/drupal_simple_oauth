@@ -1,16 +1,10 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\simple_oauth\Entity\Form\AccessTokenResourceForm.
- */
-
 namespace Drupal\simple_oauth\Entity\Form;
 
 use Drupal\Core\Controller\ControllerResolverInterface;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\Discovery\YamlDiscovery;
 use Drupal\user\PermissionHandler;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
