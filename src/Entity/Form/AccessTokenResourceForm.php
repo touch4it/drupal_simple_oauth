@@ -74,7 +74,7 @@ class AccessTokenResourceForm extends EntityForm {
     $permissions_list = [];
     $permission_handler = new PermissionHandler($this->moduleHandler, $this->stringTranslation, $this->controllerResolver);
     foreach ($permission_handler->getPermissions() as $permission => $permission_info) {
-      $permissions_list[$permission] = $permission_info['title'];
+      $permissions_list[$permission] = $permission_info['title'] . " ($permission)";
     }
     $form['permissions'] = [
       '#type' => 'checkboxes',
