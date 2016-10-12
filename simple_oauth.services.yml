@@ -9,3 +9,8 @@ services:
     public: false
     tags:
       - { name: page_cache_request_policy }
+  cache_context.user.bearer_token:
+    class: Drupal\simple_oauth\Cache\Context\BearerTokenCacheContext
+    arguments: ['@request_stack']
+    tags:
+      - { name: cache.context }
