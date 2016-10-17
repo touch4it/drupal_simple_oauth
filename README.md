@@ -1,3 +1,6 @@
+# IMPORTANT
+The development of this module and issue tracking has been moved back to http://drupal.org/project/simple_oauth.
+
 [![Build Status](https://travis-ci.org/e0ipso/simple_oauth.svg?branch=8.x-1.x)](https://travis-ci.org/e0ipso/simple_oauth)
 
 Simple OAuth is an implementation of the OAuth 2.0 Authorization Framework: Bearer Token specification. Using OAuth 2.0 Bearer Token is very easy. See how you can get the basics working in **less than a minute**! This project is focused in simplicity of use and flexibility. When deciding which project to use, also consider other projects like [OAuth](https://www.drupal.org/project/oauth), an OAuth 1 implementation that doesn't rely on you having https in your production server.
