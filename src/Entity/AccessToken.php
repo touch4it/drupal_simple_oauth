@@ -291,11 +291,6 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
     if (!$this->isRefreshToken()) {
       $this->addRefreshToken();
     }
-    // If there is an access token for those conditions (resource + user) then
-    // delete it.
-    if (!$this->isNew() && $this->isDuplicated()) {
-      $this->deleteDuplicates();
-    }
   }
 
   /**
@@ -372,52 +367,6 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
     // If the selected permission is not included in the list of permissions
     // for the resource attached to the token, then return FALSE.
     return $resource->id() == 'global' || in_array($permission, $token_permissions);
-  }
-
-  /**
-   * Checks if there is already a token for the conditions of the current one.
-   *
-   * @return bool
-   *   TRUE if there is at least one toke for the same conditions. FALSE
-   *   otherwise.
-   */
-  protected function isDuplicated() {
-    $query = $this->queryForDuplicates();
-    return (bool) $query->count()->execute();
-  }
-
-  /**
-   * Deletes the duplicated access tokens.
-   *
-   * @return int
-   *   The number of deleted duplicates.
-   */
-  protected function deleteDuplicates() {
-    $query = $this->queryForDuplicates();
-    $results = $query->execute();
-    if (empty($results)) {
-      return 0;
-    }
-    $storage = $this->entityManager()->getStorage($this->getEntityTypeId());
-    $tokens = $storage->loadMultiple(array_keys($results));
-    $storage->delete($tokens);
-    return count($results);
-  }
-
-  /**
-   * Get the query to detect the duplicates for this token.
-   *
-   * @return \Drupal\Core\Entity\Query\QueryInterface
-   */
-  protected function queryForDuplicates() {
-    $query = $this
-      ->entityManager()
-      ->getStorage($this->getEntityTypeId())
-      ->getQuery('AND');
-    $query->condition('id', $this->id(), '<>');
-    $query->condition('auth_user_id', $this->get('auth_user_id')->target_id);
-    $query->condition('resource', $this->get('resource')->target_id);
-    return $query;
   }
 
   /**
