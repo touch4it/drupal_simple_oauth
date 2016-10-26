@@ -258,6 +258,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
    */
   public function setOwnerId($uid) {
     $this->set('user_id', $uid);
+
     return $this;
   }
 
@@ -266,6 +267,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
    */
   public function setOwner(UserInterface $account) {
     $this->set('user_id', $account->id());
+
     return $this;
   }
 
@@ -316,7 +318,8 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
     if ($has_refresh_token) {
       return;
     }
-    $extension = \Drupal::config('simple_oauth.settings')->get('refresh_extension') ?: static::REFRESH_EXTENSION_TIME;
+    $extension = \Drupal::config('simple_oauth.settings')
+      ->get('refresh_extension') ?: static::REFRESH_EXTENSION_TIME;
     $values = [
       'expire' => $this->get('expire')->value + $extension,
       'auth_user_id' => $this->get('auth_user_id')->target_id,
@@ -343,6 +346,7 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
     $values = array_map(function ($item) {
       return $this->get($item)->getValue();
     }, $keys);
+
     return $values;
   }
 
@@ -350,7 +354,9 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
    * {@inheritdoc}
    */
   public static function defaultExpiration() {
-    $expiration = \Drupal::config('simple_oauth.settings')->get('expiration') ?: static::DEFAULT_EXPIRATION_PERIOD;
+    $expiration = \Drupal::config('simple_oauth.settings')
+      ->get('expiration') ?: static::DEFAULT_EXPIRATION_PERIOD;
+
     return [REQUEST_TIME + $expiration];
   }
 
@@ -370,36 +376,43 @@ class AccessToken extends ContentEntityBase implements AccessTokenInterface {
   }
 
   /**
-   * If this is an refresh token, the refresh token will refresh and provide a new access token
+   * If this is an refresh token, the refresh token will refresh and provide a
+   * new access token
    *
-   * @return \Drupal\simple_oauth\Entity\AccessToken
+   * @return \Drupal\simple_oauth\AccessTokenInterface
    */
   public function refresh() {
     if (!$this->isRefreshToken()) {
       return NULL;
     }
-
     // Find / generate the access token for this refresh token.
-    $access_token = $this->get('access_token_id')->entity;
-    if (!$access_token || $access_token->get('expire')->value < REQUEST_TIME) {
-      // If there is no token to be found, refresh it by generating a new one.
-      $values = [
-        'expire' => static::defaultExpiration(),
-        'user_id' => $this->get('user_id')->target_id,
-        'auth_user_id' => $this->get('auth_user_id')->target_id,
-        'resource' => $access_token ? $access_token->get('resource')->target_id : 'global',
-        'created' => REQUEST_TIME,
-        'changed' => REQUEST_TIME,
-      ];
-      /* @var AccessTokenInterface $access_token */
-      $store = \Drupal::entityManager()->getStorage('access_token');
-      $access_token = $store->create($values);
-      // This refresh token is no longer needed.
-      $this->delete();
-      // Saving this token will generate a refresh token for that one.
-      $access_token->save();
+    /* @var \Drupal\simple_oauth\AccessTokenInterface $current_access_token */
+    $current_access_token = $this->get('access_token_id')->entity;
+    if ($current_access_token && $current_access_token->get('expire')->value > REQUEST_TIME) {
+      return $current_access_token;
+    }
+    // If there is no valid token to be found, refresh it by generating a new
+    // one.
+    $values = [
+      'expire' => static::defaultExpiration(),
+      'user_id' => $this->get('user_id')->target_id,
+      'auth_user_id' => $this->get('auth_user_id')->target_id,
+      'resource' => $current_access_token ? $current_access_token->get('resource')->target_id : 'global',
+      'created' => REQUEST_TIME,
+      'changed' => REQUEST_TIME,
+    ];
+    /* @var AccessTokenInterface $access_token */
+    $store = \Drupal::entityManager()->getStorage('access_token');
+    $access_token = $store->create($values);
+    // The old refresh / access tokens is no longer needed.
+    $this->delete();
+    if ($current_access_token) {
+      // Since we are removing the refresh token we also delete the access.
+      $current_access_token->delete();
     }
 
+    // Saving the access token will generate a refresh token for that one too.
+    $access_token->save();
     return $access_token;
   }
 }
