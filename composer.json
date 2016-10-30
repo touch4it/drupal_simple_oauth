@@ -1,0 +1,9 @@
+{
+    "name": "drupal/simple_oauth",
+    "description": "The Simple OAuth module for drupal",
+    "type": "project",
+    "license": "GPL-2.0+",
+    "require": {
+        "league/oauth2-server": "~5.1"
+    }
+}
