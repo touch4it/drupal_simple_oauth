@@ -3,7 +3,7 @@
 namespace Drupal\simple_oauth\Authentication\Provider;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\simple_oauth\Authentication\TokenAuthUser;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,21 +22,21 @@ class SimpleOauthAuthenticationProvider implements SimpleOauthAuthenticationProv
   /**
    * The entity manager.
    *
-   * @var \Drupal\Core\Entity\EntityManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityManager;
+  protected $entityTypeManager;
 
   /**
    * Constructs a HTTP basic authentication provider object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity manager service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, EntityManagerInterface $entity_manager) {
+  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager) {
     $this->configFactory = $config_factory;
-    $this->entityManager = $entity_manager;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -81,7 +81,7 @@ class SimpleOauthAuthenticationProvider implements SimpleOauthAuthenticationProv
    * {@inheritdoc}
    */
   public function authenticate(Request $request) {
-    $token_storage = $this->entityManager->getStorage('access_token');
+    $token_storage = $this->entityTypeManager->getStorage('access_token');
     $ids = $token_storage
       ->getQuery()
       ->condition('value', $this::getTokenValue($request))
