@@ -8,32 +8,38 @@ use Drupal\simple_oauth\Entities\AuthCodeEntity;
 
 class AuthCodeRepository implements AuthCodeRepositoryInterface {
 
-  /**
-   * {@inheritdoc}
-   */
-  public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity) {
-    // Some logic to persist the auth code to a database
-  }
+  use RevocableTokenRepositoryTrait;
 
-  /**
-   * {@inheritdoc}
-   */
-  public function revokeAuthCode($codeId) {
-    // Some logic to revoke the auth code in a database
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isAuthCodeRevoked($codeId) {
-    return FALSE; // The auth code has not been revoked
-  }
+  protected static $entity_type_id = 'auth_code';
+  protected static $entity_class = 'Drupal\simple_oauth\Entities\AuthCodeEntity';
+  protected static $entity_interface = 'League\OAuth2\Server\Entities\AuthCodeEntityInterface';
 
   /**
    * {@inheritdoc}
    */
   public function getNewAuthCode() {
-    return new AuthCodeEntity();
+    return $this->getNew();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function persistNewAuthCode(AuthCodeEntityInterface $auth_code_entity) {
+    $this->persistNew($auth_code_entity);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function revokeAuthCode($code_id) {
+    $this->revoke($code_id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isAuthCodeRevoked($code_id) {
+    return $this->isRevoked($code_id);
   }
 
 }

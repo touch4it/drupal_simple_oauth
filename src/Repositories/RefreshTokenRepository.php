@@ -4,36 +4,41 @@ namespace Drupal\simple_oauth\Repositories;
 
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
-use Drupal\simple_oauth\Entities\RefreshTokenEntity;
 
 class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
 
-  /**
-   * {@inheritdoc}
-   */
-  public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntityInterface) {
-    // Some logic to persist the refresh token in a database
-  }
+  use RevocableTokenRepositoryTrait;
 
-  /**
-   * {@inheritdoc}
-   */
-  public function revokeRefreshToken($tokenId) {
-    // Some logic to revoke the refresh token in a database
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isRefreshTokenRevoked($tokenId) {
-    return FALSE; // The refresh token has not been revoked
-  }
+  protected static $entity_type_id = 'refresh_token';
+  protected static $entity_class = 'Drupal\simple_oauth\Entities\RefreshTokenEntity';
+  protected static $entity_interface = 'League\OAuth2\Server\Entities\RefreshTokenEntityInterface';
 
   /**
    * {@inheritdoc}
    */
   public function getNewRefreshToken() {
-    return new RefreshTokenEntity();
+    return $this->getNew();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function persistNewRefreshToken(RefreshTokenEntityInterface $refresh_token_entity) {
+    $this->persistNew($refresh_token_entity);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function revokeRefreshToken($token_id) {
+    $this->revoke($token_id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isRefreshTokenRevoked($token_id) {
+    return $this->isRevoked($token_id);
   }
 
 }

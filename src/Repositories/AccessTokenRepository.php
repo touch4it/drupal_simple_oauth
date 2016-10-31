@@ -2,46 +2,52 @@
 
 namespace Drupal\simple_oauth\Repositories;
 
+use Drupal\simple_oauth\Entities\AccessTokenEntity;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
-use Drupal\simple_oauth\Entities\AccessTokenEntity;
 
 class AccessTokenRepository implements AccessTokenRepositoryInterface {
 
+  use RevocableTokenRepositoryTrait;
+
+  protected static $entity_type_id = 'access_token';
+  protected static $entity_class = 'Drupal\simple_oauth\Entities\AccessTokenEntity';
+  protected static $entity_interface = 'League\OAuth2\Server\Entities\AccessTokenEntityInterface';
+
   /**
    * {@inheritdoc}
    */
-  public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity) {
-    // Some logic here to save the access token to a database
+  public function persistNewAccessToken(AccessTokenEntityInterface $access_token_entity) {
+    $this->persistNew($access_token_entity);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function revokeAccessToken($tokenId) {
-    // Some logic here to revoke the access token
+  public function revokeAccessToken($token_id) {
+    $this->revoke($token_id);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function isAccessTokenRevoked($tokenId) {
-    return FALSE; // Access token hasn't been revoked
+  public function isAccessTokenRevoked($token_id) {
+    return $this->isRevoked($token_id);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = NULL) {
-    $accessToken = new AccessTokenEntity();
-    $accessToken->setClient($clientEntity);
+  public function getNewToken(ClientEntityInterface $client_entity, array $scopes, $user_identifier = NULL) {
+    $access_token = new AccessTokenEntity();
+    $access_token->setClient($client_entity);
     foreach ($scopes as $scope) {
-      $accessToken->addScope($scope);
+      $access_token->addScope($scope);
     }
-    $accessToken->setUserIdentifier($userIdentifier);
+    $access_token->setUserIdentifier($user_identifier);
 
-    return $accessToken;
+    return $access_token;
   }
 
 }
