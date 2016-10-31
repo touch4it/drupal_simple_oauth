@@ -15,7 +15,7 @@ class Oauth2TokenViewsData extends EntityViewsData implements EntityViewsDataInt
   public function getViewsData() {
     $data = parent::getViewsData();
 
-    $data['access_token']['table']['base'] = array(
+    $data['oauth2_token']['table']['base'] = array(
       'field' => 'id',
       'title' => $this->t('Access Token'),
       'help' => $this->t('The Access Token ID.'),

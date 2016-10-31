@@ -20,7 +20,7 @@ class Oauth2TokenSettingsForm extends FormBase {
    *   The unique string identifying the form.
    */
   public function getFormId() {
-    return 'access_token_settings';
+    return 'oauth2_token_settings';
   }
 
   /**

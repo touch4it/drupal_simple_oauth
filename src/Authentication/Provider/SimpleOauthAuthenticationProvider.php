@@ -68,7 +68,7 @@ class SimpleOauthAuthenticationProvider implements SimpleOauthAuthenticationProv
     // http://tools.ietf.org/html/rfc6750#section-2.2
     $ct_header = $request->headers->get('Content-Type', '', TRUE);
     $is_get = $request->getMethod() == Request::METHOD_GET;
-    $token = $request->request->get('access_token');
+    $token = $request->request->get('oauth2_token');
     if (!$is_get && $ct_header == 'application/x-www-form-urlencoded' && $token) {
       return $token;
     }
@@ -81,7 +81,7 @@ class SimpleOauthAuthenticationProvider implements SimpleOauthAuthenticationProv
    * {@inheritdoc}
    */
   public function authenticate(Request $request) {
-    $token_storage = $this->entityTypeManager->getStorage('access_token');
+    $token_storage = $this->entityTypeManager->getStorage('oauth2_token');
     $ids = $token_storage
       ->getQuery()
       ->condition('value', $this::getTokenValue($request))

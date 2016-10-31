@@ -11,7 +11,7 @@ use Drupal\Core\Entity\EntityViewBuilder;
  *
  * @package Drupal\simple_oauth
  */
-class AccessTokenViewBuilder extends EntityViewBuilder {
+class Oauth2TokenViewBuilder extends EntityViewBuilder {
 
   /**
    * {@inheritdoc}
@@ -19,8 +19,8 @@ class AccessTokenViewBuilder extends EntityViewBuilder {
   protected function alterBuild(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
     parent::alterBuild($build, $entity, $display, $view_mode);
     if ($entity->id()) {
-      $build['#contextual_links']['access_token'] = array(
-        'route_parameters' =>array('access_token' => $entity->id()),
+      $build['#contextual_links']['oauth2_token'] = array(
+        'route_parameters' =>array('oauth2_token' => $entity->id()),
       );
     }
   }

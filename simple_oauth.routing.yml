@@ -1,19 +1,19 @@
 
 # Oauth2Token routing definition
-entity.access_token.canonical:
-  path: '/admin/content/access_token/{access_token}'
+entity.oauth2_token.canonical:
+  path: '/admin/content/oauth2_token/{oauth2_token}'
   defaults:
-    _entity_view: 'access_token'
+    _entity_view: 'oauth2_token'
     _title: 'Access Token'
   requirements:
-    _entity_access: 'access_token.view'
+    _entity_access: 'oauth2_token.view'
   options:
     _admin_route: TRUE
 
-entity.access_token.collection:
-  path: '/admin/content/access_token'
+entity.oauth2_token.collection:
+  path: '/admin/content/oauth2_token'
   defaults:
-    _entity_list: 'access_token'
+    _entity_list: 'oauth2_token'
     _title: 'Access Token list'
   requirements:
     _permission: 'administer access token entities'
@@ -21,38 +21,38 @@ entity.access_token.collection:
     _admin_route: TRUE
   base_route: system.admin_content
 
-entity.access_token.add_form:
-  path: '/admin/content/access_token/add'
+entity.oauth2_token.add_form:
+  path: '/admin/content/oauth2_token/add'
   defaults:
-    _entity_form: access_token.add
+    _entity_form: oauth2_token.add
     _title: 'Add Access Token'
   requirements:
     _permission: 'add access token entities'
   options:
     _admin_route: TRUE
 
-entity.access_token.edit_form:
-  path: '/admin/content/access_token/{access_token}/edit'
+entity.oauth2_token.edit_form:
+  path: '/admin/content/oauth2_token/{oauth2_token}/edit'
   defaults:
-    _entity_form: access_token.edit
+    _entity_form: oauth2_token.edit
     _title: 'Edit Access Token'
   requirements:
-    _entity_access: 'access_token.edit'
+    _entity_access: 'oauth2_token.edit'
   options:
     _admin_route: TRUE
 
-entity.access_token.delete_form:
-  path: '/admin/content/access_token/{access_token}/delete'
+entity.oauth2_token.delete_form:
+  path: '/admin/content/oauth2_token/{oauth2_token}/delete'
   defaults:
-    _entity_form: access_token.delete
+    _entity_form: oauth2_token.delete
     _title: 'Delete Access Token'
   requirements:
-    _entity_access: 'access_token.delete'
+    _entity_access: 'oauth2_token.delete'
   options:
     _admin_route: TRUE
 
-access_token.settings:
-  path: '/admin/config/people/access_token'
+oauth2_token.settings:
+  path: '/admin/config/people/oauth2_token'
   defaults:
    _form: '\Drupal\simple_oauth\Entity\Form\Oauth2TokenSettingsForm'
    _title: 'Token Auth Settings'
@@ -63,47 +63,47 @@ access_token.settings:
   base_route: entity.user.admin_form
 
 # Oauth2TokenResource routing definition
-entity.access_token_resource.collection:
-  path: '/admin/config/people/access_token/access_token_resource'
+entity.oauth2_token_resource.collection:
+  path: '/admin/config/people/oauth2_token/oauth2_token_resource'
   defaults:
-    _entity_list: 'access_token_resource'
+    _entity_list: 'oauth2_token_resource'
     _title: 'Access Token Resource'
   requirements:
     _permission: 'administer access token entities'
   options:
     _admin_route: TRUE
 
-entity.access_token_resource.add_form:
-  path: '/admin/config/people/access_token/access_token_resource/add'
+entity.oauth2_token_resource.add_form:
+  path: '/admin/config/people/oauth2_token/oauth2_token_resource/add'
   defaults:
-    _entity_form: 'access_token_resource.add'
+    _entity_form: 'oauth2_token_resource.add'
     _title: 'Add Access Token Resource'
   requirements:
     _permission: 'administer access token entities'
   options:
     _admin_route: TRUE
 
-entity.access_token_resource.edit_form:
-  path: '/admin/config/people/access_token/access_token_resource/{access_token_resource}'
+entity.oauth2_token_resource.edit_form:
+  path: '/admin/config/people/oauth2_token/oauth2_token_resource/{oauth2_token_resource}'
   defaults:
-    _entity_form: 'access_token_resource.edit'
+    _entity_form: 'oauth2_token_resource.edit'
     _title: 'Edit Access Token Resource'
   requirements:
     _permission: 'administer access token entities'
   options:
     _admin_route: TRUE
 
-entity.access_token_resource.delete_form:
-  path: '/admin/config/people/access_token/access_token_resource/{access_token_resource}/delete'
+entity.oauth2_token_resource.delete_form:
+  path: '/admin/config/people/oauth2_token/oauth2_token_resource/{oauth2_token_resource}/delete'
   defaults:
-    _entity_form: 'access_token_resource.delete'
+    _entity_form: 'oauth2_token_resource.delete'
     _title: 'Delete Access Token Resource'
   requirements:
     _permission: 'administer access token entities'
   options:
     _admin_route: TRUE
 
-user.access_token.collection:
+user.oauth2_token.collection:
   path: '/user/{user}/oauth2-tokens'
   defaults:
     _controller: 'Drupal\simple_oauth\Controller\Oauth2TokenUserList::tokenList'
@@ -111,7 +111,7 @@ user.access_token.collection:
   requirements:
     _permission: 'view own access token entities'
 
-access_token.refresh:
+oauth2_token.refresh:
   path: '/simple-oauth/refresh'
   defaults:
     _controller: 'Drupal\simple_oauth\Controller\Oauth2TokenRefresh::refresh'

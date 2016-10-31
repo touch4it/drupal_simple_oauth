@@ -4,7 +4,7 @@ services:
     arguments: ["@config.factory", "@entity.manager"]
     tags:
       - { name: authentication_provider, provider_id: token_bearer, global: TRUE, priority: 35 }
-  simple_oauth.page_cache_request_policy.disallow_access_token_requests:
+  simple_oauth.page_cache_request_policy.disallow_oauth2_token_requests:
     class: Drupal\simple_oauth\PageCache\DisallowSimpleOauthRequests
     public: false
     tags:

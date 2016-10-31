@@ -6,15 +6,15 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Render\Element;
 use Drupal\user\Entity\User;
 
-class AccessTokenUserList extends ControllerBase {
+class Oauth2TokenUserList extends ControllerBase {
 
   /**
    * Provide a list of tokens.
    */
   public function tokenList(User $user) {
-    $entity_type = 'access_token';
+    $entity_type = 'oauth2_token';
     $storage = $this
-      ->entityManager()
+      ->entityTypeManager()
       ->getStorage($entity_type);
     $ids = $storage
       ->getQuery()

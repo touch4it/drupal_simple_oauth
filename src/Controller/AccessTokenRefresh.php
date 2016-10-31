@@ -66,14 +66,14 @@ class AccessTokenRefresh extends ControllerBase {
     }
 
     // Find / generate the access token for this refresh token.
-    $access_token = $refresh_token->refresh();
+    $oauth2_token = $refresh_token->refresh();
 
-    if(!$access_token) {
+    if(!$oauth2_token) {
       // TODO: Set the error headers appropriately.
       return NULL;
     }
 
-    $this->response->setData($this->normalize($access_token));
+    $this->response->setData($this->normalize($oauth2_token));
     return $this->response;
   }
 
@@ -88,10 +88,10 @@ class AccessTokenRefresh extends ControllerBase {
    */
   protected function normalize(Oauth2TokenInterface $token) {
     $storage = $this->entityManager()
-      ->getStorage('access_token');
+      ->getStorage('oauth2_token');
     $ids = $storage
       ->getQuery()
-      ->condition('access_token_id', $token->id())
+      ->condition('oauth2_token_id', $token->id())
       ->condition('expire', REQUEST_TIME, '>')
       ->condition('resource', 'authentication')
       ->range(0, 1)
@@ -106,7 +106,7 @@ class AccessTokenRefresh extends ControllerBase {
       return [];
     }
     return [
-      'access_token' => $token->get('value')->value,
+      'oauth2_token' => $token->get('value')->value,
       'token_type' => 'Bearer',
       'expires_in' => $token->get('expire')->value - REQUEST_TIME,
       'refresh_token' => $refresh_token->get('value')->value,

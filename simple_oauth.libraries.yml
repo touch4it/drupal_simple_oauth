@@ -1,5 +1,5 @@
-drupal.access_token:
+drupal.oauth2_token:
   version: '1.0'
   css:
     component:
-      css/access_token.css: {}
+      css/oauth2_token.css: {}

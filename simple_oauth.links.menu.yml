@@ -1,12 +1,12 @@
 # Access Token menu items definition
-entity.access_token.collection:
+entity.oauth2_token.collection:
   title: 'OAuth2 Tokens'
-  route_name: entity.access_token.collection
+  route_name: entity.oauth2_token.collection
   parent: system.admin_content
   description: 'List Access Token entities'
 
-access_token.admin.config.people.settings:
+oauth2_token.admin.config.people.settings:
   title: Token Auth Settings
   description: 'Configure Access Token entities'
-  route_name: access_token.settings
+  route_name: oauth2_token.settings
   parent: user.admin_index

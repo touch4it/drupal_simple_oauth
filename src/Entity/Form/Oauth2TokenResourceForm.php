@@ -43,13 +43,13 @@ class Oauth2TokenResourceForm extends EntityForm {
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
-    /* @var \Drupal\simple_oauth\Oauth2TokenResourceInterface $access_token_resource */
-    $access_token_resource = $this->entity;
+    /* @var \Drupal\simple_oauth\Oauth2TokenResourceInterface $oauth2_token_resource */
+    $oauth2_token_resource = $this->entity;
     $form['label'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Label'),
       '#maxlength' => 255,
-      '#default_value' => $access_token_resource->label(),
+      '#default_value' => $oauth2_token_resource->label(),
       '#description' => $this->t('Label for the Access Token Resource.'),
       '#required' => TRUE,
     );
@@ -57,18 +57,18 @@ class Oauth2TokenResourceForm extends EntityForm {
     $form['description'] = array(
       '#type' => 'textarea',
       '#title' => $this->t('Description'),
-      '#default_value' => $access_token_resource->getDescription(),
+      '#default_value' => $oauth2_token_resource->getDescription(),
       '#description' => $this->t('Description for the Access Token Resource.'),
       '#required' => FALSE,
     );
 
     $form['id'] = array(
       '#type' => 'machine_name',
-      '#default_value' => $access_token_resource->id(),
+      '#default_value' => $oauth2_token_resource->id(),
       '#machine_name' => array(
         'exists' => '\Drupal\simple_oauth\Entity\Oauth2TokenResource::load',
       ),
-      '#disabled' => !$access_token_resource->isNew(),
+      '#disabled' => !$oauth2_token_resource->isNew(),
     );
 
     $permissions_list = [];
@@ -79,12 +79,12 @@ class Oauth2TokenResourceForm extends EntityForm {
     $form['permissions'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Permissions'),
-      '#default_value' => $access_token_resource->get('permissions') ?: [],
+      '#default_value' => $oauth2_token_resource->get('permissions') ?: [],
       '#description' => $this->t('A collection of permissions around a given feature. If a user is authenticated with a token that grants access to this scope, that user will ony be granted access (at most) to the permissions in this list. This will not grant access to any permissions forbidden to the user by their roles.'),
       '#options' => $permissions_list,
       '#required' => TRUE,
       '#attached' => [
-        'library' => ['simple_oauth/drupal.access_token'],
+        'library' => ['simple_oauth/drupal.oauth2_token'],
       ],
     ];
 
@@ -105,22 +105,22 @@ class Oauth2TokenResourceForm extends EntityForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
-    $access_token_resource = $this->getEntity();
-    $status = $access_token_resource->save();
+    $oauth2_token_resource = $this->getEntity();
+    $status = $oauth2_token_resource->save();
 
     switch ($status) {
       case SAVED_NEW:
         drupal_set_message($this->t('Created the %label Access Token Resource.', [
-          '%label' => $access_token_resource->label(),
+          '%label' => $oauth2_token_resource->label(),
         ]));
         break;
 
       default:
         drupal_set_message($this->t('Saved the %label Access Token Resource.', [
-          '%label' => $access_token_resource->label(),
+          '%label' => $oauth2_token_resource->label(),
         ]));
     }
-    $form_state->setRedirectUrl($access_token_resource->urlInfo('collection'));
+    $form_state->setRedirectUrl($oauth2_token_resource->urlInfo('collection'));
   }
 
 }

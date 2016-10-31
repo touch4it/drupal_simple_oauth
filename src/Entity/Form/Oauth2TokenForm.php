@@ -50,7 +50,7 @@ class Oauth2TokenForm extends ContentEntityForm {
           '%label' => $entity->label(),
         ]));
     }
-    $form_state->setRedirect('user.access_token.collection', ['user' => $entity->get('auth_user_id')->target_id]);
+    $form_state->setRedirect('user.oauth2_token.collection', ['user' => $entity->get('auth_user_id')->target_id]);
   }
 
 }

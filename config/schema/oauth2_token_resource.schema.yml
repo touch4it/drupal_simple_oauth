@@ -1,4 +1,4 @@
-simple_oauth.access_token_resource.*:
+simple_oauth.oauth2_token_resource.*:
   type: config_entity
   label: 'Access Token Resource config'
   mapping:

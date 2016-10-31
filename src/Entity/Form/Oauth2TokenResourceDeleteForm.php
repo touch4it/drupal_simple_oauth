@@ -21,7 +21,7 @@ class Oauth2TokenResourceDeleteForm extends EntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return new Url('entity.access_token_resource.collection');
+    return new Url('entity.oauth2_token_resource.collection');
   }
 
   /**

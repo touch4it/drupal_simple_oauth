@@ -45,8 +45,8 @@ class Oauth2TokenListBuilder extends EntityListBuilder {
       'user' => $owner->id(),
     ));
     $row['id'] = $entity->id();
-    $row['name'] = Link::createFromRoute($entity->label(), 'entity.access_token.edit_form', array(
-      'access_token' => $entity->id(),
+    $row['name'] = Link::createFromRoute($entity->label(), 'entity.oauth2_token.edit_form', array(
+      'oauth2_token' => $entity->id(),
     ));
     $row['resource'] = $entity->get('resource')->entity->label();
 

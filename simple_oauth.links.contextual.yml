@@ -1,17 +1,17 @@
-entity.access_token.canonical:
-  route_name: entity.access_token.canonical
-  group: access_token
+entity.oauth2_token.canonical:
+  route_name: entity.oauth2_token.canonical
+  group: oauth2_token
   title: View
   weight: -10
 
-entity.access_token.edit_form:
-  route_name: entity.access_token.edit_form
-  group: access_token
+entity.oauth2_token.edit_form:
+  route_name: entity.oauth2_token.edit_form
+  group: oauth2_token
   title: Edit
   weight: 0
 
-entity.access_token.delete_form:
-  route_name: entity.access_token.delete_form
-  group: access_token
+entity.oauth2_token.delete_form:
+  route_name: entity.oauth2_token.delete_form
+  group: oauth2_token
   title: Delete
   weight: 10

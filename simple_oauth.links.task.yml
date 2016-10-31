@@ -1,39 +1,39 @@
 # Access Token routing definition
-access_token.settings_tab:
-  route_name: access_token.settings
+oauth2_token.settings_tab:
+  route_name: oauth2_token.settings
   title: 'Settings'
-  base_route: access_token.settings
+  base_route: oauth2_token.settings
 
-entity.access_token.collection:
-  route_name: entity.access_token.collection
+entity.oauth2_token.collection:
+  route_name: entity.oauth2_token.collection
   base_route: system.admin_content
   title: 'OAuth2 Tokens'
 
-entity.access_token.canonical:
-  route_name: entity.access_token.canonical
-  base_route: entity.access_token.canonical
+entity.oauth2_token.canonical:
+  route_name: entity.oauth2_token.canonical
+  base_route: entity.oauth2_token.canonical
   title: 'View'
 
-entity.access_token.edit_form:
-  route_name: entity.access_token.edit_form
-  base_route: entity.access_token.canonical
+entity.oauth2_token.edit_form:
+  route_name: entity.oauth2_token.edit_form
+  base_route: entity.oauth2_token.canonical
   title: Edit
 
-entity.access_token.delete_form:
-  route_name:  entity.access_token.delete_form
-  base_route:  entity.access_token.canonical
+entity.oauth2_token.delete_form:
+  route_name:  entity.oauth2_token.delete_form
+  base_route:  entity.oauth2_token.canonical
   title: Delete
   weight: 10
 
 # Access Token Resource menu items definition
-entity.access_token_resource.collection:
+entity.oauth2_token_resource.collection:
   title: 'Resources'
-  route_name: entity.access_token_resource.collection
+  route_name: entity.oauth2_token_resource.collection
   description: 'List Access Token Resource'
-  base_route: access_token.settings
+  base_route: oauth2_token.settings
 
-user.access_token.collection:
+user.oauth2_token.collection:
   title: 'OAuth2 Tokens'
-  route_name: user.access_token.collection
+  route_name: user.oauth2_token.collection
   description: 'List Access Tokens for the current user'
   base_route: entity.user.canonical

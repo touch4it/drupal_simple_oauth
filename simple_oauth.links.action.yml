@@ -1,14 +1,14 @@
-entity.access_token.add_form:
-  route_name: entity.access_token.add_form
+entity.oauth2_token.add_form:
+  route_name: entity.oauth2_token.add_form
   title: 'Add Access Token'
   appears_on:
-    - entity.access_token.collection
-    - entity.access_token.canonical
-    - user.access_token.collection
+    - entity.oauth2_token.collection
+    - entity.oauth2_token.canonical
+    - user.oauth2_token.collection
 
-entity.access_token_resource.add_form:
-  route_name: 'entity.access_token_resource.add_form'
+entity.oauth2_token_resource.add_form:
+  route_name: 'entity.oauth2_token_resource.add_form'
   title: 'Add Access Token Resource'
   appears_on:
-    - entity.access_token_resource.collection
-    - access_token.settings
+    - entity.oauth2_token_resource.collection
+    - oauth2_token.settings

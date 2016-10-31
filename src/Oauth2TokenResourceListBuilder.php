@@ -8,7 +8,7 @@ use Drupal\Core\Entity\EntityInterface;
 /**
  * Provides a listing of Access Token Resource entities.
  */
-class AccessTokenResourceListBuilder extends ConfigEntityListBuilder {
+class Oauth2TokenResourceListBuilder extends ConfigEntityListBuilder {
   /**
    * {@inheritdoc}
    */

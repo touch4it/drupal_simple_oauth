@@ -60,14 +60,14 @@ class SimpleOauthAuthenticationTest extends UnitTestCase {
     $request = new Request();
     $request->setMethod(Request::METHOD_POST);
     $request->headers->set('Content-Type', 'application/x-www-form-urlencoded');
-    $request->request->set('access_token', $token);
+    $request->request->set('oauth2_token', $token);
     $data[] = [$request, $token];
 
     // 5. Form encoded parameter. Fail: missing content type.
     $token = $this->getRandomGenerator()->name();
     $request = new Request();
     $request->setMethod(Request::METHOD_POST);
-    $request->request->set('access_token', $token);
+    $request->request->set('oauth2_token', $token);
     $data[] = [$request, NULL];
 
     // 6. Form encoded parameter. Fail: missing token.
@@ -81,7 +81,7 @@ class SimpleOauthAuthenticationTest extends UnitTestCase {
     $request = new Request();
     $request->setMethod(Request::METHOD_GET);
     $request->headers->set('Content-Type', 'application/x-www-form-urlencoded');
-    $request->request->set('access_token', $token);
+    $request->request->set('oauth2_token', $token);
     $data[] = [$request, NULL];
 
     return $data;

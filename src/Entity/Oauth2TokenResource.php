@@ -12,7 +12,7 @@ use Drupal\simple_oauth\Oauth2TokenResourceInterface;
  *   id = "oauth2_token_resource",
  *   label = @Translation("OAuth2 Token Resource"),
  *   handlers = {
- *     "list_builder" = "Drupal\simple_oauth\AccessTokenResourceListBuilder",
+ *     "list_builder" = "Drupal\simple_oauth\Oauth2TokenResourceListBuilder",
  *     "form" = {
  *       "add" = "Drupal\simple_oauth\Entity\Form\Oauth2TokenResourceForm",
  *       "edit" = "Drupal\simple_oauth\Entity\Form\Oauth2TokenResourceForm",

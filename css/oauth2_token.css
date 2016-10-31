@@ -1,7 +1,7 @@
-.access_token {
+.oauth2_token {
     clear: both;
 }
-.access_token .dropbutton-wrapper.dropbutton-multiple .dropbutton-widget {
+.oauth2_token .dropbutton-wrapper.dropbutton-multiple .dropbutton-widget {
     width: 20%;
     max-width: 150px;
     min-width: 80px;
@@ -16,9 +16,9 @@
     clear: both;
 }
 
-article.access_token {
+article.oauth2_token {
     padding: 3px;
 }
-article.access_token--refresh {
+article.oauth2_token--refresh {
     background: rgba(0,0,0,0.05);
 }

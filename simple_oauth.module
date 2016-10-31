@@ -29,7 +29,7 @@ function simple_oauth_help($route_name, RouteMatchInterface $route_match) {
 function simple_oauth_cron() {
   /* @var \Drupal\Core\Entity\EntityManagerInterface $manager */
   $manager = \Drupal::service('entity.manager');
-  $storage = $manager->getStorage('access_token');
+  $storage = $manager->getStorage('oauth2_token');
   $query = $storage->getQuery();
   // We only delete access tokens when deleting their expired refresh tokens.
   $ids = $query
@@ -39,11 +39,11 @@ function simple_oauth_cron() {
   if (!empty($ids)) {
     $refresh_tokens = $storage->loadMultiple($ids);
     // Get the access tokens associated to this refresh token.
-    $access_tokens = array_map(function ($refresh_token) {
-      return $refresh_token->get('access_token_id')->entity;
+    $oauth2_tokens = array_map(function ($refresh_token) {
+      return $refresh_token->get('oauth2_token_id')->entity;
     }, $refresh_tokens);
     // Delete the access tokens.
-    $storage->delete(array_filter($access_tokens));
+    $storage->delete(array_filter($oauth2_tokens));
     // Delete the refresh tokens.
     $storage->delete($refresh_tokens);
   }
@@ -54,9 +54,9 @@ function simple_oauth_cron() {
  */
 function simple_oauth_theme($existing, $type, $theme, $path) {
   return [
-    'access_token' => [
-      'render element' => 'access_token',
-      'file' => 'access_token.page.inc',
+    'oauth2_token' => [
+      'render element' => 'oauth2_token',
+      'file' => 'oauth2_token.page.inc',
     ],
   ];
 }

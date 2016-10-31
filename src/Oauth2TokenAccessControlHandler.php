@@ -12,7 +12,7 @@ use Drupal\Core\Access\AccessResult;
  *
  * @see \Drupal\simple_oauth\Entity\Oauth2Token.
  */
-class AccessTokenAccessControlHandler extends EntityAccessControlHandler {
+class Oauth2TokenAccessControlHandler extends EntityAccessControlHandler {
   /**
    * {@inheritdoc}
    */
