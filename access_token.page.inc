@@ -20,7 +20,7 @@ use Drupal\Core\Render\Element;
  *   - attributes: HTML attributes for the containing element.
  */
 function template_preprocess_access_token(array &$variables) {
-  // Fetch AccessToken Entity Object.
+  // Fetch Oauth2Token Entity Object.
   $access_token = $variables['access_token'];
 
   $class = $access_token['#access_token']->isRefreshToken() ? 'access_token--refresh' : 'access_token--access';

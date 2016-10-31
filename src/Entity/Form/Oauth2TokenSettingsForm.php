@@ -6,13 +6,13 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Class AccessTokenSettingsForm.
+ * Class Oauth2TokenSettingsForm.
  *
  * @package Drupal\simple_oauth\Form
  *
  * @ingroup simple_oauth
  */
-class AccessTokenSettingsForm extends FormBase {
+class Oauth2TokenSettingsForm extends FormBase {
   /**
    * Returns a unique string identifying the form.
    *

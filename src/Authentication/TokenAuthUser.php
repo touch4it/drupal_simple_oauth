@@ -5,7 +5,7 @@ namespace Drupal\simple_oauth\Authentication;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\simple_oauth\AccessTokenInterface;
+use Drupal\simple_oauth\Oauth2TokenInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
@@ -26,7 +26,7 @@ class TokenAuthUser implements TokenAuthUserInterface {
   /**
    * The decorator subject.
    *
-   * @var AccessTokenInterface
+   * @var Oauth2TokenInterface
    */
   protected $token;
 
@@ -40,12 +40,13 @@ class TokenAuthUser implements TokenAuthUserInterface {
   /**
    * Constructs a TokenAuthUser object.
    *
-   * @param AccessTokenInterface $token
+   * @param Oauth2TokenInterface $token
    *   The underlying token.
-   * @throws \Exception
+   * 
+*@throws \Exception
    *   When there is no user.
    */
-  public function __construct(AccessTokenInterface $token) {
+  public function __construct(Oauth2TokenInterface $token) {
     if (!$this->subject = $token->get('auth_user_id')->entity) {
       throw new \Exception('The access token does not link to a user.');
     }

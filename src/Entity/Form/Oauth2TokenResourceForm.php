@@ -9,11 +9,11 @@ use Drupal\user\PermissionHandler;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class AccessTokenResourceForm.
+ * Class Oauth2TokenResourceForm.
  *
  * @package Drupal\simple_oauth\Entity\Form
  */
-class AccessTokenResourceForm extends EntityForm {
+class Oauth2TokenResourceForm extends EntityForm {
 
   /**
    * @var \Drupal\Core\Controller\ControllerResolverInterface
@@ -21,7 +21,7 @@ class AccessTokenResourceForm extends EntityForm {
   protected $controllerResolver;
 
   /**
-   * AccessTokenResourceForm constructor.
+   * Oauth2TokenResourceForm constructor.
    *
    * @param \Drupal\Core\Controller\ControllerResolverInterface $controller_resolver
    *   The controller resolver.
@@ -43,7 +43,7 @@ class AccessTokenResourceForm extends EntityForm {
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
-    /* @var \Drupal\simple_oauth\AccessTokenResourceInterface $access_token_resource */
+    /* @var \Drupal\simple_oauth\Oauth2TokenResourceInterface $access_token_resource */
     $access_token_resource = $this->entity;
     $form['label'] = array(
       '#type' => 'textfield',
@@ -66,7 +66,7 @@ class AccessTokenResourceForm extends EntityForm {
       '#type' => 'machine_name',
       '#default_value' => $access_token_resource->id(),
       '#machine_name' => array(
-        'exists' => '\Drupal\simple_oauth\Entity\AccessTokenResource::load',
+        'exists' => '\Drupal\simple_oauth\Entity\Oauth2TokenResource::load',
       ),
       '#disabled' => !$access_token_resource->isNew(),
     );

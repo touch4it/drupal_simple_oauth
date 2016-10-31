@@ -3,24 +3,24 @@
 namespace Drupal\simple_oauth\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
-use Drupal\simple_oauth\AccessTokenResourceInterface;
+use Drupal\simple_oauth\Oauth2TokenResourceInterface;
 
 /**
- * Defines the Access Token Resource entity.
+ * Defines the OAuth2 Token Resource entity.
  *
  * @ConfigEntityType(
- *   id = "access_token_resource",
- *   label = @Translation("Access Token Resource"),
+ *   id = "oauth2_token_resource",
+ *   label = @Translation("OAuth2 Token Resource"),
  *   handlers = {
  *     "list_builder" = "Drupal\simple_oauth\AccessTokenResourceListBuilder",
  *     "form" = {
- *       "add" = "Drupal\simple_oauth\Entity\Form\AccessTokenResourceForm",
- *       "edit" = "Drupal\simple_oauth\Entity\Form\AccessTokenResourceForm",
- *       "delete" = "Drupal\simple_oauth\Entity\Form\AccessTokenResourceDeleteForm"
+ *       "add" = "Drupal\simple_oauth\Entity\Form\Oauth2TokenResourceForm",
+ *       "edit" = "Drupal\simple_oauth\Entity\Form\Oauth2TokenResourceForm",
+ *       "delete" = "Drupal\simple_oauth\Entity\Form\Oauth2TokenResourceDeleteForm"
  *     },
  *     "access" = "Drupal\simple_oauth\LockableConfigEntityAccessControlHandler"
  *   },
- *   config_prefix = "access_token_resource",
+ *   config_prefix = "oauth2_token_resource",
  *   admin_permission = "administer site configuration",
  *   entity_keys = {
  *     "id" = "id",
@@ -28,14 +28,14 @@ use Drupal\simple_oauth\AccessTokenResourceInterface;
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "canonical" = "/admin/config/people/accounts/access_token_resource/{access_token_resource}",
- *     "edit-form" = "/admin/config/people/accounts/access_token_resource/{access_token_resource}/edit",
- *     "delete-form" = "/admin/config/people/accounts/access_token_resource/{access_token_resource}/delete",
+ *     "canonical" = "/admin/config/people/accounts/oauth2_token_resource/{oauth2_token_resource}",
+ *     "edit-form" = "/admin/config/people/accounts/oauth2_token_resource/{oauth2_token_resource}/edit",
+ *     "delete-form" = "/admin/config/people/accounts/oauth2_token_resource/{oauth2_token_resource}/delete",
  *     "collection" = "/admin/config/people/accounts/visibility_group"
  *   }
  * )
  */
-class AccessTokenResource extends ConfigEntityBase implements AccessTokenResourceInterface {
+class Oauth2TokenResource extends ConfigEntityBase implements Oauth2TokenResourceInterface {
 
   /**
    * The Access Token Resource ID.

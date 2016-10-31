@@ -1,5 +1,5 @@
 
-# AccessToken routing definition
+# Oauth2Token routing definition
 entity.access_token.canonical:
   path: '/admin/content/access_token/{access_token}'
   defaults:
@@ -54,7 +54,7 @@ entity.access_token.delete_form:
 access_token.settings:
   path: '/admin/config/people/access_token'
   defaults:
-   _form: '\Drupal\simple_oauth\Entity\Form\AccessTokenSettingsForm'
+   _form: '\Drupal\simple_oauth\Entity\Form\Oauth2TokenSettingsForm'
    _title: 'Token Auth Settings'
   requirements:
     _permission: 'administer access token entities'
@@ -62,7 +62,7 @@ access_token.settings:
     _admin_route: TRUE
   base_route: entity.user.admin_form
 
-# AccessTokenResource routing definition
+# Oauth2TokenResource routing definition
 entity.access_token_resource.collection:
   path: '/admin/config/people/access_token/access_token_resource'
   defaults:
@@ -106,7 +106,7 @@ entity.access_token_resource.delete_form:
 user.access_token.collection:
   path: '/user/{user}/oauth2-tokens'
   defaults:
-    _controller: 'Drupal\simple_oauth\Controller\AccessTokenUserList::tokenList'
+    _controller: 'Drupal\simple_oauth\Controller\Oauth2TokenUserList::tokenList'
     _title: 'OAuth2 Tokens'
   requirements:
     _permission: 'view own access token entities'
@@ -114,6 +114,6 @@ user.access_token.collection:
 access_token.refresh:
   path: '/simple-oauth/refresh'
   defaults:
-    _controller: 'Drupal\simple_oauth\Controller\AccessTokenRefresh::refresh'
+    _controller: 'Drupal\simple_oauth\Controller\Oauth2TokenRefresh::refresh'
   requirements:
     _permission: 'refresh access token'

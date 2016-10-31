@@ -6,7 +6,7 @@ use Drupal\Component\Serialization\Json;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\simple_oauth\AccessTokenInterface;
+use Drupal\simple_oauth\Oauth2TokenInterface;
 use Drupal\simple_oauth\Authentication\TokenAuthUserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -80,13 +80,13 @@ class AccessTokenRefresh extends ControllerBase {
   /**
    * Serializes the token either using the serializer or manually.
    *
-   * @param AccessTokenInterface $token
+   * @param Oauth2TokenInterface $token
    *   The token.
    *
    * @return string
    *   The serialized token.
    */
-  protected function normalize(AccessTokenInterface $token) {
+  protected function normalize(Oauth2TokenInterface $token) {
     $storage = $this->entityManager()
       ->getStorage('access_token');
     $ids = $storage

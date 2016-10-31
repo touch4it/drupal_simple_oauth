@@ -10,7 +10,7 @@ use Drupal\Core\Access\AccessResult;
 /**
  * Access controller for the Access Token entity.
  *
- * @see \Drupal\simple_oauth\Entity\AccessToken.
+ * @see \Drupal\simple_oauth\Entity\Oauth2Token.
  */
 class AccessTokenAccessControlHandler extends EntityAccessControlHandler {
   /**

@@ -11,13 +11,13 @@ use Drupal\Core\Language\Language;
  *
  * @ingroup simple_oauth
  */
-class AccessTokenForm extends ContentEntityForm {
+class Oauth2TokenForm extends ContentEntityForm {
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    /* @var $entity \Drupal\simple_oauth\Entity\AccessToken */
+    /* @var $entity \Drupal\simple_oauth\Entity\Oauth2Token */
     $form = parent::buildForm($form, $form_state);
     $entity = $this->entity;
 

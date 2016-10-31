@@ -2,18 +2,19 @@
 
 namespace Drupal\simple_oauth;
 
+use Drupal\Console\Command\TranslationTrait;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
-use Drupal\Core\Routing\LinkGeneratorTrait;
-use Drupal\Core\Url;
+use Drupal\Core\Link;
 
 /**
  * Defines a class to build a listing of Access Token entities.
  *
  * @ingroup simple_oauth
  */
-class AccessTokenListBuilder extends EntityListBuilder {
-  use LinkGeneratorTrait;
+class Oauth2TokenListBuilder extends EntityListBuilder {
+
+  use TranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -32,21 +33,21 @@ class AccessTokenListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /* @var $entity \Drupal\simple_oauth\Entity\AccessToken */
+    /* @var $entity \Drupal\simple_oauth\Entity\Oauth2Token */
     $type = $entity->get('resource')->target_id == 'authentication' ? t('Refresh Token') : t('Access Token');
     $row['type'] = $type;
     $user = $entity->get('auth_user_id')->entity;
-    $row['user'] = $this->l($user->label(), new Url('entity.user.canonical', array(
+    $row['user'] = Link::createFromRoute($user->label(), 'entity.user.canonical', array(
       'user' => $user->id(),
-    )));
+    ));
     $owner = $entity->get('user_id')->entity;
-    $row['owner'] = $this->l($owner->label(), new Url('entity.user.canonical', array(
+    $row['owner'] = Link::createFromRoute($owner->label(), 'entity.user.canonical', array(
       'user' => $owner->id(),
-    )));
+    ));
     $row['id'] = $entity->id();
-    $row['name'] = $this->l($entity->label(), new Url('entity.access_token.edit_form', array(
+    $row['name'] = Link::createFromRoute($entity->label(), 'entity.access_token.edit_form', array(
       'access_token' => $entity->id(),
-    )));
+    ));
     $row['resource'] = $entity->get('resource')->entity->label();
 
     return $row + parent::buildRow($entity);

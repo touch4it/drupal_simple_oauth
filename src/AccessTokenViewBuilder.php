@@ -7,7 +7,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityViewBuilder;
 
 /**
- * Class AccessTokenViewBuilder.
+ * Class Oauth2TokenViewBuilder.
  *
  * @package Drupal\simple_oauth
  */

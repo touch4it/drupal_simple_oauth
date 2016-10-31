@@ -7,7 +7,7 @@ use Drupal\Core\Config\Entity\ConfigEntityInterface;
 /**
  * Provides an interface for defining Access Token Resource entities.
  */
-interface AccessTokenResourceInterface extends ConfigEntityInterface {
+interface Oauth2TokenResourceInterface extends ConfigEntityInterface {
 
   /**
    * Get the description.

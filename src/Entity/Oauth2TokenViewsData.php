@@ -8,7 +8,7 @@ use Drupal\views\EntityViewsDataInterface;
 /**
  * Provides Views data for Access Token entities.
  */
-class AccessTokenViewsData extends EntityViewsData implements EntityViewsDataInterface {
+class Oauth2TokenViewsData extends EntityViewsData implements EntityViewsDataInterface {
   /**
    * {@inheritdoc}
    */

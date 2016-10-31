@@ -89,7 +89,7 @@ class SimpleOauthAuthenticationProvider implements SimpleOauthAuthenticationProv
       ->range(0, 1)
       ->execute();
     if (!empty($ids)) {
-      /* @var \Drupal\simple_oauth\AccessTokenInterface $token */
+      /* @var \Drupal\simple_oauth\Oauth2TokenInterface $token */
       $token = $token_storage->load(reset($ids));
       try {
         return new TokenAuthUser($token);
