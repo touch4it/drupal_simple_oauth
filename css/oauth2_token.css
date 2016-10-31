@@ -19,6 +19,3 @@
 article.oauth2_token {
     padding: 3px;
 }
-article.oauth2_token--refresh {
-    background: rgba(0,0,0,0.05);
-}

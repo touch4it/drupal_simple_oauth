@@ -37,6 +37,8 @@ use Drupal\simple_oauth\Oauth2TokenResourceInterface;
  */
 class Oauth2TokenResource extends ConfigEntityBase implements Oauth2TokenResourceInterface {
 
+  use ConfigEntityLockableTrait;
+
   /**
    * The Access Token Resource ID.
    *
@@ -59,13 +61,6 @@ class Oauth2TokenResource extends ConfigEntityBase implements Oauth2TokenResourc
   protected $description = '';
 
   /**
-   * Locked status.
-   *
-   * @var bool
-   */
-  protected $locked = FALSE;
-
-  /**
    * {@inheritdoc}
    */
   public function getDescription() {
@@ -77,27 +72,6 @@ class Oauth2TokenResource extends ConfigEntityBase implements Oauth2TokenResourc
    */
   public function setDescription($description) {
     $this->description = $description;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isLocked() {
-    return $this->locked;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function lock() {
-    $this->locked = TRUE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function unlock() {
-    $this->locked = FALSE;
   }
 
 }

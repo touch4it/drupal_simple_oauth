@@ -11,7 +11,7 @@ use Drupal\simple_oauth\Authentication\TokenAuthUserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class AccessTokenRefresh extends ControllerBase {
+class Oauth2TokenRefresh extends ControllerBase {
 
   /**
    * The response object.
