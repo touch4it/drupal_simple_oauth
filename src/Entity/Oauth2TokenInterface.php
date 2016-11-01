@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\simple_oauth;
+namespace Drupal\simple_oauth\Entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;

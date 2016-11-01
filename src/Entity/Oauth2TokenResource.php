@@ -3,7 +3,6 @@
 namespace Drupal\simple_oauth\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
-use Drupal\simple_oauth\Oauth2TokenResourceInterface;
 
 /**
  * Defines the OAuth2 Token Resource entity.

@@ -7,7 +7,6 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\simple_oauth\Oauth2TokenInterface;
 use Drupal\user\UserInterface;
 
 /**
@@ -20,8 +19,6 @@ use Drupal\user\UserInterface;
  *   label = @Translation("OAuth2 token"),
  *   bundle_label = @Translation("Token type"),
  *   handlers = {
- *     "view_builder" = "Drupal\simple_oauth\Oauth2TokenViewBuilder",
- *     "list_builder" = "Drupal\simple_oauth\Oauth2TokenListBuilder",
  *     "views_data" = "Drupal\simple_oauth\Entity\Oauth2TokenViewsData",
  *
  *     "form" = {
@@ -51,20 +48,6 @@ use Drupal\user\UserInterface;
 class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
 
   use EntityChangedTrait;
-
-  /**
-   * The default time while the token is valid.
-   *
-   * @var int
-   */
-  const DEFAULT_EXPIRATION_PERIOD = 300;
-
-  /**
-   * The time a refresh token stays valid after the access token expires.
-   *
-   * @var int
-   */
-  const REFRESH_EXTENSION_TIME = 86400;
 
   /**
    * {@inheritdoc}
@@ -311,8 +294,7 @@ class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
    */
   public static function defaultExpiration() {
     // TODO: Use dependency injection to get the config factory.
-    $expiration = \Drupal::config('simple_oauth.settings')
-      ->get('expiration') ?: static::DEFAULT_EXPIRATION_PERIOD;
+    $expiration = \Drupal::config('simple_oauth.settings')->get('expiration');
 
     // TODO: Use dependency injection to get the datetime.time service.
     return [\Drupal::time()->getRequestTime() + $expiration];

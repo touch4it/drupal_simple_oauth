@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\simple_oauth;
+namespace Drupal\simple_oauth\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 
 /**
  * Provides an interface for defining Access Token Resource entities.
  */
-interface Oauth2TokenResourceInterface extends ConfigEntityInterface {
+interface Oauth2TokenResourceInterface extends ConfigEntityLockableInterface  {
 
   /**
    * Get the description.

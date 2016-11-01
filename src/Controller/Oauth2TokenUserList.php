@@ -25,7 +25,7 @@ class Oauth2TokenUserList extends ControllerBase {
         '#markup' => $this->t('There are no tokens for this user.'),
       ];
     }
-    $view_controller = $this->entityManager()->getViewBuilder($entity_type);
+    $view_controller = $this->entityTypeManager()->getViewBuilder($entity_type);
     $tokens = $storage->loadMultiple($ids);
 
     return $view_controller->viewMultiple($tokens);
