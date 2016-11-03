@@ -11,7 +11,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface {
 
   use RevocableTokenRepositoryTrait;
 
-  protected static $entity_type_id = 'access_token';
+  protected static $bundle_id = 'access_token';
   protected static $entity_class = 'Drupal\simple_oauth\Entities\AccessTokenEntity';
   protected static $entity_interface = 'League\OAuth2\Server\Entities\AccessTokenEntityInterface';
 

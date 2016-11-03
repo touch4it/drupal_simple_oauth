@@ -14,3 +14,31 @@ services:
     arguments: ['@request_stack']
     tags:
       - { name: cache.context }
+
+  simple_oauth.normalizer.oauth2_token:
+    class: Drupal\simple_oauth\Normalizer\TokenEntityNormalizer
+  simple_oauth.server.authorization_server.factory:
+    class: Drupal\simple_oauth\Server\AuthorizationServerFactory
+    arguments:
+      - '@simple_oauth.repositories.client'
+      - '@simple_oauth.repositories.scope'
+      - '@simple_oauth.repositories.user'
+      - '@simple_oauth.repositories.access_token'
+      - '@simple_oauth.repositories.refresh_token'
+      - '@simple_oauth.repositories.auth_code'
+      - '@config.factory'
+  simple_oauth.repositories.client:
+    class: Drupal\simple_oauth\Repositories\ClientRepository
+  simple_oauth.repositories.scope:
+    class: Drupal\simple_oauth\Repositories\ScopeRepository
+  simple_oauth.repositories.user:
+    class: Drupal\simple_oauth\Repositories\UserRepository
+  simple_oauth.repositories.access_token:
+    class: Drupal\simple_oauth\Repositories\AccessTokenRepository
+    arguments: ['@entity_type.manager', '@simple_oauth.normalizer.oauth2_token']
+  simple_oauth.repositories.refresh_token:
+    class: Drupal\simple_oauth\Repositories\RefreshTokenRepository
+    arguments: ['@entity_type.manager', '@simple_oauth.normalizer.oauth2_token']
+  simple_oauth.repositories.auth_code:
+    class: Drupal\simple_oauth\Repositories\AuthCodeRepository
+    arguments: ['@entity_type.manager', '@simple_oauth.normalizer.oauth2_token']

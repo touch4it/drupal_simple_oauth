@@ -9,7 +9,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
 
   use RevocableTokenRepositoryTrait;
 
-  protected static $entity_type_id = 'refresh_token';
+  protected static $bundle_id = 'refresh_token';
   protected static $entity_class = 'Drupal\simple_oauth\Entities\RefreshTokenEntity';
   protected static $entity_interface = 'League\OAuth2\Server\Entities\RefreshTokenEntityInterface';
 

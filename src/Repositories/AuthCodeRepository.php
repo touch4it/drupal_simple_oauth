@@ -10,7 +10,7 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface {
 
   use RevocableTokenRepositoryTrait;
 
-  protected static $entity_type_id = 'auth_code';
+  protected static $bundle_id = 'auth_code';
   protected static $entity_class = 'Drupal\simple_oauth\Entities\AuthCodeEntity';
   protected static $entity_interface = 'League\OAuth2\Server\Entities\AuthCodeEntityInterface';
 

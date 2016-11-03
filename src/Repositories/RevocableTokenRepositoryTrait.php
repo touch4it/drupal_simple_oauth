@@ -8,7 +8,8 @@ use Drupal\simple_oauth\Normalizer\TokenEntityNormalizerInterface;
 
 trait RevocableTokenRepositoryTrait {
 
-  protected static $entity_type_id = '';
+  protected static $entity_type_id = 'oauth2_token';
+  protected static $bundle_id = '';
   protected static $entity_class = '';
   protected static $entity_interface = '';
 
