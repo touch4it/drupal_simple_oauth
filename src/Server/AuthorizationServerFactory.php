@@ -73,8 +73,9 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface 
     $this->accessTokenRepository = $access_token_repository;
     $this->refreshTokenRepository = $refresh_token_repository;
     $this->authCodeRepository = $auth_code_repository;
-    $this->publicKeyPath = $config_factory->get('simple_oauth.settings.public_key');
-    $this->privateKeyPath = $config_factory->get('simple_oauth.settings.private_key');
+    $settings = $config_factory->get('simple_oauth.settings');
+    $this->publicKeyPath = $settings->get('public_key');
+    $this->privateKeyPath = $settings->get('private_key');
   }
 
   /**
