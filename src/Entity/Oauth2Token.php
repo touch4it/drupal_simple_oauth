@@ -7,6 +7,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\user\UserInterface;
 
 /**
@@ -20,7 +21,6 @@ use Drupal\user\UserInterface;
  *   bundle_label = @Translation("Token type"),
  *   handlers = {
  *     "views_data" = "Drupal\simple_oauth\Entity\Oauth2TokenViewsData",
- *
  *     "form" = {
  *       "default" = "Drupal\simple_oauth\Entity\Form\Oauth2TokenForm",
  *       "add" = "Drupal\simple_oauth\Entity\Form\Oauth2TokenForm",
@@ -75,6 +75,13 @@ class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
       ->setLabel(t('UUID'))
       ->setDescription(t('The UUID of the Access Token entity.'))
       ->setReadOnly(TRUE);
+
+    $fields['bundle'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Bundle'))
+      ->setDescription(t('The bundle property.'))
+      ->setRevisionable(FALSE)
+      ->setReadOnly(TRUE)
+      ->setSetting('target_type', 'oauth2_token_type');
 
     $fields['user_id'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Creator'))
@@ -177,6 +184,7 @@ class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
       ->setSetting('target_type', 'oauth2_scope')
       ->setSetting('handler', 'default')
       ->setDefaultValue('default')
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
       ->setTranslatable(FALSE)
       ->setDisplayOptions('view', array(
         'label' => 'inline',

@@ -4,14 +4,11 @@
 namespace Drupal\simple_oauth\Repositories;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\simple_oauth\Normalizer\TokenEntityNormalizerInterface;
+use Symfony\Component\Serializer\Serializer;
 
 trait RevocableTokenRepositoryTrait {
 
   protected static $entity_type_id = 'oauth2_token';
-  protected static $bundle_id = '';
-  protected static $entity_class = '';
-  protected static $entity_interface = '';
 
   /**
    * @var \Drupal\Core\Entity\EntityStorageInterface
@@ -19,9 +16,9 @@ trait RevocableTokenRepositoryTrait {
   protected $storage;
 
   /**
-   * @var \Drupal\simple_oauth\Normalizer\TokenEntityNormalizerInterface
+   * @var \Symfony\Component\Serializer\Serializer
    */
-  protected $normalizer;
+  protected $serializer;
 
   /**
    * Construct a revocable token.
@@ -29,9 +26,9 @@ trait RevocableTokenRepositoryTrait {
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    * @param \Drupal\simple_oauth\Normalizer\TokenEntityNormalizerInterface $normalizer
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, TokenEntityNormalizerInterface $normalizer) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, Serializer $serializer) {
     $this->storage = $entity_type_manager->getStorage(static::$entity_type_id);
-    $this->normalizer = $normalizer;
+    $this->serializer = $serializer;
   }
 
   /**
@@ -41,7 +38,8 @@ trait RevocableTokenRepositoryTrait {
     if (!is_a($token_entity, static::$entity_interface)){
       throw new \InvalidArgumentException(sprintf('%s does not implement %s.', get_class($token_entity), static::$entity_interface));
     }
-    $values = $this->normalizer->normalize($token_entity);
+    $values = $this->serializer->normalize($token_entity);
+    $values['bundle'] = static::$bundle_id;
     $new_token = $this->storage->create($values);
     $new_token->save();
   }

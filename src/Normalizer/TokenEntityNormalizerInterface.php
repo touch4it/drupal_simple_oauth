@@ -2,6 +2,6 @@
 
 namespace Drupal\simple_oauth\Normalizer;
 
-interface TokenEntityNormalizerInterface {
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-}
+interface TokenEntityNormalizerInterface extends NormalizerInterface {}

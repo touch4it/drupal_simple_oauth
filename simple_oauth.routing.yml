@@ -112,8 +112,9 @@ user.oauth2_token.collection:
     _permission: 'view own access token entities'
 
 oauth2_token.refresh:
-  path: '/simple-oauth/refresh'
+  path: '/oauth/token'
   defaults:
-    _controller: 'Drupal\simple_oauth\Controller\Oauth2TokenRefresh::refresh'
+    _controller: 'Drupal\simple_oauth\Controller\Oauth2Token::token'
+  methods: [POST]
   requirements:
-    _permission: 'refresh access token'
+    _permission: 'access content'

@@ -17,6 +17,12 @@ services:
 
   simple_oauth.normalizer.oauth2_token:
     class: Drupal\simple_oauth\Normalizer\TokenEntityNormalizer
+    tags:
+      - { name: normalizer, priority: 21 }
+  simple_oauth.normalizer.oauth2_refresh_token:
+    class: Drupal\simple_oauth\Normalizer\RefreshTokenEntityNormalizer
+    tags:
+      - { name: normalizer, priority: 20 }
   simple_oauth.server.authorization_server.factory:
     class: Drupal\simple_oauth\Server\AuthorizationServerFactory
     arguments:
@@ -35,10 +41,10 @@ services:
     class: Drupal\simple_oauth\Repositories\UserRepository
   simple_oauth.repositories.access_token:
     class: Drupal\simple_oauth\Repositories\AccessTokenRepository
-    arguments: ['@entity_type.manager', '@simple_oauth.normalizer.oauth2_token']
+    arguments: ['@entity_type.manager', '@serializer']
   simple_oauth.repositories.refresh_token:
     class: Drupal\simple_oauth\Repositories\RefreshTokenRepository
-    arguments: ['@entity_type.manager', '@simple_oauth.normalizer.oauth2_token']
+    arguments: ['@entity_type.manager', '@serializer']
   simple_oauth.repositories.auth_code:
     class: Drupal\simple_oauth\Repositories\AuthCodeRepository
-    arguments: ['@entity_type.manager', '@simple_oauth.normalizer.oauth2_token']
+    arguments: ['@entity_type.manager', '@serializer']

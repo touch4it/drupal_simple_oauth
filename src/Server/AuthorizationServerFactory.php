@@ -6,6 +6,7 @@ namespace Drupal\simple_oauth\Server;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\PasswordGrant;
+use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
@@ -56,6 +57,11 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface 
   protected $publicKeyPath;
 
   /**
+   * @var \DateTime
+   */
+  protected $expiration;
+
+  /**
    * Construct a new AuthorizationServerFactory object.
    */
   public function __construct(
@@ -67,7 +73,7 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface 
     AuthCodeRepositoryInterface $auth_code_repository,
     ConfigFactoryInterface $config_factory
   ) {
-    $this->accessTokenRepository = $client_repository;
+    $this->clientRepository = $client_repository;
     $this->scopeRepository = $scope_repository;
     $this->userRepository = $user_repository;
     $this->accessTokenRepository = $access_token_repository;
@@ -76,6 +82,10 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface 
     $settings = $config_factory->get('simple_oauth.settings');
     $this->publicKeyPath = $settings->get('public_key');
     $this->privateKeyPath = $settings->get('private_key');
+    if (!file_exists($this->publicKeyPath) || !file_exists($this->privateKeyPath)) {
+      throw new \InvalidArgumentException(sprintf('You need to set the OAuth2 secret and private keys.'));
+    }
+    $this->expiration = new \DateInterval(sprintf('PT%dS', $settings->get('expiration')));
   }
 
   /**
@@ -93,7 +103,7 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface 
     // Enable the password grant on the server with a token TTL of X hours.
     $server->enableGrantType(
       $grant,
-      new \DateInterval('PT1H') // TODO: Make this configurable.
+      $this->expiration
     );
 
     return $server;
@@ -103,8 +113,11 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface 
    * {@inheritdoc}
    */
   public function grantFactory($grant_type_id) {
-    if ($grant_type_id === 'password') {
+    if ($grant_type_id == 'password') {
       return new PasswordGrant($this->userRepository, $this->refreshTokenRepository);
+    }
+    elseif ($grant_type_id == 'refresh_token') {
+      return new RefreshTokenGrant($this->refreshTokenRepository);
     }
     throw new \InvalidArgumentException(sprintf('The grant type %s for OAuth2 does not exist.', $grant_type_id));
   }
