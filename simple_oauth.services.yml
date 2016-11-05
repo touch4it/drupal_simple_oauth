@@ -35,13 +35,13 @@ services:
       - '@config.factory'
   simple_oauth.repositories.client:
     class: Drupal\simple_oauth\Repositories\ClientRepository
-    arguments: ['@entity_type.manager']
+    arguments: ['@entity_type.manager', '@password']
   simple_oauth.repositories.scope:
     class: Drupal\simple_oauth\Repositories\ScopeRepository
     arguments: ['@entity_type.manager']
   simple_oauth.repositories.user:
     class: Drupal\simple_oauth\Repositories\UserRepository
-    arguments: ['@entity_type.manager']
+    arguments: ['@user.auth']
   simple_oauth.repositories.access_token:
     class: Drupal\simple_oauth\Repositories\AccessTokenRepository
     arguments: ['@entity_type.manager', '@serializer']

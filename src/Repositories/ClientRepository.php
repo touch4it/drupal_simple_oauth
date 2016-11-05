@@ -3,6 +3,7 @@
 namespace Drupal\simple_oauth\Repositories;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Password\PasswordInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use Drupal\simple_oauth\Entities\ClientEntity;
 
@@ -14,10 +15,16 @@ class ClientRepository implements ClientRepositoryInterface {
   protected $entityTypeManager;
 
   /**
+   * @var \Drupal\Core\Password\PasswordInterface
+   */
+  protected $passwordChecker;
+
+  /**
    * Constructs a ClientRepository object.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, PasswordInterface $password_checker) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->passwordChecker = $password_checker;
   }
 
   /**
@@ -36,7 +43,7 @@ class ClientRepository implements ClientRepositoryInterface {
     if (
       $must_validate_secret === TRUE &&
       $client_entity->get('is_confidential') == TRUE &&
-      password_verify($client_secret, $client_entity->get('secret')) === FALSE
+      $this->passwordChecker->check($client_secret, $client_entity->get('secret')) === FALSE
     ) {
       return NULL;
     }

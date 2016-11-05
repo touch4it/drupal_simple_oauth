@@ -58,7 +58,7 @@ simple_oauth.oauth2_client.*:
     secret:
       type: string
       label: 'Secret key'
-      description: 'Stores a hash of the secret ID using password_hash($secret, PASSWORD_BCRYPT).'
+      description: 'Stores a hash of the secret ID.'
 
 simple_oauth.oauth2_scope.*:
   type: config_entity
