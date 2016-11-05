@@ -49,9 +49,16 @@ simple_oauth.oauth2_client.*:
     label:
       type: label
       label: 'Label'
-    description:
+    redirect_uri:
       type: uri
       label: 'Redirect URI'
+    is_confidential:
+      type: boolean
+      label: 'Is confidential?'
+    secret:
+      type: string
+      label: 'Secret key'
+      description: 'Stores a hash of the secret ID using password_hash($secret, PASSWORD_BCRYPT).'
 
 simple_oauth.oauth2_scope.*:
   type: config_entity

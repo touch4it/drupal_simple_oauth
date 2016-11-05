@@ -2,41 +2,49 @@
 
 namespace Drupal\simple_oauth\Repositories;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use Drupal\simple_oauth\Entities\ClientEntity;
 
 class ClientRepository implements ClientRepositoryInterface {
 
   /**
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Constructs a ClientRepository object.
+   */
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+    $this->entityTypeManager = $entity_type_manager;
+  }
+
+  /**
    * {@inheritdoc}
    */
-  public function getClientEntity($clientIdentifier, $grantType, $clientSecret = NULL, $mustValidateSecret = TRUE) {
-    $clients = [
-      'myawesomeapp' => [
-        'secret' => password_hash('abc123', PASSWORD_BCRYPT),
-        'name' => 'My Awesome App',
-        'redirect_uri' => 'http://foo/bar',
-        'is_confidential' => TRUE,
-      ],
-    ];
+  public function getClientEntity($client_identifier, $grant_type, $client_secret = NULL, $must_validate_secret = TRUE) {
+    $client_entity = $this->entityTypeManager
+      ->getStorage('oauth2_client')
+      ->load($client_identifier);
 
-    // Check if client is registered
-    if (array_key_exists($clientIdentifier, $clients) === FALSE) {
-      return;
+    // Check if the client is registered.
+    if (!$client_entity) {
+      return NULL;
     }
 
     if (
-      $mustValidateSecret === TRUE
-      && $clients[$clientIdentifier]['is_confidential'] === TRUE
-      && password_verify($clientSecret, $clients[$clientIdentifier]['secret']) === FALSE
+      $must_validate_secret === TRUE &&
+      $client_entity->get('is_confidential') == TRUE &&
+      password_verify($client_secret, $client_entity->get('secret')) === FALSE
     ) {
-      return;
+      return NULL;
     }
 
     $client = new ClientEntity();
-    $client->setIdentifier($clientIdentifier);
-    $client->setName($clients[$clientIdentifier]['name']);
-    $client->setRedirectUri($clients[$clientIdentifier]['redirect_uri']);
+    $client->setIdentifier($client_identifier);
+    $client->setName($client_entity->get('label'));
+    $client->setRedirectUri($client_entity->get('redirect_uri'));
 
     return $client;
   }

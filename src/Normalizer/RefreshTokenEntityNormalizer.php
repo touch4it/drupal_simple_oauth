@@ -21,7 +21,7 @@ class RefreshTokenEntityNormalizer extends NormalizerBase implements TokenEntity
     /** @var \League\OAuth2\Server\Entities\TokenInterface $token_entity */
     return [
       'value' => $token_entity->getIdentifier(),
-      'expire' => $token_entity->getExpiryDateTime()->format(\DateTime::ISO8601),
+      'expire' => $token_entity->getExpiryDateTime()->format('U'),
     ];
   }
 
