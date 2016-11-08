@@ -1,7 +1,7 @@
 services:
   simple_oauth.authentication.simple_oauth:
     class: Drupal\simple_oauth\Authentication\Provider\SimpleOauthAuthenticationProvider
-    arguments: ['@config.factory', '@entity_type.manager']
+    arguments: ['@simple_oauth.server.resource_server', '@entity_type.manager']
     tags:
       - { name: authentication_provider, provider_id: token_bearer, global: TRUE, priority: 35 }
   simple_oauth.page_cache_request_policy.disallow_oauth2_token_requests:
@@ -9,11 +9,6 @@ services:
     public: false
     tags:
       - { name: page_cache_request_policy }
-  cache_context.user.bearer_token:
-    class: Drupal\simple_oauth\Cache\Context\BearerTokenCacheContext
-    arguments: ['@request_stack']
-    tags:
-      - { name: cache.context }
 
   simple_oauth.normalizer.oauth2_token:
     class: Drupal\simple_oauth\Normalizer\TokenEntityNormalizer

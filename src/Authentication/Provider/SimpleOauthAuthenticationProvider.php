@@ -5,6 +5,8 @@ namespace Drupal\simple_oauth\Authentication\Provider;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\simple_oauth\Authentication\TokenAuthUser;
+use Drupal\simple_oauth\Server\ResourceServerInterface;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -13,15 +15,13 @@ use Symfony\Component\HttpFoundation\Request;
  * @package Drupal\simple_oauth\Authentication\Provider
  */
 class SimpleOauthAuthenticationProvider implements SimpleOauthAuthenticationProviderInterface {
+
   /**
-   * The config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   * @var \Drupal\simple_oauth\Server\ResourceServerInterface
    */
-  protected $configFactory;
+  protected $resourceServer;
+
   /**
-   * The entity manager.
-   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
@@ -29,73 +29,42 @@ class SimpleOauthAuthenticationProvider implements SimpleOauthAuthenticationProv
   /**
    * Constructs a HTTP basic authentication provider object.
    *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The config factory.
+   * @param \Drupal\simple_oauth\Server\ResourceServerInterface $resource_server
+   *   The resource server object.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity manager service.
+   *   The entity type manager service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager) {
-    $this->configFactory = $config_factory;
+  public function __construct(ResourceServerInterface $resource_server, EntityTypeManagerInterface $entity_type_manager) {
+    $this->resourceServer = $resource_server;
     $this->entityTypeManager = $entity_type_manager;
-  }
-
-  /**
-   * Checks whether suitable authentication credentials are on the request.
-   *
-   * @param \Symfony\Component\HttpFoundation\Request $request
-   *   The request object.
-   *
-   * @return bool
-   *   TRUE if authentication credentials suitable for this provider are on the
-   *   request, FALSE otherwise.
-   */
-  public function applies(Request $request) {
-    // Check for the presence of the token.
-    return (bool) $this::getTokenValue($request);
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function getTokenValue(Request $request) {
+  public function applies(Request $request) {
+    // Check for the presence of the token.
+    return $this->hasTokenValue($request);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function hasTokenValue(Request $request) {
     // Check the header. See: http://tools.ietf.org/html/rfc6750#section-2.1
     $auth_header = $request->headers->get('Authorization', '', TRUE);
-    $prefix = 'Bearer ';
-    if (strpos($auth_header, $prefix) === 0) {
-      return substr($auth_header, strlen($prefix));
-    }
-    // Form encoded parameter. See:
-    // http://tools.ietf.org/html/rfc6750#section-2.2
-    $ct_header = $request->headers->get('Content-Type', '', TRUE);
-    $is_get = $request->getMethod() == Request::METHOD_GET;
-    $token = $request->request->get('oauth2_token');
-    if (!$is_get && $ct_header == 'application/x-www-form-urlencoded' && $token) {
-      return $token;
-    }
-    // This module purposely refuses to implement
-    // http://tools.ietf.org/html/rfc6750#section-2.3 for security resons.
-    return NULL;
+
+    return (bool) trim(preg_replace('/^(?:\s+)?Bearer\s/', '', $auth_header));
   }
 
   /**
    * {@inheritdoc}
    */
   public function authenticate(Request $request) {
-    $token_storage = $this->entityTypeManager->getStorage('oauth2_token');
-    $ids = $token_storage
-      ->getQuery()
-      ->condition('value', $this::getTokenValue($request))
-      ->condition('expire', REQUEST_TIME, '>')
-      ->range(0, 1)
-      ->execute();
-    if (!empty($ids)) {
-      /* @var \Drupal\simple_oauth\Oauth2TokenInterface $token */
-      $token = $token_storage->load(reset($ids));
-      try {
-        return new TokenAuthUser($token);
-      }
-      catch (\Exception $e) {}
-    }
+    // Update the request with the OAuth information.
+    $request = $this->resourceServer->validateAuthenticatedRequest($request);
+
+    // TODO: Load the user and respond with the appropriate TokenAuthUser.
     return [];
   }
 

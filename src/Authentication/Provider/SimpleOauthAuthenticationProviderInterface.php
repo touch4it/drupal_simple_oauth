@@ -19,11 +19,9 @@ interface SimpleOauthAuthenticationProviderInterface extends AuthenticationProvi
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The request object.
    *
-   * @return string
-   *   The access token.
-   *
-   * @see http://tools.ietf.org/html/rfc6750
+   * @return bool
+   *   TRUE if there is an access token. FALSE otherwise.
    */
-  public static function getTokenValue(Request $request);
+  public static function hasTokenValue(Request $request);
 
 }
