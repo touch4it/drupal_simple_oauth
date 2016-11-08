@@ -32,7 +32,7 @@ services:
     class: Drupal\simple_oauth\Server\ResourceServer
     arguments:
       - '@simple_oauth.repositories.access_token'
-      - '@config.factory',
+      - '@config.factory'
       - '@psr7.http_message_factory'
       - '@psr7.http_foundation_factory'
   simple_oauth.repositories.client:
