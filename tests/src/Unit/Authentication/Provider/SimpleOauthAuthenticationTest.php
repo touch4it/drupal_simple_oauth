@@ -2,9 +2,9 @@
 
 namespace Drupal\Tests\simple_oauth\Unit\Authentication\Provider;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\simple_oauth\Authentication\Provider\SimpleOauthAuthenticationProvider;
+use Drupal\simple_oauth\Server\ResourceServerInterface;
 use Drupal\Tests\UnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -26,81 +26,55 @@ class SimpleOauthAuthenticationTest extends UnitTestCase {
   protected $provider;
 
   /**
-   * @covers ::getTokenValue
+   * {@inheritdoc}
+   */
+  protected function setUp() {
+    parent::setUp();
+
+    $resource_server = $this->prophesize(ResourceServerInterface::class);
+    $entity_type_manager = $this->prophesize(EntityTypeManagerInterface::class);
+    $this->provider = new SimpleOauthAuthenticationProvider(
+      $resource_server->reveal(),
+      $entity_type_manager->reveal()
+    );
+  }
+
+  /**
+   * @covers ::hasTokenValue
    * @covers ::applies
    *
    * @dataProvider getTokenValueProvider
    */
-  public function testGetTokenValue(Request $request, $token) {
-    $this->assertSame($token, $this->provider->getTokenValue($request));
+  public function testHasTokenValue(Request $request, $has_token) {
+    $this->assertSame($has_token, $this->provider->hasTokenValue($request));
   }
 
-  public function getTokenValueProvider() {
+  public function hasTokenValueProvider() {
     $data = [];
 
     // 1. Authentication header.
     $token = $this->getRandomGenerator()->name();
     $request = new Request();
     $request->headers->set('Authorization', 'Bearer ' . $token);
-    $data[] = [$request, $token];
+    $data[] = [$request, TRUE];
 
-    // 2. Authentication header. Fail: wrong token.
+    // 2. Authentication header. Trailing white spaces.
     $token = $this->getRandomGenerator()->name();
     $request = new Request();
-    $request->headers->set('Authorization', 'Bearer fail--' . $token);
-    $data[] = [$request, 'fail--' . $token];
+    $request->headers->set('Authorization', '  Bearer ' . $token);
+    $data[] = [$request, TRUE];
 
-    // 3. Authentication header. Fail: no token.
+    // 3. Authentication header. No white spaces.
     $token = $this->getRandomGenerator()->name();
     $request = new Request();
-    $data[] = [$request, NULL];
+    $request->headers->set('Authorization', 'Bearer' . $token);
+    $data[] = [$request, FALSE];
 
-    // 4. Form encoded parameter.
-    $token = $this->getRandomGenerator()->name();
+    // 4. Authentication header. Fail: no token.
     $request = new Request();
-    $request->setMethod(Request::METHOD_POST);
-    $request->headers->set('Content-Type', 'application/x-www-form-urlencoded');
-    $request->request->set('oauth2_token', $token);
-    $data[] = [$request, $token];
-
-    // 5. Form encoded parameter. Fail: missing content type.
-    $token = $this->getRandomGenerator()->name();
-    $request = new Request();
-    $request->setMethod(Request::METHOD_POST);
-    $request->request->set('oauth2_token', $token);
-    $data[] = [$request, NULL];
-
-    // 6. Form encoded parameter. Fail: missing token.
-    $request = new Request();
-    $request->setMethod(Request::METHOD_POST);
-    $request->headers->set('Content-Type', 'application/x-www-form-urlencoded');
-    $data[] = [$request, NULL];
-
-    // 7. Form encoded parameter. Fail: wrong method.
-    $token = $this->getRandomGenerator()->name();
-    $request = new Request();
-    $request->setMethod(Request::METHOD_GET);
-    $request->headers->set('Content-Type', 'application/x-www-form-urlencoded');
-    $request->request->set('oauth2_token', $token);
-    $data[] = [$request, NULL];
+    $data[] = [$request, FALSE];
 
     return $data;
   }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp();
-
-    $config_factory = $this->prophesize(ConfigFactoryInterface::class);
-    $entity_manager = $this->prophesize(EntityManagerInterface::class);
-    $this->provider = new SimpleOauthAuthenticationProvider(
-      $config_factory->reveal(),
-      $entity_manager->reveal()
-    );
-  }
-
-
 
 }
