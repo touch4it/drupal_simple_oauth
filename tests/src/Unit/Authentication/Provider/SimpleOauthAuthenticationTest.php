@@ -43,7 +43,7 @@ class SimpleOauthAuthenticationTest extends UnitTestCase {
    * @covers ::hasTokenValue
    * @covers ::applies
    *
-   * @dataProvider getTokenValueProvider
+   * @dataProvider hasTokenValueProvider
    */
   public function testHasTokenValue(Request $request, $has_token) {
     $this->assertSame($has_token, $this->provider->hasTokenValue($request));
