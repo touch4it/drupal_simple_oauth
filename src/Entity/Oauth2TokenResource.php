@@ -11,7 +11,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *   id = "oauth2_token_resource",
  *   label = @Translation("OAuth2 Token Resource"),
  *   handlers = {
- *     "list_builder" = "Drupal\simple_oauth\Oauth2TokenResourceListBuilder",
+ *     "list_builder" = "Drupal\simple_oauth\Oauth2TokenListBuilder",
  *     "form" = {
  *       "add" = "Drupal\simple_oauth\Entity\Form\Oauth2TokenResourceForm",
  *       "edit" = "Drupal\simple_oauth\Entity\Form\Oauth2TokenResourceForm",

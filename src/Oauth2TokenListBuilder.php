@@ -34,21 +34,30 @@ class Oauth2TokenListBuilder extends EntityListBuilder {
    */
   public function buildRow(EntityInterface $entity) {
     /* @var $entity \Drupal\simple_oauth\Entity\Oauth2Token */
-    $type = $entity->get('resource')->target_id == 'authentication' ? t('Refresh Token') : t('Access Token');
-    $row['type'] = $type;
-    $user = $entity->get('auth_user_id')->entity;
-    $row['user'] = Link::createFromRoute($user->label(), 'entity.user.canonical', array(
-      'user' => $user->id(),
-    ));
-    $owner = $entity->get('user_id')->entity;
-    $row['owner'] = Link::createFromRoute($owner->label(), 'entity.user.canonical', array(
-      'user' => $owner->id(),
-    ));
+    $row['resource'] = NULL;
+    $row['type'] = NULL;
+    if ($resource = $entity->get('resource')) {
+      $row['resource'] = $resource->entity->label();
+      $type = $resource->target_id == 'authentication' ? t('Refresh Token') : t('Access Token');
+      $row['type'] = $type;
+    }
+    $row['user'] = NULL;
+    if ($user = $entity->get('auth_user_id')) {
+      $row['user'] = Link::createFromRoute($user->entity->label(), 'entity.user.canonical', array(
+        'user' => $user->entity->id(),
+      ));
+    }
+    $row['owner'] = NULL;
+    if ($owner = $entity->get('user_id')) {
+      $row['owner'] = Link::createFromRoute($owner->entity->label(), 'entity.user.canonical', array(
+        'user' => $owner->entity->id(),
+      ));
+    }
     $row['id'] = $entity->id();
     $row['name'] = Link::createFromRoute($entity->label(), 'entity.oauth2_token.edit_form', array(
       'oauth2_token' => $entity->id(),
     ));
-    $row['resource'] = $entity->get('resource')->entity->label();
+    $row['resource'] = NULL;
 
     return $row + parent::buildRow($entity);
   }
