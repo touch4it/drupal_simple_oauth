@@ -31,6 +31,11 @@ entity.oauth2_token_resource.collection:
   route_name: entity.oauth2_token_resource.collection
   description: 'List Access Token Resource'
   base_route: oauth2_token.settings
+entity.oauth2_client.collection:
+  title: 'Clients'
+  route_name: entity.oauth2_client.collection
+  description: 'List Clients'
+  base_route: oauth2_token.settings
 
 user.oauth2_token.collection:
   title: 'OAuth2 Tokens'

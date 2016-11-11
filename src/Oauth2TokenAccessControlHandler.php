@@ -24,13 +24,13 @@ class Oauth2TokenAccessControlHandler extends EntityAccessControlHandler {
     }
     switch ($operation) {
       case 'view':
-        return AccessResult::allowedIfHasPermission($account, 'view own access token entities');
+        return AccessResult::allowedIfHasPermission($account, 'view own simple_oauth entities');
 
       case 'update':
-        return AccessResult::allowedIfHasPermission($account, 'edit own access token entities');
+        return AccessResult::allowedIfHasPermission($account, 'edit own simple_oauth entities');
 
       case 'delete':
-        return AccessResult::allowedIfHasPermission($account, 'delete own access token entities');
+        return AccessResult::allowedIfHasPermission($account, 'delete own simple_oauth entities');
     }
 
     return AccessResult::allowed();
@@ -40,7 +40,7 @@ class Oauth2TokenAccessControlHandler extends EntityAccessControlHandler {
    * {@inheritdoc}
    */
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
-    return AccessResult::allowedIfHasPermission($account, 'add access token entities');
+    return AccessResult::allowedIfHasPermission($account, 'add simple_oauth entities');
   }
 
 }

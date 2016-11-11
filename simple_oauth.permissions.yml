@@ -1,17 +1,17 @@
-add access token entities:
+add simple_oauth entities:
   title: 'Create new Access Token entities'
 
-administer access token entities:
+administer simple_oauth entities:
   title: 'Administer Access Token entities'
   description: 'Allow to access the administration form to configure Access Token entities.'
 
-delete own access token entities:
+delete own simple_oauth entities:
   title: 'Delete Access Token entities'
 
-edit own access token entities:
+edit own simple_oauth entities:
   title: 'Edit Access Token entities'
 
-view own access token entities:
+view own simple_oauth entities:
   title: 'View Access Token entities'
 
 refresh access token:

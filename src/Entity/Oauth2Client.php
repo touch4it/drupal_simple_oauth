@@ -11,7 +11,13 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *   id = "oauth2_client",
  *   label = @Translation("OAuth2 Client"),
  *   handlers = {
- *     "access" = "Drupal\simple_oauth\LockableConfigEntityAccessControlHandler"
+ *     "list_builder" = "Drupal\simple_oauth\Oauth2ClientListBuilder",
+ *     "form" = {
+ *       "add" = "Drupal\simple_oauth\Entity\Form\Oauth2ClientForm",
+ *       "edit" = "Drupal\simple_oauth\Entity\Form\Oauth2ClientForm",
+ *       "delete" = "Drupal\Core\Entity\EntityDeleteForm"
+ *     },
+ *     "access" = "Drupal\Core\Entity\EntityAccessControlHandler"
  *   },
  *   config_prefix = "oauth2_client",
  *   admin_permission = "administer site configuration",
@@ -21,7 +27,10 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "canonical" = "/admin/config/people/accounts/oauth2_client/{oauth2_client}",
+ *     "canonical" = "/admin/config/people/simple_oauth/oauth2_client/{oauth2_client}",
+ *     "edit-form" = "/admin/config/people/simple_oauth/oauth2_client/{oauth2_client}/edit",
+ *     "delete-form" = "/admin/config/people/simple_oauth/oauth2_client/{oauth2_client}/delete",
+ *     "collection" = "/admin/config/people/simple_oauth/clients"
  *   }
  * )
  */

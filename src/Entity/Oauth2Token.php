@@ -39,9 +39,9 @@ use Drupal\user\UserInterface;
  *   },
  *   bundle_entity_type = "oauth2_token_type",
  *   links = {
- *     "canonical" = "/admin/content/oauth2_token/{oauth2_token}",
- *     "edit-form" = "/admin/content/oauth2_token/{oauth2_token}/edit",
- *     "delete-form" = "/admin/content/oauth2_token/{oauth2_token}/delete"
+ *     "canonical" = "/admin/content/simple_oauth/{oauth2_token}",
+ *     "edit-form" = "/admin/content/simple_oauth/{oauth2_token}/edit",
+ *     "delete-form" = "/admin/content/simple_oauth/{oauth2_token}/delete"
  *   }
  * )
  */
@@ -129,7 +129,7 @@ class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
       ->setPropertyConstraints('target_id', [
-        'OwnOrAdmin' => ['permission' => 'administer access token entities'],
+        'OwnOrAdmin' => ['permission' => 'administer simple_oauth entities'],
       ]);
 
     $fields['resource'] = BaseFieldDefinition::create('entity_reference')
