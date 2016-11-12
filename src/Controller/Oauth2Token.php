@@ -6,6 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\simple_oauth\Server\AuthorizationServerFactoryInterface;
 use GuzzleHttp\Psr7\Response;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -67,7 +68,12 @@ class Oauth2Token extends ControllerBase {
     // Instantiate a new PSR-7 response object so the library can fill it.
     $response = new Response();
     // Respond to the incoming request and fill in the response.
-    $response = $auth_server->respondToAccessTokenRequest($psr7_request, $response);
+    try {
+      $response = $auth_server->respondToAccessTokenRequest($psr7_request, $response);
+    }
+    catch (OAuthServerException $exception) {
+      $response = $exception->generateHttpResponse($response);
+    }
     // Transform the PSR-7 response into an HTTP foundation response so Drupal
     // can process it.
     return $this->foundationFactory->createResponse($response);
