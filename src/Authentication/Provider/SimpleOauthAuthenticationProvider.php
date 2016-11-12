@@ -62,10 +62,20 @@ class SimpleOauthAuthenticationProvider implements SimpleOauthAuthenticationProv
    */
   public function authenticate(Request $request) {
     // Update the request with the OAuth information.
-    $request = $this->resourceServer->validateAuthenticatedRequest($request);
+    try {
+      $request = $this->resourceServer->validateAuthenticatedRequest($request);
+    }
+    catch (OAuthServerException $exception) {
+      // Procedural code here is hard to avoid.
+      watchdog_exception('simple_oauth', $exception);
+      return [];
+    }
 
-    // TODO: Load the user and respond with the appropriate TokenAuthUser.
-    return [];
+    if (!$uid = $request->get('oauth_user_id')) {
+      return [];
+    }
+
+    return $this->entityTypeManager->getStorage('user')->load($uid);
   }
 
 }
