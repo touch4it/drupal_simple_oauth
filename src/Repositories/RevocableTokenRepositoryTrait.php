@@ -48,7 +48,11 @@ trait RevocableTokenRepositoryTrait {
    * {@inheritdoc}
    */
   public function revoke($token_id) {
-    $token = $this->storage->load($token_id);
+    if (!$tokens = $this->storage->loadByProperties(['value' => $token_id])) {
+      return;
+    }
+    /** @var \Drupal\simple_oauth\Entity\Oauth2TokenInterface $token */
+    $token = reset($tokens)->isRevoked();
     $token->revoke();
     $token->save();
   }
@@ -57,7 +61,12 @@ trait RevocableTokenRepositoryTrait {
    * {@inheritdoc}
    */
   public function isRevoked($token_id) {
-    $token = $this->storage->load($token_id);
+    if (!$tokens = $this->storage->loadByProperties(['value' => $token_id])) {
+      return TRUE;
+    }
+    /** @var \Drupal\simple_oauth\Entity\Oauth2TokenInterface $token */
+    $token = reset($tokens);
+
     return $token->isRevoked();
   }
 

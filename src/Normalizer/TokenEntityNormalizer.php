@@ -31,6 +31,7 @@ class TokenEntityNormalizer extends NormalizerBase implements TokenEntityNormali
       'scope' => implode(' ', $scopes),
       'value' => $token_entity->getIdentifier(),
       'expire' => $token_entity->getExpiryDateTime()->format('U'),
+      'status' => TRUE,
     ];
   }
 

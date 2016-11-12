@@ -255,6 +255,13 @@ class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
+    $fields['status'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Publishing status'))
+      ->setDescription(t('A boolean indicating whether the token is available.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(TRUE)
+      ->setDefaultValue(TRUE);
+
     return $fields;
   }
 
@@ -317,6 +324,20 @@ class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
     // If the selected permission is not included in the list of permissions
     // for the resource attached to the token, then return FALSE.
     return $resource->id() == 'global' || in_array($permission, $token_permissions);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function revoke() {
+    $this->set('status', FALSE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isRevoked() {
+    return !$this->get('status')->value;
   }
 
 }

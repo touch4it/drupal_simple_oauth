@@ -33,5 +33,18 @@ interface Oauth2TokenInterface extends ContentEntityInterface, EntityChangedInte
    */
   public function hasPermission($permission);
 
+  /**
+   * Revoke a token.
+   */
+  public function revoke();
+
+  /**
+   * Check if the token was revoked.
+   *
+   * @return bool
+   *   TRUE if the token is revoked. FALSE otherwise.
+   */
+  public function isRevoked();
+
 
 }
