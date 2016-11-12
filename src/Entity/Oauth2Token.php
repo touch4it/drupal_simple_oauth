@@ -52,17 +52,6 @@ class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
   /**
    * {@inheritdoc}
    */
-  public static function preCreate(EntityStorageInterface $storage_controller, array &$values) {
-    parent::preCreate($storage_controller, $values);
-    $values += array(
-      'user_id' => \Drupal::currentUser()->id(),
-    );
-  }
-
-
-  /**
-   * {@inheritdoc}
-   */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
@@ -82,25 +71,6 @@ class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
       ->setRevisionable(FALSE)
       ->setReadOnly(TRUE)
       ->setSetting('target_type', 'oauth2_token_type');
-
-    $fields['user_id'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Creator'))
-      ->setDescription(t('The user ID of author of the Access Token entity.'))
-      ->setRevisionable(TRUE)
-      ->setSetting('target_type', 'user')
-      ->setSetting('handler', 'default')
-      ->setDefaultValueCallback('Drupal\node\Entity\Node::getCurrentUserId')
-      ->setTranslatable(TRUE)
-      ->setDisplayOptions('view', array(
-        'label' => 'inline',
-        'type' => 'author',
-        'weight' => 0,
-      ))
-      ->setDisplayOptions('form', array(
-        'type' => 'hidden',
-      ))
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
 
     $fields['auth_user_id'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('User'))
@@ -127,10 +97,7 @@ class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
         ),
       ))
       ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE)
-      ->setPropertyConstraints('target_id', [
-        'OwnOrAdmin' => ['permission' => 'administer simple_oauth entities'],
-      ]);
+      ->setDisplayConfigurable('view', TRUE);
 
     $fields['resource'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Resource'))
@@ -212,7 +179,6 @@ class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
         'text_processing' => 0,
       ))
       ->setRequired(TRUE)
-      ->setDefaultValue('')
       ->setDisplayOptions('view', array(
         'label' => 'inline',
         'type' => 'string',
@@ -240,7 +206,6 @@ class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
 
     $fields['expire'] = BaseFieldDefinition::create('timestamp')
       ->setLabel(t('Expire'))
-      ->setDefaultValueCallback(__CLASS__ . '::defaultExpiration')
       ->setDescription(t('The time when the token expires.'))
       ->setDisplayOptions('form', array(
         'type' => 'datetime_timestamp',
@@ -270,60 +235,6 @@ class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
    */
   public function getCreatedTime() {
     return $this->get('created')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getOwner() {
-    return $this->get('user_id')->entity;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getOwnerId() {
-    return $this->get('user_id')->target_id;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setOwnerId($uid) {
-    $this->set('user_id', $uid);
-
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setOwner(UserInterface $account) {
-    $this->set('user_id', $account->id());
-
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function defaultExpiration() {
-    // TODO: Use dependency injection to get the config factory.
-    $expiration = \Drupal::config('simple_oauth.settings')->get('expiration');
-
-    // TODO: Use dependency injection to get the datetime.time service.
-    return [\Drupal::time()->getRequestTime() + $expiration];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function hasPermission($permission) {
-    $resource = $this->get('resource')->entity;
-    $token_permissions = $resource->get('permissions') ?: [];
-    // If the selected permission is not included in the list of permissions
-    // for the resource attached to the token, then return FALSE.
-    return $resource->id() == 'global' || in_array($permission, $token_permissions);
   }
 
   /**
