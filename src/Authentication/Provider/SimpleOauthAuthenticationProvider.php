@@ -52,9 +52,9 @@ class SimpleOauthAuthenticationProvider implements SimpleOauthAuthenticationProv
    */
   public static function hasTokenValue(Request $request) {
     // Check the header. See: http://tools.ietf.org/html/rfc6750#section-2.1
-    $auth_header = $request->headers->get('Authorization', '', TRUE);
+    $auth_header = trim($request->headers->get('Authorization', '', TRUE));
 
-    return (bool) trim(preg_replace('/^(?:\s+)?Bearer\s/', '', $auth_header));
+    return strpos($auth_header, 'Bearer ') !== FALSE;
   }
 
   /**
@@ -68,6 +68,7 @@ class SimpleOauthAuthenticationProvider implements SimpleOauthAuthenticationProv
     catch (OAuthServerException $exception) {
       // Procedural code here is hard to avoid.
       watchdog_exception('simple_oauth', $exception);
+
       return [];
     }
 

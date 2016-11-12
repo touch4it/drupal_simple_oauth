@@ -67,7 +67,7 @@ class SimpleOauthAuthenticationTest extends UnitTestCase {
     // 3. Authentication header. No white spaces.
     $token = $this->getRandomGenerator()->name();
     $request = new Request();
-    $request->headers->set('Authorization', 'Bearer' . $token);
+    $request->headers->set('Authorization', 'Foo' . $token);
     $data[] = [$request, FALSE];
 
     // 4. Authentication header. Fail: no token.
