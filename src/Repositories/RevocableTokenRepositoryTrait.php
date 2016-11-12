@@ -52,7 +52,7 @@ trait RevocableTokenRepositoryTrait {
       return;
     }
     /** @var \Drupal\simple_oauth\Entity\Oauth2TokenInterface $token */
-    $token = reset($tokens)->isRevoked();
+    $token = reset($tokens);
     $token->revoke();
     $token->save();
   }
