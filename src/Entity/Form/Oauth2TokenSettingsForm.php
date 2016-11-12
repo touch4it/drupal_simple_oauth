@@ -38,8 +38,12 @@ class Oauth2TokenSettingsForm extends FormBase {
       $settings->set('expiration', $expiration);
       $save = TRUE;
     }
-    if ($refresh_extension = $form_state->getValue('refresh_extension')) {
-      $settings->set('refresh_extension', $refresh_extension);
+    if ($public_key_path = $form_state->getValue('public_key')) {
+      $settings->set('public_key', $public_key_path);
+      $save = TRUE;
+    }
+    if ($private_key_path = $form_state->getValue('private_key')) {
+      $settings->set('private_key', $private_key_path);
       $save = TRUE;
     }
     if ($save) {
@@ -65,17 +69,46 @@ class Oauth2TokenSettingsForm extends FormBase {
       '#description' => $this->t('The default value, in seconds, to be used as expiration time when creating new tokens. This value may be overridden in the token generation form.'),
       '#default_value' => $this->config('simple_oauth.settings')->get('expiration'),
     ];
-    $form['refresh_extension'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Refresh extension'),
-      '#description' => $this->t('The time a refresh token stays valid after the access token has expired.'),
-      '#default_value' => $this->config('simple_oauth.settings')->get('refresh_extension'),
+    $form['public_key'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Public Key'),
+      '#description' => $this->t('The path to the public key file.'),
+      '#default_value' => $this->config('simple_oauth.settings')->get('public_key'),
+      '#element_validate' => ['::validateExistingFile'],
+      '#required' => TRUE,
+    ];
+    $form['textfield'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Private Key'),
+      '#description' => $this->t('The path to the private key file.'),
+      '#default_value' => $this->config('simple_oauth.settings')->get('private_key'),
+      '#element_validate' => ['::validateExistingFile'],
+      '#required' => TRUE,
     ];
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Save'),
     ];
     return $form;
+  }
+
+  /**
+   * Validates if the file exists.
+   *
+   * @param array $element
+   *   The element being processed.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   * @param array $complete_form
+   *   The complete form structure.
+   */
+  public function validateExistingFile(&$element, FormStateInterface $form_state, &$complete_form) {
+    if (!empty($element['#value'])) {
+      $path = $element['#value'];
+      if (!file_exists($path)) {
+        $form_state->setError($element, $this->t('The %field file does not exist.', ['%field' => $element['#title']]));
+      }
+    }
   }
 
 }
