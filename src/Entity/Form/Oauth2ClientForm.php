@@ -2,12 +2,34 @@
 
 namespace Drupal\simple_oauth\Entity\Form;
 
-use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Site\Settings;
+use Drupal\Core\Password\PasswordInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class Oauth2ClientForm extends EntityForm  {
+
+  /**
+   * Password service.
+   *
+   * @var \Drupal\Core\Password\PasswordInterface
+   */
+  protected $password;
+
+  /**
+   * Oauth2ClientForm constructor.
+   */
+  public function __construct(PasswordInterface $password) {
+    $this->password = $password;
+  }
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static($container->get('password'));
+  }
 
   /**
    * {@inheritdoc}
@@ -68,8 +90,7 @@ class Oauth2ClientForm extends EntityForm  {
     // If the secret was changed, then digest it before saving. If not, then
     // leave it alone.
     if ($new_secret = $form_state->getValue('new_secret')) {
-      $secret = Crypt::hmacBase64($new_secret, Settings::getHashSalt());
-      $form_state->setValue('secret', $secret);
+      $form_state->setValue('secret', $this->password->hash($new_secret));
     }
     else {
       $secret = $this->getEntity()->get('secret');
