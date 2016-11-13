@@ -3,6 +3,7 @@
 namespace Drupal\simple_oauth\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\Core\Entity\EntityDescriptionInterface;
 
 /**
  * Defines the OAuth2 Client entity.
@@ -34,7 +35,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *   }
  * )
  */
-class Oauth2Client extends ConfigEntityBase implements Oauth2ClientInterface {
+class Oauth2Client extends ConfigEntityBase implements Oauth2ClientInterface, EntityDescriptionInterface {
 
   /**
    * The Access Client ID.
@@ -49,5 +50,69 @@ class Oauth2Client extends ConfigEntityBase implements Oauth2ClientInterface {
    * @var string
    */
   protected $label;
+
+  /**
+   * The Client description.
+   *
+   * @var string
+   */
+  protected $description = '';
+
+  /**
+   * Redirect URI.
+   *
+   * @var string
+   */
+  protected $redirectUri;
+
+  /**
+   * Is confidential?
+   *
+   * @var bool
+   */
+  protected $isConfidential;
+
+  /**
+   * Client secret hash
+   *
+   * @var string
+   */
+  protected $secret;
+
+  /**
+   * Default user UUID.
+   *
+   * @var string
+   */
+  protected $defaultUserUuid;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDescription() {
+    return $this->description;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setDescription($description) {
+    $this->description = $description;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDefaultUser() {
+    $users = [];
+    if ($user_uuid = $this->get('defaultUserUuid')) {
+      $users = $this->entityTypeManager()
+        ->getStorage('user')
+        ->loadByProperties(['uuid' => $user_uuid]);
+    }
+
+    return reset($users);
+  }
+
 
 }

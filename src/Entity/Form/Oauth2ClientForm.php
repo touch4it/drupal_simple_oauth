@@ -67,17 +67,27 @@ class Oauth2ClientForm extends EntityForm  {
       '#title' => $this->t('New Secret'),
       '#description' => $description,
     );
-    $form['redirect_uri'] = array(
+    $form['redirectUri'] = array(
       '#type' => 'url',
       '#title' => $this->t('Redirect URI'),
-      '#default_value' => $entity->get('redirect_uri'),
+      '#default_value' => $entity->get('redirectUri'),
       '#description' => $this->t('The URI to redirect upon success.'),
     );
-    $form['is_confidential'] = array(
+    $form['isConfidential'] = array(
       '#type' => 'checkbox',
       '#title' => $this->t('Is confidential?'),
-      '#default_value' => $entity->get('is_confidential'),
+      '#default_value' => $entity->get('isConfidential'),
       '#description' => $this->t('Indicates if the client secret needs to be checked.'),
+    );
+    $form['defaultUserUuid'] = array(
+      '#type' => 'textfield',
+      '#title' => $this->t('Default User UUID'),
+      '#default_value' => $entity->get('defaultUserUuid'),
+      '#description' => $this->t('This is the user that will be used for this
+      client. The default user is used when there is no other user specified in
+      the token request but the client ID and secret have been validated. It is
+      recommended to create a dedicated user for every client. If no user is
+      specified here, the anonyomus user will be used in its place.'),
     );
 
     return $form;

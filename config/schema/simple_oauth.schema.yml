@@ -49,16 +49,20 @@ simple_oauth.oauth2_client.*:
     label:
       type: label
       label: 'Label'
-    redirect_uri:
+    redirectUri:
       type: uri
       label: 'Redirect URI'
-    is_confidential:
+    isConfidential:
       type: boolean
       label: 'Is confidential?'
     secret:
       type: string
       label: 'Secret key'
       description: 'Stores a hash of the secret ID.'
+    defaultUserUuid:
+      type: string
+      label: 'Default user UUID'
+      description: 'The user this client will use if valid client credentials are used and no other user has been specified.'
 
 simple_oauth.oauth2_scope.*:
   type: config_entity

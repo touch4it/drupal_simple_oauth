@@ -42,7 +42,7 @@ class ClientRepository implements ClientRepositoryInterface {
 
     if (
       $must_validate_secret === TRUE &&
-      $client_entity->get('is_confidential') == TRUE &&
+      $client_entity->get('isConfidential') == TRUE &&
       $this->passwordChecker->check($client_secret, $client_entity->get('secret')) === FALSE
     ) {
       return NULL;
@@ -51,7 +51,7 @@ class ClientRepository implements ClientRepositoryInterface {
     $client = new ClientEntity();
     $client->setIdentifier($client_identifier);
     $client->setName($client_entity->get('label'));
-    $client->setRedirectUri($client_entity->get('redirect_uri'));
+    $client->setRedirectUri($client_entity->get('redirectUri'));
 
     return $client;
   }
