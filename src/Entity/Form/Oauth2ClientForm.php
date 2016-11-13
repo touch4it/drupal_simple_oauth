@@ -5,6 +5,7 @@ namespace Drupal\simple_oauth\Entity\Form;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Password\PasswordInterface;
+use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class Oauth2ClientForm extends EntityForm  {
@@ -62,7 +63,7 @@ class Oauth2ClientForm extends EntityForm  {
     $description = $this->t('Use this field to create a hash of the secret key. This module will never store your client key, only a hash of it. Current hash: "%hash".', [
       '%hash' => $entity->get('secret'),
     ]);
-    $form['new_secret'] = array(
+    $form['newSecret'] = array(
       '#type' => 'password',
       '#title' => $this->t('New Secret'),
       '#description' => $description,
@@ -79,15 +80,27 @@ class Oauth2ClientForm extends EntityForm  {
       '#default_value' => $entity->get('isConfidential'),
       '#description' => $this->t('Indicates if the client secret needs to be checked.'),
     );
+    $default_user = $entity->get('defaultUserUuid') ?
+      reset($this
+        ->entityTypeManager
+        ->getStorage('user')
+        ->loadByProperties([
+          'uuid' => $entity->get('defaultUserUuid'),
+        ])) :
+      NULL;
     $form['defaultUserUuid'] = array(
-      '#type' => 'textfield',
+      '#type' => 'entity_autocomplete',
+      '#target_type' => 'user',
       '#title' => $this->t('Default User UUID'),
-      '#default_value' => $entity->get('defaultUserUuid'),
+      '#default_value' => $default_user,
       '#description' => $this->t('This is the user that will be used for this
       client. The default user is used when there is no other user specified in
       the token request but the client ID and secret have been validated. It is
       recommended to create a dedicated user for every client. If no user is
       specified here, the anonyomus user will be used in its place.'),
+      // A comment can be made anonymous by leaving this field empty therefore
+      // there is no need to list them in the autocomplete.
+      '#selection_settings' => ['include_anonymous' => FALSE],
     );
 
     return $form;
@@ -99,12 +112,23 @@ class Oauth2ClientForm extends EntityForm  {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // If the secret was changed, then digest it before saving. If not, then
     // leave it alone.
-    if ($new_secret = $form_state->getValue('new_secret')) {
-      $form_state->setValue('secret', $this->password->hash($new_secret));
+    if ($newSecret = $form_state->getValue('newSecret')) {
+      $form_state->setValue('secret', $this->password->hash($newSecret));
     }
     else {
       $secret = $this->getEntity()->get('secret');
       $form_state->setValue('secret', $secret);
+    }
+    if (is_numeric($form_state->getValue('defaultUserUuid'))) {
+      $default_user = $this
+        ->entityTypeManager
+        ->getStorage('user')
+        ->load($form_state->getValue('defaultUserUuid'));
+      // Extract the UUID from the entity.
+      $form_state->setValue(
+        'defaultUserUuid',
+        $default_user->get('uuid')->value
+      );
     }
 
     parent::submitForm($form, $form_state);
