@@ -81,18 +81,18 @@ class Oauth2ClientForm extends EntityForm  {
       '#description' => $this->t('Indicates if the client secret needs to be checked.'),
     );
     $default_user = $entity->get('defaultUserUuid') ?
-      reset($this
+      $this
         ->entityTypeManager
         ->getStorage('user')
         ->loadByProperties([
           'uuid' => $entity->get('defaultUserUuid'),
-        ])) :
+        ]) :
       NULL;
     $form['defaultUserUuid'] = array(
       '#type' => 'entity_autocomplete',
       '#target_type' => 'user',
       '#title' => $this->t('Default User UUID'),
-      '#default_value' => $default_user,
+      '#default_value' => $default_user ? reset($default_user) : NULL,
       '#description' => $this->t('This is the user that will be used for this
       client. The default user is used when there is no other user specified in
       the token request but the client ID and secret have been validated. It is
