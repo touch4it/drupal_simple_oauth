@@ -80,7 +80,7 @@ simple_oauth.oauth2_scope.*:
 
 simple_oauth.settings:
   type: mapping
-  label: 'Token Auth Settings'
+  label: 'Simple OAuth Settings'
   mapping:
     expiration:
       type: integer

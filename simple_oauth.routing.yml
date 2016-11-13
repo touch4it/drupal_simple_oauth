@@ -55,7 +55,7 @@ oauth2_token.settings:
   path: '/admin/config/people/oauth2_token'
   defaults:
    _form: '\Drupal\simple_oauth\Entity\Form\Oauth2TokenSettingsForm'
-   _title: 'Token Auth Settings'
+   _title: 'Simple OAuth Settings'
   requirements:
     _permission: 'administer simple_oauth entities'
   options:
