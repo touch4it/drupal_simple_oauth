@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: global
-label: Global
-description: 'Tokens with access to this resource can get their requests authenticated with the corresponding Drupal user.'
-locked: true

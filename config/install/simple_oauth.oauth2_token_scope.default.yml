@@ -1,6 +1,0 @@
-langcode: en
-status: true
-id: default
-label: Default
-description: 'This is the default scope.'
-locked: true

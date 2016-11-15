@@ -4,6 +4,7 @@ namespace Drupal\simple_oauth\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Entity\EntityDescriptionInterface;
+use Drupal\user\UserInterface;
 
 /**
  * Defines the OAuth2 Client entity.
@@ -80,11 +81,24 @@ class Oauth2Client extends ConfigEntityBase implements Oauth2ClientInterface, En
   protected $secret;
 
   /**
-   * Default user UUID.
+   * Default user roles.
    *
-   * @var string
+   * @var string[]
    */
-  protected $defaultUserUuid;
+  protected $roles;
+
+  /**
+   * @var \Drupal\user\UserStorageInterface
+   */
+  protected $userStorage;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $values, $entity_type) {
+    parent::__construct($values, $entity_type);
+    $this->userStorage = $this->entityTypeManager()->getStorage('user');
+  }
 
   /**
    * {@inheritdoc}
@@ -104,14 +118,15 @@ class Oauth2Client extends ConfigEntityBase implements Oauth2ClientInterface, En
    * {@inheritdoc}
    */
   public function getDefaultUser() {
-    $users = [];
-    if ($user_uuid = $this->get('defaultUserUuid')) {
-      $users = $this->entityTypeManager()
-        ->getStorage('user')
-        ->loadByProperties(['uuid' => $user_uuid]);
-    }
-
-    return reset($users);
+    return $this->userStorage->create([
+      // We need to use something bigger than 0 so ->isAuthenticated() returns
+      // TRUE. On the other hand we don't want this ID to collide with any
+      // other existing user. Additionally we don't want this user to be
+      // persisted in the database.
+      'uid' => 0.5,
+      'name' => $this->id(),
+      'roles' => array_filter(array_values($this->get('roles'))),
+    ]);
   }
 
 

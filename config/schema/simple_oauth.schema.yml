@@ -59,10 +59,13 @@ simple_oauth.oauth2_client.*:
       type: string
       label: 'Secret key'
       description: 'Stores a hash of the secret ID.'
-    defaultUserUuid:
-      type: string
-      label: 'Default user UUID'
-      description: 'The user this client will use if valid client credentials are used and no other user has been specified.'
+    roles:
+      type: array
+      label: 'Roles for the Client'
+      description: 'These are the roles this application is entitiled to use.'
+      items:
+        type: string
+        label: Role
 
 simple_oauth.oauth2_scope.*:
   type: config_entity

@@ -5,6 +5,7 @@ namespace Drupal\simple_oauth\Entity\Form;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Password\PasswordInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -80,27 +81,26 @@ class Oauth2ClientForm extends EntityForm  {
       '#default_value' => $entity->get('isConfidential'),
       '#description' => $this->t('Indicates if the client secret needs to be checked.'),
     );
-    $default_user = $entity->get('defaultUserUuid') ?
-      $this
-        ->entityTypeManager
-        ->getStorage('user')
-        ->loadByProperties([
-          'uuid' => $entity->get('defaultUserUuid'),
-        ]) :
-      NULL;
-    $form['defaultUserUuid'] = array(
-      '#type' => 'entity_autocomplete',
-      '#target_type' => 'user',
-      '#title' => $this->t('Default User UUID'),
-      '#default_value' => $default_user ? reset($default_user) : NULL,
-      '#description' => $this->t('This is the user that will be used for this
-      client. The default user is used when there is no other user specified in
-      the token request but the client ID and secret have been validated. It is
-      recommended to create a dedicated user for every client. If no user is
-      specified here, the anonyomus user will be used in its place.'),
-      // A comment can be made anonymous by leaving this field empty therefore
-      // there is no need to list them in the autocomplete.
-      '#selection_settings' => ['include_anonymous' => FALSE],
+
+    // Load all the Role entities.
+    $role_storage = $this->entityTypeManager->getStorage('user_role');
+    $role_ids = $role_storage
+      ->getQuery()
+      ->condition('id', [AccountInterface::ANONYMOUS_ROLE, AccountInterface::AUTHENTICATED_ROLE], 'NOT IN')
+      ->execute();
+    $roles = $role_storage->loadMultiple($role_ids);
+    $options = array_map(function ($role) {
+      return $role->label();
+    }, $roles);
+    $form['roles'] = array(
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Roles'),
+      '#options' => $options,
+      '#default_value' => $entity->get('roles') ?: [],
+      '#description' => $this->t('When no user is identified from the client,
+      requests for this client will be considered as using these roles. It is
+      highly recommended to create a new role containing only the permissions
+      necessary to operate under those conditions.'),
     );
 
     return $form;
@@ -118,17 +118,6 @@ class Oauth2ClientForm extends EntityForm  {
     else {
       $secret = $this->getEntity()->get('secret');
       $form_state->setValue('secret', $secret);
-    }
-    if (is_numeric($form_state->getValue('defaultUserUuid'))) {
-      $default_user = $this
-        ->entityTypeManager
-        ->getStorage('user')
-        ->load($form_state->getValue('defaultUserUuid'));
-      // Extract the UUID from the entity.
-      $form_state->setValue(
-        'defaultUserUuid',
-        $default_user->get('uuid')->value
-      );
     }
 
     parent::submitForm($form, $form_state);
