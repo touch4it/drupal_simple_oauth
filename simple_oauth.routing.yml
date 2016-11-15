@@ -62,47 +62,6 @@ oauth2_token.settings:
     _admin_route: TRUE
   base_route: entity.user.admin_form
 
-# Oauth2TokenResource routing definition
-entity.oauth2_token_resource.collection:
-  path: '/admin/config/people/simple_oauth/oauth2_token_resource'
-  defaults:
-    _entity_list: 'oauth2_token_resource'
-    _title: 'Access Token Resource'
-  requirements:
-    _permission: 'administer simple_oauth entities'
-  options:
-    _admin_route: TRUE
-
-entity.oauth2_token_resource.add_form:
-  path: '/admin/config/people/simple_oauth/oauth2_token_resource/add'
-  defaults:
-    _entity_form: 'oauth2_token_resource.add'
-    _title: 'Add Access Token Resource'
-  requirements:
-    _permission: 'administer simple_oauth entities'
-  options:
-    _admin_route: TRUE
-
-entity.oauth2_token_resource.edit_form:
-  path: '/admin/config/people/simple_oauth/oauth2_token_resource/{oauth2_token_resource}'
-  defaults:
-    _entity_form: 'oauth2_token_resource.edit'
-    _title: 'Edit Access Token Resource'
-  requirements:
-    _permission: 'administer simple_oauth entities'
-  options:
-    _admin_route: TRUE
-
-entity.oauth2_token_resource.delete_form:
-  path: '/admin/config/people/simple_oauth/oauth2_token_resource/{oauth2_token_resource}/delete'
-  defaults:
-    _entity_form: 'oauth2_token_resource.delete'
-    _title: 'Delete Access Token Resource'
-  requirements:
-    _permission: 'administer simple_oauth entities'
-  options:
-    _admin_route: TRUE
-
 # Oauth2Client routing definition
 entity.oauth2_client.collection:
   path: '/admin/config/people/simple_oauth/oauth2_client'

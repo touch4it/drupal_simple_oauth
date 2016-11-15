@@ -25,12 +25,6 @@ entity.oauth2_token.delete_form:
   title: Delete
   weight: 10
 
-# Access Token Resource menu items definition
-entity.oauth2_token_resource.collection:
-  title: 'Resources'
-  route_name: entity.oauth2_token_resource.collection
-  description: 'List Access Token Resource'
-  base_route: oauth2_token.settings
 entity.oauth2_client.collection:
   title: 'Clients'
   route_name: entity.oauth2_client.collection

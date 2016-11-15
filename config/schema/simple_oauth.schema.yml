@@ -15,30 +15,6 @@ simple_oauth.oauth2_token.bundle.*:
       type: boolean
       label: 'Locked'
 
-simple_oauth.oauth2_token_resource.*:
-  type: config_entity
-  label: 'Access Token Resource config'
-  mapping:
-    id:
-      type: string
-      label: 'ID'
-    label:
-      type: label
-      label: 'Label'
-    description:
-      type: text
-      label: 'Description'
-    locked:
-      type: boolean
-      label: 'Locked'
-    permissions:
-      type: sequence
-      label: 'Permissions'
-      sequence:
-          type: string
-    uuid:
-      type: string
-
 simple_oauth.oauth2_client.*:
   type: config_entity
   label: 'Client config'
