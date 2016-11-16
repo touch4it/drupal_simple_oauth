@@ -2,7 +2,6 @@
 
 namespace Drupal\simple_oauth;
 
-use Drupal\Console\Command\TranslationTrait;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
 use Drupal\Core\Link;
@@ -14,8 +13,6 @@ use Drupal\user\RoleInterface;
  * @ingroup simple_oauth
  */
 class Oauth2TokenListBuilder extends EntityListBuilder {
-
-  use TranslationTrait;
 
   /**
    * {@inheritdoc}

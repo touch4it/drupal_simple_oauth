@@ -2,7 +2,6 @@
 
 namespace Drupal\simple_oauth;
 
-use Drupal\Console\Command\TranslationTrait;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
 use Drupal\Core\Link;
@@ -13,8 +12,6 @@ use Drupal\Core\Link;
  * @ingroup simple_oauth
  */
 class Oauth2ClientListBuilder extends EntityListBuilder {
-
-  use TranslationTrait;
 
   /**
    * {@inheritdoc}
