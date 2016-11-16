@@ -8,12 +8,8 @@ administer simple_oauth entities:
 delete own simple_oauth entities:
   title: 'Delete Access Token entities'
 
-edit own simple_oauth entities:
+update own simple_oauth entities:
   title: 'Edit Access Token entities'
 
 view own simple_oauth entities:
   title: 'View Access Token entities'
-
-refresh access token:
-  title: 'Refresh The Access Token'
-  description: 'This permission is only in application when making a request with a token for the authentication resource.'

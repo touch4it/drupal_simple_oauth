@@ -22,7 +22,7 @@ use Drupal\user\UserInterface;
  *     "access" = "Drupal\Core\Entity\EntityAccessControlHandler"
  *   },
  *   config_prefix = "oauth2_client",
- *   admin_permission = "administer site configuration",
+ *   admin_permission = "administer simple_oauth entities",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",

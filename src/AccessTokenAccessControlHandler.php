@@ -17,23 +17,20 @@ class AccessTokenAccessControlHandler extends EntityAccessControlHandler {
    * {@inheritdoc}
    */
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
-
+    if ($admin_permission = $this->entityType->getAdminPermission()) {
+      return AccessResult::allowedIfHasPermission($account, $admin_permission);
+    }
     // Permissions only apply to own entities.
-    if ($account->id() != $entity->get('auth_user_id')->target_id) {
-      return AccessResult::forbidden();
+    $is_owner = $account->id() == $entity->get('auth_user_id')->target_id;
+    $is_owner_access = AccessResult::allowedIf($is_owner)
+      ->addCacheableDependency($entity);
+    if (!in_array($operation, ['view', 'update', 'delete'])) {
+      return AccessResult::neutral();
     }
-    switch ($operation) {
-      case 'view':
-        return AccessResult::allowedIfHasPermission($account, 'view own access token entities');
-
-      case 'update':
-        return AccessResult::allowedIfHasPermission($account, 'edit own access token entities');
-
-      case 'delete':
-        return AccessResult::allowedIfHasPermission($account, 'delete own access token entities');
-    }
-
-    return AccessResult::allowed();
+    return $is_owner_access->andIf(AccessResult::allowedIfHasPermission(
+      $account,
+      sprintf('%s own simple_oauth entities', $operation)
+    ));
   }
 
   /**

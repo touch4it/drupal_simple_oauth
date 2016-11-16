@@ -20,7 +20,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "access" = "Drupal\simple_oauth\LockableConfigEntityAccessControlHandler"
  *   },
  *   config_prefix = "oauth2_scope",
- *   admin_permission = "administer site configuration",
+ *   admin_permission = "administer simple_oauth entities",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",

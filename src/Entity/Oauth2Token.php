@@ -27,7 +27,7 @@ use Drupal\user\UserInterface;
  *     "access" = "Drupal\simple_oauth\AccessTokenAccessControlHandler",
  *   },
  *   base_table = "oauth2_token",
- *   admin_permission = "administer Oauth2Token entity",
+ *   admin_permission = "administer simple_oauth entities",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "value",
