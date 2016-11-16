@@ -29,7 +29,6 @@ use Drupal\user\UserInterface;
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "canonical" = "/admin/config/people/simple_oauth/oauth2_client/{oauth2_client}",
  *     "edit-form" = "/admin/config/people/simple_oauth/oauth2_client/{oauth2_client}/edit",
  *     "delete-form" = "/admin/config/people/simple_oauth/oauth2_client/{oauth2_client}/delete",
  *     "collection" = "/admin/config/people/simple_oauth/clients"
