@@ -20,11 +20,8 @@ use Drupal\user\UserInterface;
  *   label = @Translation("OAuth2 token"),
  *   bundle_label = @Translation("Token type"),
  *   handlers = {
- *     "views_data" = "Drupal\simple_oauth\Entity\Oauth2TokenViewsData",
+ *     "list_builder" = "Drupal\simple_oauth\Oauth2TokenListBuilder",
  *     "form" = {
- *       "default" = "Drupal\simple_oauth\Entity\Form\Oauth2TokenForm",
- *       "add" = "Drupal\simple_oauth\Entity\Form\Oauth2TokenForm",
- *       "edit" = "Drupal\simple_oauth\Entity\Form\Oauth2TokenForm",
  *       "delete" = "Drupal\simple_oauth\Entity\Form\Oauth2TokenDeleteForm",
  *     },
  *     "access" = "Drupal\Core\Entity\EntityAccessControlHandler",
@@ -40,7 +37,6 @@ use Drupal\user\UserInterface;
  *   bundle_entity_type = "oauth2_token_type",
  *   links = {
  *     "canonical" = "/admin/content/simple_oauth/{oauth2_token}",
- *     "edit-form" = "/admin/content/simple_oauth/{oauth2_token}/edit",
  *     "delete-form" = "/admin/content/simple_oauth/{oauth2_token}/delete"
  *   }
  * )

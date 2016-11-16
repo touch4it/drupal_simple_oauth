@@ -12,6 +12,7 @@ use Drupal\Core\Url;
  * @ingroup simple_oauth
  */
 class Oauth2TokenDeleteForm extends ContentEntityConfirmFormBase {
+
   /**
    * {@inheritdoc}
    */
@@ -23,9 +24,7 @@ class Oauth2TokenDeleteForm extends ContentEntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return new Url('user.oauth2_token.collection', [
-      'user' => $this->getEntity()->get('auth_user_id')->target_id,
-    ]);
+    return $this->getEntity()->toUrl('canonical');
   }
 
   /**
@@ -50,7 +49,7 @@ class Oauth2TokenDeleteForm extends ContentEntityConfirmFormBase {
         )
     );
 
-    $form_state->setRedirectUrl($this->getCancelUrl());
+    $form_state->setRedirectUrl(new Url('entity.oauth2_token.collection'));
   }
 
 }

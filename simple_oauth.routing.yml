@@ -1,7 +1,7 @@
 
 # Oauth2Token routing definition
 entity.oauth2_token.canonical:
-  path: '/admin/content/simple_oauth/{oauth2_token}'
+  path: '/admin/config/people/simple_oauth/oauth2_token/{oauth2_token}'
   defaults:
     _entity_view: 'oauth2_token'
     _title: 'Access Token'
@@ -11,7 +11,7 @@ entity.oauth2_token.canonical:
     _admin_route: TRUE
 
 entity.oauth2_token.collection:
-  path: '/admin/content/oauth2_token'
+  path: '/admin/config/people/simple_oauth/oauth2_token'
   defaults:
     _entity_list: 'oauth2_token'
     _title: 'Access Token list'
@@ -21,28 +21,8 @@ entity.oauth2_token.collection:
     _admin_route: TRUE
   base_route: system.admin_content
 
-entity.oauth2_token.add_form:
-  path: '/admin/content/simple_oauth/add'
-  defaults:
-    _entity_form: oauth2_token.add
-    _title: 'Add Access Token'
-  requirements:
-    _permission: 'add simple_oauth entities'
-  options:
-    _admin_route: TRUE
-
-entity.oauth2_token.edit_form:
-  path: '/admin/content/simple_oauth/{oauth2_token}/edit'
-  defaults:
-    _entity_form: oauth2_token.edit
-    _title: 'Edit Access Token'
-  requirements:
-    _entity_access: 'oauth2_token.edit'
-  options:
-    _admin_route: TRUE
-
 entity.oauth2_token.delete_form:
-  path: '/admin/content/simple_oauth/{oauth2_token}/delete'
+  path: '/admin/config/people/simple_oauth/oauth2_token/{oauth2_token}/delete'
   defaults:
     _entity_form: oauth2_token.delete
     _title: 'Delete Access Token'
@@ -52,7 +32,7 @@ entity.oauth2_token.delete_form:
     _admin_route: TRUE
 
 oauth2_token.settings:
-  path: '/admin/config/people/oauth2_token'
+  path: '/admin/config/people/simple_oauth'
   defaults:
    _form: '\Drupal\simple_oauth\Entity\Form\Oauth2TokenSettingsForm'
    _title: 'Simple OAuth Settings'
@@ -102,14 +82,6 @@ entity.oauth2_client.delete_form:
     _permission: 'administer simple_oauth entities'
   options:
     _admin_route: TRUE
-
-user.oauth2_token.collection:
-  path: '/user/{user}/oauth2-tokens'
-  defaults:
-    _controller: 'Drupal\simple_oauth\Controller\Oauth2TokenUserList::tokenList'
-    _title: 'OAuth2 Tokens'
-  requirements:
-    _permission: 'view own simple_oauth entities'
 
 oauth2_token.refresh:
   path: '/oauth/token'

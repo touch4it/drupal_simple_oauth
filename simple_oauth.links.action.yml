@@ -1,11 +1,3 @@
-entity.oauth2_token.add_form:
-  route_name: entity.oauth2_token.add_form
-  title: 'Add Access Token'
-  appears_on:
-    - entity.oauth2_token.collection
-    - entity.oauth2_token.canonical
-    - user.oauth2_token.collection
-
 entity.oauth2_client.add_form:
   route_name: 'entity.oauth2_client.add_form'
   title: 'Add Client'

@@ -1,5 +1,0 @@
-drupal.oauth2_token:
-  version: '1.0'
-  css:
-    component:
-      css/oauth2_token.css: {}
