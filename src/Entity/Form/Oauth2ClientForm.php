@@ -54,7 +54,7 @@ class Oauth2ClientForm extends EntityForm  {
       '#description' => $this->t('A unique name for this block instance. Must be alpha-numeric and underscore separated.'),
       '#default_value' => $entity->id(),
       '#machine_name' => array(
-        'exists' => '\Drupal\simple_oauth\Entity\Oauth2TokenResource::load',
+        'exists' => '\Drupal\simple_oauth\Entity\Oauth2Client::load',
         'replace_pattern' => '[^a-z0-9_.]+',
         'source' => array('label'),
       ),
@@ -118,6 +118,9 @@ class Oauth2ClientForm extends EntityForm  {
     else {
       $secret = $this->getEntity()->get('secret');
       $form_state->setValue('secret', $secret);
+    }
+    if ($newSecret = $form_state->getValue('roles')) {
+      $form_state->setValue('roles', array_filter(array_values($form_state->getValue('roles'))));
     }
 
     parent::submitForm($form, $form_state);
