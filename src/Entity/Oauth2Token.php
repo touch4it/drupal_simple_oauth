@@ -27,7 +27,7 @@ use Drupal\user\UserInterface;
  *       "edit" = "Drupal\simple_oauth\Entity\Form\Oauth2TokenForm",
  *       "delete" = "Drupal\simple_oauth\Entity\Form\Oauth2TokenDeleteForm",
  *     },
- *     "access" = "Drupal\simple_oauth\Oauth2TokenAccessControlHandler",
+ *     "access" = "Drupal\Core\Entity\EntityAccessControlHandler",
  *   },
  *   base_table = "oauth2_token",
  *   admin_permission = "administer Oauth2Token entity",
