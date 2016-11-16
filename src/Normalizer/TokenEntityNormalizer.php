@@ -22,13 +22,13 @@ class TokenEntityNormalizer extends NormalizerBase implements TokenEntityNormali
 
     $scopes = array_map(function ($scope_entity) {
       /** @var \League\OAuth2\Server\Entities\ScopeEntityInterface $scope_entity */
-      return $scope_entity->getIdentifier();
+      return ['target_id' => $scope_entity->getIdentifier()];
     }, $token_entity->getScopes());
 
     return [
-      'auth_user_id' => $token_entity->getUserIdentifier(),
-      'client' => $token_entity->getClient()->getIdentifier(),
-      'scope' => implode(' ', $scopes),
+      'auth_user_id' => ['target_id' => $token_entity->getUserIdentifier()],
+      'client' => ['target_id' => $token_entity->getClient()->getIdentifier()],
+      'scopes' => $scopes,
       'value' => $token_entity->getIdentifier(),
       'expire' => $token_entity->getExpiryDateTime()->format('U'),
       'status' => TRUE,

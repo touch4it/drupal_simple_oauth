@@ -3,6 +3,7 @@
 namespace Drupal\simple_oauth\Authentication\Provider;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\simple_oauth\Authentication\TokenAuthUser;
 use Drupal\simple_oauth\Server\ResourceServerInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,38 +71,11 @@ class SimpleOauthAuthenticationProvider implements SimpleOauthAuthenticationProv
       return NULL;
     }
 
-    if (!$uid = $request->get('oauth_user_id')) {
-      // No user could be found, but the client was successfully validated,
-      // therefore the request is entitled to the default user for that client.
-      return $this->getClientDefaultUser($request);
-    }
-
-    return $this->entityTypeManager->getStorage('user')->load($uid);
-  }
-
-  /**
-   * Get the default user associated with a client.
-   *
-   * @param \Symfony\Component\HttpFoundation\Request $client_identifier
-   *   The OAuth processed request.
-   *
-   * @return \Drupal\user\UserInterface|array
-   *   The default user associated to the client entity or an empty array if
-   *   none could be found.
-   */
-  protected function getClientDefaultUser(Request $request) {
-    if (!$client_identifier = $request->get('oauth_client_id')) {
-      return NULL;
-    }
-    // Try to get the Client entity and load the default user from it.
-    /* @var \Drupal\simple_oauth\Entity\Oauth2ClientInterface $client_entity */
-    $client_entity = $this->entityTypeManager
-      ->getStorage('oauth2_client')
-      ->load($client_identifier);
-
-    return $client_entity ?
-      $client_entity->getDefaultUser() :
-      NULL;
+    $tokens = $this->entityTypeManager->getStorage('oauth2_token')->loadByProperties([
+      'value' => $request->get('oauth_access_token_id'),
+    ]);
+    $token = reset($tokens);
+    return new TokenAuthUser($token);
   }
 
 }

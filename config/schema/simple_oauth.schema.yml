@@ -43,20 +43,6 @@ simple_oauth.oauth2_client.*:
         type: string
         label: Role
 
-simple_oauth.oauth2_scope.*:
-  type: config_entity
-  label: 'Client config'
-  mapping:
-    id:
-      type: string
-      label: 'ID'
-    label:
-      type: label
-      label: 'Label'
-    locked:
-      type: boolean
-      label: 'Locked'
-
 simple_oauth.settings:
   type: mapping
   label: 'Simple OAuth Settings'

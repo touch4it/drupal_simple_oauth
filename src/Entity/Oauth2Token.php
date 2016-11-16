@@ -115,11 +115,11 @@ class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
         'weight' => 2,
       ));
 
-    $fields['scope'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Scope'))
-      ->setDescription(t('The scope for this Access Token.'))
+    $fields['scopes'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Scopes'))
+      ->setDescription(t('The scopes for this Access Token. OAuth2 scopes are implemented as Drupal roles.'))
       ->setRevisionable(TRUE)
-      ->setSetting('target_type', 'oauth2_scope')
+      ->setSetting('target_type', 'user_role')
       ->setSetting('handler', 'default')
       ->setDefaultValue('default')
       ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
