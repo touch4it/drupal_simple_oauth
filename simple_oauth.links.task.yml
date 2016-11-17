@@ -25,9 +25,3 @@ entity.oauth2_client.collection:
   route_name: entity.oauth2_client.collection
   description: 'List Clients'
   base_route: oauth2_token.settings
-
-user.oauth2_token.collection:
-  title: 'OAuth2 Tokens'
-  route_name: user.oauth2_token.collection
-  description: 'List Access Tokens for the current user'
-  base_route: entity.user.canonical
