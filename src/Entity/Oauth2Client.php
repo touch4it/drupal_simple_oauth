@@ -22,6 +22,9 @@ use Drupal\user\UserInterface;
  *   handlers = {
  *     "list_builder" = "Drupal\simple_oauth\Oauth2ClientListBuilder",
  *     "form" = {
+ *       "default" = "Drupal\simple_oauth\Entity\Form\Oauth2ClientForm",
+ *       "add" = "Drupal\simple_oauth\Entity\Form\Oauth2ClientForm",
+ *       "edit" = "Drupal\simple_oauth\Entity\Form\Oauth2ClientForm",
  *       "delete" = "Drupal\simple_oauth\Entity\Form\Oauth2ClientDeleteForm",
  *     },
  *     "access" = "Drupal\simple_oauth\AccessTokenAccessControlHandler",
@@ -35,7 +38,8 @@ use Drupal\user\UserInterface;
  *   },
  *   links = {
  *     "canonical" = "/admin/content/simple_oauth/{oauth2_client}",
- *     "edit-form" = "/admin/content/simple_oauth/{oauth2_client}/edit",
+ *     "add-form" = "/admin/content/simple_oauth/{oauth2_client}/add",
+ *     "edit-form" = "/admin/content/simple_oauth/{oauth2_client}",
  *     "delete-form" = "/admin/content/simple_oauth/{oauth2_client}/delete"
  *   }
  * )
@@ -73,20 +77,14 @@ class Oauth2Client extends ContentEntityBase implements Oauth2ClientInterface {
       ->setSetting('target_type', 'user')
       ->setDefaultValueCallback('Drupal\simple_oauth\Entity\Oauth2Client::getCurrentUserId')
       ->setTranslatable(TRUE)
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'author',
         'weight' => 0,
-      ))
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 5,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => '60',
-          'placeholder' => '',
-        ),
-      ))
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'hidden',
+      ])
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['label'] = BaseFieldDefinition::create('string')
@@ -95,18 +93,18 @@ class Oauth2Client extends ContentEntityBase implements Oauth2ClientInterface {
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setTranslatable(TRUE)
-      ->setSettings(array(
+      ->setSettings([
         'max_length' => 128,
         'text_processing' => 0,
-      ))
-      ->setDisplayOptions('view', array(
+      ])
+      ->setDisplayOptions('view', [
         'label' => 'inline',
         'type' => 'timestamp',
-        'weight' => 4,
-      ))
-      ->setDisplayOptions('form', array(
-        'weight' => 2,
-      ));
+        'weight' => 0,
+      ])
+      ->setDisplayOptions('form', [
+        'weight' => 0,
+      ]);
 
     $fields['secret'] = BaseFieldDefinition::create('password')
       ->setLabel(new TranslatableMarkup('Secret'))
@@ -115,11 +113,14 @@ class Oauth2Client extends ContentEntityBase implements Oauth2ClientInterface {
     $fields['confidential'] = BaseFieldDefinition::create('boolean')
       ->setLabel(new TranslatableMarkup('Is Confidential?'))
       ->setDescription(new TranslatableMarkup('A boolean indicating whether the client secret needs to be validated or not.'))
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'inline',
         'type' => 'boolean',
-        'weight' => 8,
-      ))
+        'weight' => 3,
+      ])
+      ->setDisplayOptions('form', [
+        'weight' => 3,
+      ])
       ->setRevisionable(TRUE)
       ->setTranslatable(TRUE)
       ->setDefaultValue(TRUE);
@@ -127,10 +128,13 @@ class Oauth2Client extends ContentEntityBase implements Oauth2ClientInterface {
     $fields['redirect'] = BaseFieldDefinition::create('uri')
       ->setLabel(new TranslatableMarkup('Redirect URI'))
       ->setDescription(new TranslatableMarkup('The URI this client will redirect to when needed.'))
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'inline',
         'weight' => 4,
-      ))
+      ])
+      ->setDisplayOptions('form', [
+        'weight' => 4,
+      ])
       ->setDisplayConfigurable('view', TRUE)
       ->setTranslatable(TRUE)
       // URIs are not length limited by RFC 2616, but we can only store 255
@@ -144,22 +148,22 @@ class Oauth2Client extends ContentEntityBase implements Oauth2ClientInterface {
       ->setSetting('target_type', 'user')
       ->setSetting('handler', 'default')
       ->setTranslatable(FALSE)
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'inline',
         'type' => 'entity_reference_label',
         'weight' => 1,
-      ))
+      ])
       ->setCardinality(1)
-      ->setDisplayOptions('form', array(
+      ->setDisplayOptions('form', [
         'type' => 'entity_reference_autocomplete',
         'weight' => 0,
-        'settings' => array(
+        'settings' => [
           'match_operator' => 'CONTAINS',
           'size' => '60',
           'autocomplete_type' => 'tags',
           'placeholder' => '',
-        ),
-      ));
+        ],
+      ]);
 
     $fields['roles'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(new TranslatableMarkup('Scopes'))
@@ -169,21 +173,15 @@ class Oauth2Client extends ContentEntityBase implements Oauth2ClientInterface {
       ->setSetting('handler', 'default')
       ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
       ->setTranslatable(FALSE)
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'inline',
         'type' => 'entity_reference_label',
-        'weight' => 3,
-      ))
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete_tags',
-        'weight' => 3,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => '60',
-          'autocomplete_type' => 'tags',
-          'placeholder' => '',
-        ),
-      ));
+        'weight' => 5,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'options_buttons',
+        'weight' => 5,
+      ]);
 
     return $fields;
   }
@@ -244,7 +242,7 @@ class Oauth2Client extends ContentEntityBase implements Oauth2ClientInterface {
    *   An array of default values.
    */
   public static function getCurrentUserId() {
-    return array(\Drupal::currentUser()->id());
+    return [\Drupal::currentUser()->id()];
   }
 
 }
