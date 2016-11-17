@@ -2,20 +2,33 @@
 
 namespace Drupal\simple_oauth\Entity;
 
-use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\user\EntityOwnerInterface;
 
 /**
- * Provides an interface for defining Access Client entities.
+ * Provides an interface for defining Access Token entities.
+ *
+ * @ingroup simple_oauth
  */
-interface Oauth2ClientInterface extends ConfigEntityInterface  {
+interface Oauth2ClientInterface extends ContentEntityInterface, EntityOwnerInterface {
 
   /**
-   * Get the default user associated with a client.
+   * Returns the hashed secret.
    *
-   * @return \Drupal\user\UserInterface|array
-   *   The default user associated to the client entity or an empty array if
-   *   none could be found.
+   * @return string
+   *   The secret password.
    */
-  public function getDefaultUser();
+  public function getSecret();
+
+  /**
+   * Sets the client secret.
+   *
+   * @param string $secret
+   *   The new unhashed secret.
+   *
+   * @return \Drupal\simple_oauth\Entity\Oauth2ClientInterface
+   *   The called client entity.
+   */
+  public function setSecret($secret);
 
 }
