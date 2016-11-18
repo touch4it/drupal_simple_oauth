@@ -12,6 +12,7 @@ services:
 
   simple_oauth.normalizer.oauth2_token:
     class: Drupal\simple_oauth\Normalizer\TokenEntityNormalizer
+    arguments: ['@entity_type.manager']
     tags:
       - { name: normalizer, priority: 21 }
   simple_oauth.normalizer.oauth2_refresh_token:

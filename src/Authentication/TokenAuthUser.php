@@ -49,6 +49,7 @@ class TokenAuthUser extends AccountProxy implements TokenAuthUserInterface {
    */
   public function __construct(Oauth2TokenInterface $token) {
     if (!$this->account = $token->get('auth_user_id')->entity) {
+      /** @var \Drupal\simple_oauth\Entity\Oauth2ClientInterface $client */
       if ($client = $token->get('client')->entity) {
         $this->account = $client->getDefaultUser();
       }

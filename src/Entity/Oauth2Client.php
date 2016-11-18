@@ -221,6 +221,22 @@ class Oauth2Client extends ContentEntityBase implements Oauth2ClientInterface {
   /**
    * {@inheritdoc}
    */
+  public function getDefaultUser() {
+    return $this->get('user_id')->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setDefaultUser(UserInterface $account) {
+    $this->set('user_id', $account->id());
+
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getSecret() {
     return $this->get('secret')->value;
   }
