@@ -41,11 +41,11 @@ class TokenEntityNormalizer extends NormalizerBase implements TokenEntityNormali
 
     /** @var \Drupal\simple_oauth\Entities\ClientEntityInterface $client */
     $client = $token_entity->getClient();
-    $client_entity = $client->getEntity();
+    $client_drupal_entity = $client->getDrupalEntity();
 
     return [
       'auth_user_id' => ['target_id' => $token_entity->getUserIdentifier()],
-      'client' => ['target_id' => $client_entity->id()],
+      'client' => ['target_id' => $client_drupal_entity->id()],
       'scopes' => $scopes,
       'value' => $token_entity->getIdentifier(),
       'expire' => $token_entity->getExpiryDateTime()->format('U'),

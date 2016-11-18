@@ -83,7 +83,7 @@ class Oauth2Token extends ControllerBase {
         /** @var \Drupal\simple_oauth\Entities\ClientEntityInterface $client */
         $client = $auth_request->getClient();
         $user->setIdentifier($client
-          ->getEntity()
+          ->getDrupalEntity()
           ->getDefaultUser()
           ->id());
         $auth_request->setUser($user);

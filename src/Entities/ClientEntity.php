@@ -47,7 +47,7 @@ class ClientEntity implements ClientEntityInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEntity() {
+  public function getDrupalEntity() {
     return $this->entity;
   }
 

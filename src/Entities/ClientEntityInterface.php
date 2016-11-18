@@ -29,6 +29,6 @@ interface ClientEntityInterface extends LeagueClientEntityInterface {
    * @return \Drupal\simple_oauth\Entity\Oauth2ClientInterface
    *   The Drupal entity.
    */
-  public function getEntity();
+  public function getDrupalEntity();
 
 }
