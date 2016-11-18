@@ -55,7 +55,7 @@ class Oauth2TokenSettingsForm extends FormBase {
     $form['expiration'] = [
       '#type' => 'number',
       '#title' => $this->t('Expiration time'),
-      '#description' => $this->t('The default value, in seconds, to be used as expiration time when creating new tokens. This value may be overridden in the token generation form.'),
+      '#description' => $this->t('The default value, in seconds, to be used as expiration time when creating new tokens.'),
       '#default_value' => $this->config('simple_oauth.settings')->get('expiration'),
     ];
     $form['use_implicit'] = [
