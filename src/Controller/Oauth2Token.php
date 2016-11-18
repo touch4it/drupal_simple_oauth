@@ -4,6 +4,7 @@ namespace Drupal\simple_oauth\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\simple_oauth\Entities\UserEntity;
 use Drupal\simple_oauth\Server\AuthorizationServerFactoryInterface;
 use GuzzleHttp\Psr7\Response;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -62,14 +63,37 @@ class Oauth2Token extends ControllerBase {
     // OAuth library expects a PSR-7 request.
     $psr7_request = $this->messageFactory->createRequest($request);
     // Extract the grant type from the request body.
-    $grant_type_id = $request->get('grant_type');
+    $grant_type_id = $request->get('grant_type') ?: 'implicit';
     // Get the auth server object from that uses the Leage library.
     $auth_server = $this->authServerFactory->createInstance($grant_type_id);
     // Instantiate a new PSR-7 response object so the library can fill it.
     $response = new Response();
-    // Respond to the incoming request and fill in the response.
     try {
-      $response = $auth_server->respondToAccessTokenRequest($psr7_request, $response);
+      // The implicit grant is a bit different.
+      if ($grant_type_id != 'implicit') {
+        // Respond to the incoming request and fill in the response.
+        $response = $auth_server->respondToAccessTokenRequest($psr7_request, $response);
+      }
+      else {
+        // Validate the HTTP request and return an AuthorizationRequest object.
+        // The auth request object can be serialized into a user's session
+        $auth_request = $auth_server->validateAuthorizationRequest($psr7_request);
+        // Once the user has logged in set the user on the AuthorizationRequest
+        $user = new UserEntity();
+        /** @var \Drupal\simple_oauth\Entities\ClientEntityInterface $client */
+        $client = $auth_request->getClient();
+        $user->setIdentifier($client
+          ->getEntity()
+          ->getDefaultUser()
+          ->id());
+        $auth_request->setUser($user);
+        // Once the user has approved or denied the client update the status
+        // (true = approved, false = denied)
+        $auth_request->setAuthorizationApproved(TRUE);
+
+        // Return the HTTP redirect response
+        $response = $auth_server->completeAuthorizationRequest($auth_request, $response);
+      }
     }
     catch (OAuthServerException $exception) {
       $response = $exception->generateHttpResponse($response);

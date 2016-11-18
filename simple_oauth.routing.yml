@@ -87,6 +87,6 @@ oauth2_token.refresh:
   path: '/oauth/token'
   defaults:
     _controller: 'Drupal\simple_oauth\Controller\Oauth2Token::token'
-  methods: [POST]
+  methods: [GET, POST]
   requirements:
     _permission: 'access content'

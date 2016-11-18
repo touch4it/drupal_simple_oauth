@@ -39,10 +39,9 @@ class TokenEntityNormalizer extends NormalizerBase implements TokenEntityNormali
       return ['target_id' => $scope_entity->getIdentifier()];
     }, $token_entity->getScopes());
 
-    $client_entities = $this->entityTypeManager->getStorage('oauth2_client')->loadByProperties([
-      'uuid' => $token_entity->getClient()->getIdentifier(),
-    ]);
-    $client_entity = reset($client_entities);
+    /** @var \Drupal\simple_oauth\Entities\ClientEntityInterface $client */
+    $client = $token_entity->getClient();
+    $client_entity = $client->getEntity();
 
     return [
       'auth_user_id' => ['target_id' => $token_entity->getUserIdentifier()],

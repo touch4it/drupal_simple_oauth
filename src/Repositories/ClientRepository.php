@@ -49,14 +49,7 @@ class ClientRepository implements ClientRepositoryInterface {
       return NULL;
     }
 
-    $client = new ClientEntity();
-    $client->setIdentifier($client_identifier);
-    $client->setName($client_entity->get('label')->value);
-    if ($uri = $client_entity->get('redirect')) {
-      $client->setRedirectUri($uri->value);
-    }
-
-    return $client;
+    return new ClientEntity($client_entity);
   }
 
 }
