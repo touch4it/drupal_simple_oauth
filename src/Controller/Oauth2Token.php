@@ -2,6 +2,7 @@
 
 namespace Drupal\simple_oauth\Controller;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\simple_oauth\Entities\UserEntity;
@@ -31,6 +32,11 @@ class Oauth2Token extends ControllerBase {
   protected $authServerFactory;
 
   /**
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
    * Constructs a CommentController object.
    *
    * @param AccountInterface $current_user
@@ -38,10 +44,11 @@ class Oauth2Token extends ControllerBase {
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager service.
    */
-  public function __construct(HttpMessageFactoryInterface $message_factory, HttpFoundationFactoryInterface $foundation_factory, AuthorizationServerFactoryInterface $auth_server_factory) {
+  public function __construct(HttpMessageFactoryInterface $message_factory, HttpFoundationFactoryInterface $foundation_factory, AuthorizationServerFactoryInterface $auth_server_factory, ConfigFactoryInterface $config_factory) {
     $this->messageFactory = $message_factory;
     $this->foundationFactory = $foundation_factory;
     $this->authServerFactory = $auth_server_factory;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -51,7 +58,8 @@ class Oauth2Token extends ControllerBase {
     return new static(
       $container->get('psr7.http_message_factory'),
       $container->get('psr7.http_foundation_factory'),
-      $container->get('simple_oauth.server.authorization_server.factory')
+      $container->get('simple_oauth.server.authorization_server.factory'),
+      $container->get('config.factory')
     );
   }
 
@@ -75,6 +83,10 @@ class Oauth2Token extends ControllerBase {
         $response = $auth_server->respondToAccessTokenRequest($psr7_request, $response);
       }
       else {
+        if (!$this->configFactory->get('simple_oauth.settings')->get('use_implicit')) {
+          $translated_hint = $this->t('Enable the use of the implicit grant in the Drupal module configuration form.');
+          throw OAuthServerException::invalidGrant($translated_hint);
+        }
         // Validate the HTTP request and return an AuthorizationRequest object.
         // The auth request object can be serialized into a user's session
         $auth_request = $auth_server->validateAuthorizationRequest($psr7_request);

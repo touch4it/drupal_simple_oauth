@@ -23,6 +23,10 @@ simple_oauth.settings:
       type: integer
       label: 'Expiration Time'
       description: 'The default period in seconds while a token is valid'
+    use_implicit:
+      type: integer
+      label: 'Enable the implicit grant?'
+      description: 'Only use the implicit grant if you understand the security implications of using it.'
     public_key:
       type: path
       label: 'Public Key'

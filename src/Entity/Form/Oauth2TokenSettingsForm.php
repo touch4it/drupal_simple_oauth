@@ -32,23 +32,12 @@ class Oauth2TokenSettingsForm extends FormBase {
    *   The current state of the form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $save = FALSE;
     $settings = $this->configFactory()->getEditable('simple_oauth.settings');
-    if ($expiration = $form_state->getValue('expiration')) {
-      $settings->set('expiration', $expiration);
-      $save = TRUE;
-    }
-    if ($public_key_path = $form_state->getValue('public_key')) {
-      $settings->set('public_key', $public_key_path);
-      $save = TRUE;
-    }
-    if ($private_key_path = $form_state->getValue('private_key')) {
-      $settings->set('private_key', $private_key_path);
-      $save = TRUE;
-    }
-    if ($save) {
-      $settings->save();
-    }
+    $settings->set('expiration', $form_state->getValue('expiration'));
+    $settings->set('use_implicit', $form_state->getValue('use_implicit'));
+    $settings->set('public_key', $form_state->getValue('public_key'));
+    $settings->set('private_key', $form_state->getValue('private_key'));
+    $settings->save();
   }
 
   /**
@@ -69,6 +58,12 @@ class Oauth2TokenSettingsForm extends FormBase {
       '#description' => $this->t('The default value, in seconds, to be used as expiration time when creating new tokens. This value may be overridden in the token generation form.'),
       '#default_value' => $this->config('simple_oauth.settings')->get('expiration'),
     ];
+    $form['use_implicit'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable the implicit grant?'),
+      '#description' => $this->t('The implicit grant has the potential to be used in an insecure way. Only enable this if you understand the risks. See https://tools.ietf.org/html/rfc6819#section-4.4.2 for more information.'),
+      '#default_value' => $this->config('simple_oauth.settings')->get('use_implicit'),
+    ];
     $form['public_key'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Public Key'),
@@ -77,7 +72,7 @@ class Oauth2TokenSettingsForm extends FormBase {
       '#element_validate' => ['::validateExistingFile'],
       '#required' => TRUE,
     ];
-    $form['textfield'] = [
+    $form['private_key'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Private Key'),
       '#description' => $this->t('The path to the private key file.'),
