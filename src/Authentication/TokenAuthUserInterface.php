@@ -2,9 +2,9 @@
 
 namespace Drupal\simple_oauth\Authentication;
 
-use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\user\UserInterface;
 
-interface TokenAuthUserInterface extends AccountProxyInterface  {
+interface TokenAuthUserInterface extends \IteratorAggregate, UserInterface {
 
   /**
    * Get the token.
