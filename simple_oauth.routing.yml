@@ -90,3 +90,15 @@ oauth2_token.refresh:
   methods: [GET, POST]
   requirements:
     _permission: 'access content'
+
+oauth2_token.user_debug:
+  path: '/oauth/debug'
+  defaults:
+    _controller: 'Drupal\simple_oauth\Controller\Oauth2Token::debug'
+  methods: [GET]
+  requirements:
+    _permission: 'access content'
+    _format: 'json'
+  options:
+    _admin_route: TRUE
+    _auth: [ 'oauth2' ]

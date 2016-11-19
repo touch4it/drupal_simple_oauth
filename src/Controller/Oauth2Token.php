@@ -12,6 +12,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class Oauth2Token extends ControllerBase {
@@ -113,6 +114,32 @@ class Oauth2Token extends ControllerBase {
     // Transform the PSR-7 response into an HTTP foundation response so Drupal
     // can process it.
     return $this->foundationFactory->createResponse($response);
+  }
+
+  /**
+   * Processes a GET request.
+   */
+  public function debug(Request $request) {
+    $user = \Drupal::currentUser();
+    $permissions_list = \Drupal::service('user.permissions')->getPermissions();
+    $permission_info = [];
+    foreach ($permissions_list as $permission_id => $permission) {
+      $permission_info[$permission_id] = [
+        'title' => $permission['title'],
+        'access' => $user->hasPermission($permission_id),
+      ];
+      if (!empty($permission['description'])) {
+        $permission_info['description'] = $permission['description'];
+      }
+    }
+    $response = new JsonResponse();
+    $response->setData([
+      'id' => $user->id(),
+      'roles' => $user->getRoles(),
+      'permissions' => $permission_info,
+    ]);
+    // Loop over all the permissions and check if the user has access or not.
+    return $response;
   }
 
 }
