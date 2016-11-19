@@ -123,6 +123,7 @@ class Oauth2Token extends ControllerBase {
     $user = \Drupal::currentUser();
     $permissions_list = \Drupal::service('user.permissions')->getPermissions();
     $permission_info = [];
+    // Loop over all the permissions and check if the user has access or not.
     foreach ($permissions_list as $permission_id => $permission) {
       $permission_info[$permission_id] = [
         'title' => $permission['title'],
@@ -132,14 +133,12 @@ class Oauth2Token extends ControllerBase {
         $permission_info['description'] = $permission['description'];
       }
     }
-    $response = new JsonResponse();
-    $response->setData([
+    return new JsonResponse([
+      'token' => str_replace('Bearer ', '', $request->headers->get('Authorization')),
       'id' => $user->id(),
       'roles' => $user->getRoles(),
       'permissions' => $permission_info,
     ]);
-    // Loop over all the permissions and check if the user has access or not.
-    return $response;
   }
 
 }
