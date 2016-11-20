@@ -91,6 +91,16 @@ oauth2_token.refresh:
   requirements:
     _permission: 'access content'
 
+oauth2_token.authorize:
+  path: '/oauth/authorize'
+  defaults:
+   _form: '\Drupal\simple_oauth\Controller\Oauth2AuthorizeForm'
+   _title: 'Grant Access to Client'
+  requirements:
+    _permission: 'grant simple_oauth codes'
+  options:
+    _auth: [ 'cookie' ]
+
 oauth2_token.user_debug:
   path: '/oauth/debug'
   defaults:

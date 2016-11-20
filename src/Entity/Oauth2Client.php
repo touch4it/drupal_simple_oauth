@@ -91,20 +91,55 @@ class Oauth2Client extends ContentEntityBase implements Oauth2ClientInterface {
       ->setLabel(new TranslatableMarkup('Label'))
       ->setDescription(new TranslatableMarkup('The client label.'))
       ->setRequired(TRUE)
-      ->setRevisionable(TRUE)
       ->setTranslatable(TRUE)
-      ->setSettings([
-        'max_length' => 128,
-        'text_processing' => 0,
-      ])
-      ->setDisplayOptions('view', [
-        'label' => 'inline',
-        'type' => 'timestamp',
+      ->setRevisionable(TRUE)
+      ->setSetting('max_length', 255)
+      ->setDisplayOptions('view', array(
+        'label' => 'hidden',
+        'type' => 'string',
+        'weight' => -5,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'string_textfield',
+        'weight' => -5,
+      ))
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['description'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Description'))
+      ->setDescription(t('A description of the client. This text will be shown to the users to authorize sharing their data to create an access token.'))
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', array(
+        'label' => 'hidden',
+        'type' => 'text_default',
         'weight' => 0,
-      ])
-      ->setDisplayOptions('form', [
+      ))
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('form', array(
+        'type' => 'text_textfield',
         'weight' => 0,
-      ]);
+      ))
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['image'] = BaseFieldDefinition::create('image')
+      ->setLabel(t('Logo'))
+      ->setDescription(t('Logo of the client. This text will be shown to the users to authorize sharing their data to create an access token.'))
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('view', array(
+        'label' => 'hidden',
+        'type' => 'image',
+        'weight' => -3,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'image',
+        'weight' => -3,
+        'settings' => array(
+          'preview_image_style' => 'thumbnail',
+          'progress_indicator' => 'throbber',
+        ),
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
 
     $fields['secret'] = BaseFieldDefinition::create('password')
       ->setLabel(new TranslatableMarkup('Secret'))
