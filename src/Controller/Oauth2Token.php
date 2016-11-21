@@ -38,12 +38,12 @@ class Oauth2Token extends ControllerBase {
   protected $configFactory;
 
   /**
-   * Constructs a CommentController object.
+   * Oauth2Token constructor.
    *
-   * @param AccountInterface $current_user
-   *   The current user.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *   The entity manager service.
+   * @param \Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface $message_factory
+   * @param \Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface $foundation_factory
+   * @param \Drupal\simple_oauth\Server\AuthorizationServerFactoryInterface $auth_server_factory
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    */
   public function __construct(HttpMessageFactoryInterface $message_factory, HttpFoundationFactoryInterface $foundation_factory, AuthorizationServerFactoryInterface $auth_server_factory, ConfigFactoryInterface $config_factory) {
     $this->messageFactory = $message_factory;

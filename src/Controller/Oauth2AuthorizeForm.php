@@ -3,12 +3,18 @@
 
 namespace Drupal\simple_oauth\Controller;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Url;
+use Drupal\simple_oauth\Entities\UserEntity;
+use Drupal\simple_oauth\Server\AuthorizationServerFactoryInterface;
+use GuzzleHttp\Psr7\Response;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
+use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class Oauth2AuthorizeForm extends FormBase {
@@ -19,13 +25,32 @@ class Oauth2AuthorizeForm extends FormBase {
   protected $entityTypeManager;
 
   /**
-   * Constructs a Oauth2AuthorizeForm object.
+   * @var \Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface
+   */
+  protected $messageFactory;
+
+  /**
+   * @var \Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface
+   */
+  protected $foundationFactory;
+
+  /**
+   * @var \League\OAuth2\Server\AuthorizationServer
+   */
+  protected $server;
+  /**
+   * Oauth2AuthorizeForm constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity manager.
+   * @param \Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface $message_factory
+   * @param \Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface $foundation_factory
+   * @param \Drupal\simple_oauth\Server\AuthorizationServerFactoryInterface $auth_server_factory
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, HttpMessageFactoryInterface $message_factory, HttpFoundationFactoryInterface $foundation_factory, AuthorizationServerFactoryInterface $auth_server_factory) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->messageFactory = $message_factory;
+    $this->foundationFactory = $foundation_factory;
+    $this->server = $auth_server_factory->createInstance('code');
   }
 
   /**
@@ -33,7 +58,10 @@ class Oauth2AuthorizeForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('psr7.http_message_factory'),
+      $container->get('psr7.http_foundation_factory'),
+      $container->get('simple_oauth.server.authorization_server.factory')
     );
   }
 
@@ -59,7 +87,28 @@ class Oauth2AuthorizeForm extends FormBase {
    *   The form structure.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    if (!$this->currentUser()->isAuthenticated()) {
+      $form['redirect_params'] = ['#type' => 'hidden', '#value' => $this->getRequest()->getQueryString()];
+      $form['description'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t('An external client application is requesting access to your data in this site. Please log in first to authorize the operation.'),
+      ];
+      $form['submit'] = ['#type' => 'submit', '#value' => $this->t('Login')];
+      return $form;
+    }
     $request = $this->getRequest();
+
+    // Transform the HTTP foundation request object into a PSR-7 object. The
+    // OAuth library expects a PSR-7 request.
+    $psr7_request = $this->messageFactory->createRequest($request);
+    // Validate the HTTP request and return an AuthorizationRequest object.
+    // The auth request object can be serialized into a user's session.
+    $auth_request = $this->server->validateAuthorizationRequest($psr7_request);
+
+    // Store the auth request temporarily.
+    $form_state->set('auth_request', $auth_request);
+
     $manager = $this->entityTypeManager;
     $form = [
       '#type' => 'container',
@@ -117,9 +166,30 @@ class Oauth2AuthorizeForm extends FormBase {
    *   The current state of the form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $response = TrustedRedirectResponse::create($form_state->getValue('redirect_uri'));
-    $form_state->setResponse($response);
+    if ($auth_request = $form_state->get('auth_request')) {
+      // Once the user has logged in set the user on the AuthorizationRequest.
+      $user_entity = new UserEntity();
+      $user_entity->setIdentifier($this->currentUser()->id());
+      $auth_request->setUser($user_entity);
+      // Once the user has approved or denied the client update the status
+      // (true = approved, false = denied).
+      $auth_request->setAuthorizationApproved((bool) $form_state->getValue('submit'));
+      // Return the HTTP redirect response.
+      $response = $this->server->completeAuthorizationRequest($auth_request, new Response());
+      // Get the location and return a secure redirect response.
+      $redirect_response = TrustedRedirectResponse::create($response->getHeaderLine('location'));
+      $form_state->setResponse($redirect_response);
+    }
+    elseif ($params = $form_state->getValue('redirect_params')) {
+      $url = Url::fromRoute('user.login');
+      $destination = Url::fromRoute('oauth2_token.authorize', [], [
+        'query' => UrlHelper::parse('/?' . $params)['query'],
+      ]);
+      $url->setOption('query', [
+        'destination' => $destination->toString(),
+      ]);
+      $form_state->setRedirectUrl($url);
+    }
   }
-
 
 }

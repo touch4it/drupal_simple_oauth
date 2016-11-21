@@ -5,6 +5,7 @@ namespace Drupal\simple_oauth\Server;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
 use League\OAuth2\Server\Grant\PasswordGrant;
@@ -64,6 +65,11 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface 
   protected $expiration;
 
   /**
+   * @var \DateTime
+   */
+  protected $authCodeExpiration;
+
+  /**
    * Construct a new AuthorizationServerFactory object.
    */
   public function __construct(
@@ -88,6 +94,8 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface 
       throw new \InvalidArgumentException(sprintf('You need to set the OAuth2 secret and private keys.'));
     }
     $this->expiration = new \DateInterval(sprintf('PT%dS', $settings->get('expiration')));
+    // TODO: Make this configurable and not just the same as the access toke expiration.
+    $this->authCodeExpiration = $this->expiration;
   }
 
   /**
@@ -126,6 +134,13 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface 
     }
     elseif ($grant_type_id == 'implicit') {
       return new ImplicitGrant($this->expiration);
+    }
+    elseif ($grant_type_id == 'code') {
+      return new AuthCodeGrant(
+        $this->authCodeRepository,
+        $this->refreshTokenRepository,
+        $this->authCodeExpiration
+      );
     }
     throw new \InvalidArgumentException(sprintf('The grant type %s for OAuth2 does not exist.', $grant_type_id));
   }
