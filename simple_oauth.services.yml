@@ -19,16 +19,6 @@ services:
     class: Drupal\simple_oauth\Normalizer\RefreshTokenEntityNormalizer
     tags:
       - { name: normalizer, priority: 20 }
-  simple_oauth.server.authorization_server.factory:
-    class: Drupal\simple_oauth\Server\AuthorizationServerFactory
-    arguments:
-      - '@simple_oauth.repositories.client'
-      - '@simple_oauth.repositories.scope'
-      - '@simple_oauth.repositories.user'
-      - '@simple_oauth.repositories.access_token'
-      - '@simple_oauth.repositories.refresh_token'
-      - '@simple_oauth.repositories.auth_code'
-      - '@config.factory'
   simple_oauth.server.resource_server:
     class: Drupal\simple_oauth\Server\ResourceServer
     arguments:
@@ -54,3 +44,12 @@ services:
   simple_oauth.repositories.auth_code:
     class: Drupal\simple_oauth\Repositories\AuthCodeRepository
     arguments: ['@entity_type.manager', '@serializer']
+  plugin.manager.oauth2_grant.processor:
+    class: Drupal\simple_oauth\Plugin\Oauth2GrantManager
+    parent: default_plugin_manager
+    arguments:
+      - '@simple_oauth.repositories.client'
+      - '@simple_oauth.repositories.scope'
+      - '@simple_oauth.repositories.access_token'
+      - '@simple_oauth.repositories.refresh_token'
+      - '@config.factory'

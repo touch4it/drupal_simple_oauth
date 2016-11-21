@@ -5,7 +5,7 @@ namespace Drupal\simple_oauth\Controller;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\simple_oauth\Entities\UserEntity;
-use Drupal\simple_oauth\Server\AuthorizationServerFactoryInterface;
+use Drupal\simple_oauth\Plugin\Oauth2GrantManagerInterface;
 use GuzzleHttp\Psr7\Response;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
@@ -27,9 +27,9 @@ class Oauth2Token extends ControllerBase {
   protected $foundationFactory;
 
   /**
-   * @var \Drupal\simple_oauth\Server\AuthorizationServerFactoryInterface
+   * @var \Drupal\simple_oauth\Plugin\Oauth2GrantManagerInterface
    */
-  protected $authServerFactory;
+  protected $grantManager;
 
   /**
    * @var \Drupal\Core\Config\ConfigFactoryInterface
@@ -41,13 +41,13 @@ class Oauth2Token extends ControllerBase {
    *
    * @param \Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface $message_factory
    * @param \Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface $foundation_factory
-   * @param \Drupal\simple_oauth\Server\AuthorizationServerFactoryInterface $auth_server_factory
+   * @param \Drupal\simple_oauth\Plugin\Oauth2GrantManagerInterface $grant_manager
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    */
-  public function __construct(HttpMessageFactoryInterface $message_factory, HttpFoundationFactoryInterface $foundation_factory, AuthorizationServerFactoryInterface $auth_server_factory, ConfigFactoryInterface $config_factory) {
+  public function __construct(HttpMessageFactoryInterface $message_factory, HttpFoundationFactoryInterface $foundation_factory, Oauth2GrantManagerInterface $grant_manager, ConfigFactoryInterface $config_factory) {
     $this->messageFactory = $message_factory;
     $this->foundationFactory = $foundation_factory;
-    $this->authServerFactory = $auth_server_factory;
+    $this->grantManager = $grant_manager;
     $this->configFactory = $config_factory;
   }
 
@@ -58,7 +58,7 @@ class Oauth2Token extends ControllerBase {
     return new static(
       $container->get('psr7.http_message_factory'),
       $container->get('psr7.http_foundation_factory'),
-      $container->get('simple_oauth.server.authorization_server.factory'),
+      $container->get('plugin.manager.oauth2_grant.processor'),
       $container->get('config.factory')
     );
   }
@@ -73,7 +73,7 @@ class Oauth2Token extends ControllerBase {
     // Extract the grant type from the request body.
     $grant_type_id = $request->get('grant_type') ?: 'implicit';
     // Get the auth server object from that uses the Leage library.
-    $auth_server = $this->authServerFactory->createInstance($grant_type_id);
+    $auth_server = $this->grantManager->getAuthorizationServer($grant_type_id);
     // Instantiate a new PSR-7 response object so the library can fill it.
     $response = new Response();
     try {

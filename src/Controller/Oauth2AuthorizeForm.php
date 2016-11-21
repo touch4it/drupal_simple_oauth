@@ -10,7 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Url;
 use Drupal\simple_oauth\Entities\UserEntity;
-use Drupal\simple_oauth\Server\AuthorizationServerFactoryInterface;
+use Drupal\simple_oauth\Plugin\Oauth2GrantManagerInterface;
 use GuzzleHttp\Psr7\Response;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
@@ -38,19 +38,20 @@ class Oauth2AuthorizeForm extends FormBase {
    * @var \League\OAuth2\Server\AuthorizationServer
    */
   protected $server;
+
   /**
    * Oauth2AuthorizeForm constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    * @param \Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface $message_factory
    * @param \Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface $foundation_factory
-   * @param \Drupal\simple_oauth\Server\AuthorizationServerFactoryInterface $auth_server_factory
+   * @param \Drupal\simple_oauth\Plugin\Oauth2GrantManagerInterface $grant_manager
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, HttpMessageFactoryInterface $message_factory, HttpFoundationFactoryInterface $foundation_factory, AuthorizationServerFactoryInterface $auth_server_factory) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, HttpMessageFactoryInterface $message_factory, HttpFoundationFactoryInterface $foundation_factory, Oauth2GrantManagerInterface $grant_manager) {
     $this->entityTypeManager = $entity_type_manager;
     $this->messageFactory = $message_factory;
     $this->foundationFactory = $foundation_factory;
-    $this->server = $auth_server_factory->createInstance('code');
+    $this->server = $grant_manager->getAuthorizationServer('code');
   }
 
   /**
@@ -61,7 +62,7 @@ class Oauth2AuthorizeForm extends FormBase {
       $container->get('entity_type.manager'),
       $container->get('psr7.http_message_factory'),
       $container->get('psr7.http_foundation_factory'),
-      $container->get('simple_oauth.server.authorization_server.factory')
+      $container->get('plugin.manager.oauth2_grant.processor')
     );
   }
 
