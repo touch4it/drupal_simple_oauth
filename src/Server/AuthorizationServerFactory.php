@@ -135,7 +135,7 @@ class AuthorizationServerFactory implements AuthorizationServerFactoryInterface 
     elseif ($grant_type_id == 'implicit') {
       return new ImplicitGrant($this->expiration);
     }
-    elseif ($grant_type_id == 'code') {
+    elseif ($grant_type_id == 'code' || $grant_type_id == 'authorization_code') {
       return new AuthCodeGrant(
         $this->authCodeRepository,
         $this->refreshTokenRepository,

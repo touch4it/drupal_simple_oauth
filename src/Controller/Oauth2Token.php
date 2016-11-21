@@ -4,7 +4,6 @@ namespace Drupal\simple_oauth\Controller;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\simple_oauth\Entities\UserEntity;
 use Drupal\simple_oauth\Server\AuthorizationServerFactoryInterface;
 use GuzzleHttp\Psr7\Response;
@@ -139,6 +138,13 @@ class Oauth2Token extends ControllerBase {
       'roles' => $user->getRoles(),
       'permissions' => $permission_info,
     ]);
+  }
+
+  /**
+   * Debug auth code.
+   */
+  public function codeDebug(Request $request) {
+    return JsonResponse::create($request->get('code'));
   }
 
 }

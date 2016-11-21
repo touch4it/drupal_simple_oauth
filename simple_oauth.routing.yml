@@ -112,3 +112,11 @@ oauth2_token.user_debug:
   options:
     _admin_route: TRUE
     _auth: [ 'oauth2' ]
+
+oauth2_token.code_debug:
+  path: '/oauth/code-debug'
+  defaults:
+    _controller: 'Drupal\simple_oauth\Controller\Oauth2Token::codeDebug'
+  methods: [GET]
+  requirements:
+    _permission: 'access content'
