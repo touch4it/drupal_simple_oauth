@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Drupal\simple_oauth\Plugin\Oauth2Grant;
+namespace Drupal\simple_oauth_3p\Plugin\Oauth2Grant;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\simple_oauth\Plugin\Oauth2GrantBase;
@@ -57,7 +57,7 @@ class AuthorizationCode extends Oauth2GrantBase {
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('simple_oauth.repositories.auth_code'),
+      $container->get('simple_oauth_3p.repositories.auth_code'),
       $container->get('simple_oauth.repositories.refresh_token'),
       $container->get('config.factory')
     );

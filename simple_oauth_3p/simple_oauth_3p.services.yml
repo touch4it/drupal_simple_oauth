@@ -1,0 +1,4 @@
+services:
+  simple_oauth_3p.repositories.auth_code:
+    class: Drupal\simple_oauth_3p\Repositories\AuthCodeRepository
+    arguments: ['@entity_type.manager', '@serializer']

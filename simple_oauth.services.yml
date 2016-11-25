@@ -41,9 +41,6 @@ services:
   simple_oauth.repositories.refresh_token:
     class: Drupal\simple_oauth\Repositories\RefreshTokenRepository
     arguments: ['@entity_type.manager', '@serializer']
-  simple_oauth.repositories.auth_code:
-    class: Drupal\simple_oauth\Repositories\AuthCodeRepository
-    arguments: ['@entity_type.manager', '@serializer']
   plugin.manager.oauth2_grant.processor:
     class: Drupal\simple_oauth\Plugin\Oauth2GrantManager
     parent: default_plugin_manager

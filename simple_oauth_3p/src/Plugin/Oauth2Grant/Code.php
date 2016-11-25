@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Drupal\simple_oauth\Plugin\Oauth2Grant;
+namespace Drupal\simple_oauth_3p\Plugin\Oauth2Grant;
 
 /**
  * Class Code

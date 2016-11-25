@@ -2,12 +2,12 @@
 
 namespace Drupal\simple_oauth\Controller;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\simple_oauth\Entities\UserEntity;
 use Drupal\simple_oauth\Plugin\Oauth2GrantManagerInterface;
 use GuzzleHttp\Psr7\Response;
+use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -32,11 +32,6 @@ class Oauth2Token extends ControllerBase {
   protected $grantManager;
 
   /**
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
    * Oauth2Token constructor.
    *
    * @param \Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface $message_factory
@@ -44,11 +39,10 @@ class Oauth2Token extends ControllerBase {
    * @param \Drupal\simple_oauth\Plugin\Oauth2GrantManagerInterface $grant_manager
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    */
-  public function __construct(HttpMessageFactoryInterface $message_factory, HttpFoundationFactoryInterface $foundation_factory, Oauth2GrantManagerInterface $grant_manager, ConfigFactoryInterface $config_factory) {
+  public function __construct(HttpMessageFactoryInterface $message_factory, HttpFoundationFactoryInterface $foundation_factory, Oauth2GrantManagerInterface $grant_manager) {
     $this->messageFactory = $message_factory;
     $this->foundationFactory = $foundation_factory;
     $this->grantManager = $grant_manager;
-    $this->configFactory = $config_factory;
   }
 
   /**
@@ -58,13 +52,12 @@ class Oauth2Token extends ControllerBase {
     return new static(
       $container->get('psr7.http_message_factory'),
       $container->get('psr7.http_foundation_factory'),
-      $container->get('plugin.manager.oauth2_grant.processor'),
-      $container->get('config.factory')
+      $container->get('plugin.manager.oauth2_grant.processor')
     );
   }
 
   /**
-   * Proceses POST requests to /oauth/token.
+   * Processes POST requests to /oauth/token.
    */
   public function token(Request $request) {
     // Transform the HTTP foundation request object into a PSR-7 object. The
@@ -72,47 +65,31 @@ class Oauth2Token extends ControllerBase {
     $psr7_request = $this->messageFactory->createRequest($request);
     // Extract the grant type from the request body.
     $grant_type_id = $request->get('grant_type') ?: 'implicit';
-    // Get the auth server object from that uses the Leage library.
-    $auth_server = $this->grantManager->getAuthorizationServer($grant_type_id);
-    // Instantiate a new PSR-7 response object so the library can fill it.
-    $response = new Response();
+    // Get the auth server object from that uses the League library.
     try {
-      // The implicit grant is a bit different.
-      if ($grant_type_id != 'implicit') {
-        // Respond to the incoming request and fill in the response.
-        $response = $auth_server->respondToAccessTokenRequest($psr7_request, $response);
-      }
-      else {
-        if (!$this->configFactory->get('simple_oauth.settings')->get('use_implicit')) {
-          $translated_hint = $this->t('Enable the use of the implicit grant in the Drupal module configuration form.');
-          throw OAuthServerException::invalidGrant($translated_hint);
-        }
-        // Validate the HTTP request and return an AuthorizationRequest object.
-        // The auth request object can be serialized into a user's session
-        $auth_request = $auth_server->validateAuthorizationRequest($psr7_request);
-        // Once the user has logged in set the user on the AuthorizationRequest
-        $user = new UserEntity();
-        /** @var \Drupal\simple_oauth\Entities\ClientEntityInterface $client */
-        $client = $auth_request->getClient();
-        $user->setIdentifier($client
-          ->getDrupalEntity()
-          ->getDefaultUser()
-          ->id());
-        $auth_request->setUser($user);
-        // Once the user has approved or denied the client update the status
-        // (true = approved, false = denied)
-        $auth_request->setAuthorizationApproved(TRUE);
-
-        // Return the HTTP redirect response
-        $response = $auth_server->completeAuthorizationRequest($auth_request, $response);
-      }
+      // Respond to the incoming request and fill in the response.
+      $auth_server = $this->grantManager->getAuthorizationServer($grant_type_id);
+      $response = $this->handleToken($psr7_request, $auth_server);
     }
     catch (OAuthServerException $exception) {
-      $response = $exception->generateHttpResponse($response);
+      $response = $exception->generateHttpResponse(new Response());
     }
     // Transform the PSR-7 response into an HTTP foundation response so Drupal
     // can process it.
-    return $this->foundationFactory->createResponse($response);
+    return $this->foundationFactory
+      ->createResponse($response);
+  }
+
+  /**
+   * Handles the token processing.
+   *
+   * @param \Psr\Http\Message\ServerRequestInterface $psr7_request
+   *
+   * @return \Psr\Http\Message\ResponseInterface
+   */
+  protected function handleToken(ServerRequestInterface $psr7_request, AuthorizationServer $auth_server) {
+    // Instantiate a new PSR-7 response object so the library can fill it.
+    return $auth_server->respondToAccessTokenRequest($psr7_request, new Response());
   }
 
   /**
@@ -138,13 +115,6 @@ class Oauth2Token extends ControllerBase {
       'roles' => $user->getRoles(),
       'permissions' => $permission_info,
     ]);
-  }
-
-  /**
-   * Debug auth code.
-   */
-  public function codeDebug(Request $request) {
-    return JsonResponse::create($request->get('code'));
   }
 
 }

@@ -1,0 +1,18 @@
+oauth2_token.authorize:
+  path: '/oauth/authorize'
+  defaults:
+   _form: '\Drupal\simple_oauth_3p\Controller\Oauth2AuthorizeForm'
+   _title: 'Grant Access to Client'
+  methods: [GET, POST]
+  requirements:
+    _permission: 'access content'
+  options:
+    _auth: [ 'cookie' ]
+
+oauth2_token.code_debug:
+  path: '/oauth/code-debug'
+  defaults:
+    _controller: 'Drupal\simple_oauth_3p\Controller\Oauth2Token3p::codeDebug'
+  methods: [ GET ]
+  requirements:
+    _permission: 'access content'

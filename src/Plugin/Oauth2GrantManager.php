@@ -101,8 +101,10 @@ class Oauth2GrantManager extends DefaultPluginManager implements Oauth2GrantMana
       $plugin = $this->createInstance($grant_type);
     }
     catch (PluginNotFoundException $exception) {
-      throw OAuthServerException::invalidGrant();
+      throw OAuthServerException::invalidGrant('Check the configuration to see if the grant is enabled.');
     }
+
+    $this->checkKeyPaths();
     $server = new AuthorizationServer(
       $this->clientRepository,
       $this->accessTokenRepository,
@@ -128,8 +130,14 @@ class Oauth2GrantManager extends DefaultPluginManager implements Oauth2GrantMana
   protected function setKeyPaths(ImmutableConfig $settings) {
     $this->publicKeyPath = $settings->get('public_key');
     $this->privateKeyPath = $settings->get('private_key');
+  }
+
+  /**
+   * @throws
+   */
+  protected function checkKeyPaths() {
     if (!file_exists($this->publicKeyPath) || !file_exists($this->privateKeyPath)) {
-      throw new \InvalidArgumentException(sprintf('You need to set the OAuth2 secret and private keys.'));
+      throw OAuthServerException::serverError(sprintf('You need to set the OAuth2 secret and private keys.'));
     }
   }
 

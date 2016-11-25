@@ -1,0 +1,7 @@
+name: Simple OAuth 3rd Parties
+type: module
+description: 'OAuth2 access grants suitable for 3rd party applications.'
+core: 8.x
+package: Authentication
+dependencies:
+  - simple_oauth

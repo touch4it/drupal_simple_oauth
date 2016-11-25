@@ -1,4 +1,3 @@
-
 # Oauth2Token routing definition
 entity.oauth2_token.canonical:
   path: '/admin/config/people/simple_oauth/oauth2_token/{oauth2_token}'
@@ -87,19 +86,9 @@ oauth2_token.refresh:
   path: '/oauth/token'
   defaults:
     _controller: 'Drupal\simple_oauth\Controller\Oauth2Token::token'
-  methods: [GET, POST]
+  methods: [POST]
   requirements:
     _permission: 'access content'
-
-oauth2_token.authorize:
-  path: '/oauth/authorize'
-  defaults:
-   _form: '\Drupal\simple_oauth\Controller\Oauth2AuthorizeForm'
-   _title: 'Grant Access to Client'
-  requirements:
-    _permission: 'grant simple_oauth codes'
-  options:
-    _auth: [ 'cookie' ]
 
 oauth2_token.user_debug:
   path: '/oauth/debug'
@@ -112,11 +101,3 @@ oauth2_token.user_debug:
   options:
     _admin_route: TRUE
     _auth: [ 'oauth2' ]
-
-oauth2_token.code_debug:
-  path: '/oauth/code-debug'
-  defaults:
-    _controller: 'Drupal\simple_oauth\Controller\Oauth2Token::codeDebug'
-  methods: [GET]
-  requirements:
-    _permission: 'access content'

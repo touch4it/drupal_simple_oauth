@@ -1,17 +1,17 @@
 <?php
 
-namespace Drupal\simple_oauth\Repositories;
+namespace Drupal\simple_oauth_3p\Repositories;
 
+use Drupal\simple_oauth\Repositories\RevocableTokenRepositoryTrait;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
-use Drupal\simple_oauth\Entities\AuthCodeEntity;
 
 class AuthCodeRepository implements AuthCodeRepositoryInterface {
 
   use RevocableTokenRepositoryTrait;
 
   protected static $bundle_id = 'auth_code';
-  protected static $entity_class = 'Drupal\simple_oauth\Entities\AuthCodeEntity';
+  protected static $entity_class = 'Drupal\simple_oauth_3p\Entities\AuthCodeEntity';
   protected static $entity_interface = 'League\OAuth2\Server\Entities\AuthCodeEntityInterface';
 
   /**

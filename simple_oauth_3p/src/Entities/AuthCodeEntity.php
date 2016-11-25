@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\simple_oauth\Entities;
+namespace Drupal\simple_oauth_3p\Entities;
 
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\Traits\AuthCodeTrait;

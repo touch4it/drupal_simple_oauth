@@ -11,9 +11,9 @@ trait RevocableTokenRepositoryTrait {
   protected static $entity_type_id = 'oauth2_token';
 
   /**
-   * @var \Drupal\Core\Entity\EntityStorageInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $storage;
+  protected $entityTypeManager;
 
   /**
    * @var \Symfony\Component\Serializer\Serializer
@@ -27,7 +27,7 @@ trait RevocableTokenRepositoryTrait {
    * @param \Drupal\simple_oauth\Normalizer\TokenEntityNormalizerInterface $normalizer
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, Serializer $serializer) {
-    $this->storage = $entity_type_manager->getStorage(static::$entity_type_id);
+    $this->entityTypeManager = $entity_type_manager;
     $this->serializer = $serializer;
   }
 
@@ -40,7 +40,7 @@ trait RevocableTokenRepositoryTrait {
     }
     $values = $this->serializer->normalize($token_entity);
     $values['bundle'] = static::$bundle_id;
-    $new_token = $this->storage->create($values);
+    $new_token = $this->entityTypeManager->getStorage(static::$entity_type_id)->create($values);
     $new_token->save();
   }
 
@@ -48,7 +48,10 @@ trait RevocableTokenRepositoryTrait {
    * {@inheritdoc}
    */
   public function revoke($token_id) {
-    if (!$tokens = $this->storage->loadByProperties(['value' => $token_id])) {
+    if (!$tokens = $this
+      ->entityTypeManager
+      ->getStorage(static::$entity_type_id)
+      ->loadByProperties(['value' => $token_id])) {
       return;
     }
     /** @var \Drupal\simple_oauth\Entity\Oauth2TokenInterface $token */
@@ -61,7 +64,10 @@ trait RevocableTokenRepositoryTrait {
    * {@inheritdoc}
    */
   public function isRevoked($token_id) {
-    if (!$tokens = $this->storage->loadByProperties(['value' => $token_id])) {
+    if (!$tokens = $this
+      ->entityTypeManager
+      ->getStorage(static::$entity_type_id)
+      ->loadByProperties(['value' => $token_id])) {
       return TRUE;
     }
     /** @var \Drupal\simple_oauth\Entity\Oauth2TokenInterface $token */

@@ -34,9 +34,8 @@ class Oauth2TokenSettingsForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $settings = $this->configFactory()->getEditable('simple_oauth.settings');
     $settings->set('expiration', $form_state->getValue('expiration'));
-    $settings->set('use_implicit', $form_state->getValue('use_implicit'));
-    $settings->set('public_key', $form_state->getValue('public_key'));
-    $settings->set('private_key', $form_state->getValue('private_key'));
+    $settings->set('public_key', realpath($form_state->getValue('public_key')));
+    $settings->set('private_key', realpath($form_state->getValue('private_key')));
     $settings->save();
   }
 

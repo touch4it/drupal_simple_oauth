@@ -13,6 +13,7 @@ use Drupal\Core\Access\AccessResult;
  * @see \Drupal\simple_oauth\Entity\AccessToken.
  */
 class AccessTokenAccessControlHandler extends EntityAccessControlHandler {
+
   /**
    * {@inheritdoc}
    */
@@ -27,6 +28,7 @@ class AccessTokenAccessControlHandler extends EntityAccessControlHandler {
     if (!in_array($operation, ['view', 'update', 'delete'])) {
       return AccessResult::neutral();
     }
+
     return $is_owner_access->andIf(AccessResult::allowedIfHasPermission(
       $account,
       sprintf('%s own simple_oauth entities', $operation)

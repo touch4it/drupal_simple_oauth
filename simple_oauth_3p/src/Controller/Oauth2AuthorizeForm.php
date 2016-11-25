@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Drupal\simple_oauth\Controller;
+namespace Drupal\simple_oauth_3p\Controller;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -40,6 +40,11 @@ class Oauth2AuthorizeForm extends FormBase {
   protected $server;
 
   /**
+   * @var \Drupal\simple_oauth\Plugin\Oauth2GrantManagerInterface
+   */
+  protected $grantManager;
+
+  /**
    * Oauth2AuthorizeForm constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -51,7 +56,7 @@ class Oauth2AuthorizeForm extends FormBase {
     $this->entityTypeManager = $entity_type_manager;
     $this->messageFactory = $message_factory;
     $this->foundationFactory = $foundation_factory;
-    $this->server = $grant_manager->getAuthorizationServer('code');
+    $this->grantManager = $grant_manager;
   }
 
   /**
@@ -88,7 +93,7 @@ class Oauth2AuthorizeForm extends FormBase {
    *   The form structure.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    if (!$this->currentUser()->isAuthenticated()) {
+      if (!$this->currentUser()->isAuthenticated()) {
       $form['redirect_params'] = ['#type' => 'hidden', '#value' => $this->getRequest()->getQueryString()];
       $form['description'] = [
         '#type' => 'html_tag',
@@ -99,6 +104,18 @@ class Oauth2AuthorizeForm extends FormBase {
       return $form;
     }
     $request = $this->getRequest();
+    if ($request->get('response_type') == 'code') {
+      $grant_type = 'code';
+    }
+    elseif ($request->get('response_type') == 'token') {
+      $grant_type = 'implicit';
+    }
+    else {
+      $grant_type = NULL;
+    }
+    $this->server = $this
+      ->grantManager
+      ->getAuthorizationServer($grant_type);
 
     // Transform the HTTP foundation request object into a PSR-7 object. The
     // OAuth library expects a PSR-7 request.
@@ -174,11 +191,16 @@ class Oauth2AuthorizeForm extends FormBase {
       $auth_request->setUser($user_entity);
       // Once the user has approved or denied the client update the status
       // (true = approved, false = denied).
-      $auth_request->setAuthorizationApproved((bool) $form_state->getValue('submit'));
+      $can_grant_codes = $this->currentUser()->hasPermission('grant simple_oauth codes');
+      $auth_request->setAuthorizationApproved((bool) $form_state->getValue('submit') && $can_grant_codes);
       // Return the HTTP redirect response.
       $response = $this->server->completeAuthorizationRequest($auth_request, new Response());
       // Get the location and return a secure redirect response.
-      $redirect_response = TrustedRedirectResponse::create($response->getHeaderLine('location'));
+      $redirect_response = TrustedRedirectResponse::create(
+        $response->getHeaderLine('location'),
+        $response->getStatusCode(),
+        $response->getHeaders()
+      );
       $form_state->setResponse($redirect_response);
     }
     elseif ($params = $form_state->getValue('redirect_params')) {
