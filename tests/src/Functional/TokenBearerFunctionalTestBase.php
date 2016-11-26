@@ -151,7 +151,9 @@ class TokenBearerFunctionalTestBase extends BrowserTestBase {
     $this->assertEquals(200, $response->getStatusCode());
     $parsed_response = Json::decode($response->getBody()->getContents());
     $this->assertSame('Bearer', $parsed_response['token_type']);
-    $this->assertSame($this->config('simple_oauth.settings')->get('expiration'), $parsed_response['expires_in']);
+    $expiration = $this->config('simple_oauth.settings')->get('expiration');
+    $this->assertLessThanOrEqual($expiration, $parsed_response['expires_in']);
+    $this->assertGreaterThanOrEqual($expiration - 10, $parsed_response['expires_in']);
     $this->assertNotEmpty($parsed_response['access_token']);
     if ($has_refresh) {
       $this->assertNotEmpty($parsed_response['refresh_token']);
