@@ -39,7 +39,6 @@ before_script:
   - mysql -e 'create database drupal'
   # Export database variable for kernel tests.
   - export SIMPLETEST_DB=mysql://root:@127.0.0.1/drupal
-  # Download Drupal 8 core from the Github mirror because it is faster.
   - travis_retry git clone --branch $DRUPAL_CORE --depth 1 http://git.drupal.org/project/drupal.git
   - cd drupal
 
@@ -61,6 +60,6 @@ before_script:
 
 script:
   # Run the PHPUnit tests which also include the kernel tests.
-  - ./vendor/bin/phpunit -c ./core/phpunit.xml.dist ./modules/simple_oauth
+  - ./vendor/bin/phpunit --verbose --color -c ./core/phpunit.xml.dist ./modules/simple_oauth
   # Check for coding standards violations
   - cd modules/simple_oauth && ~/.composer/vendor/bin/phpcs --standard=DrupalPractice .
