@@ -82,7 +82,7 @@ entity.oauth2_client.delete_form:
   options:
     _admin_route: TRUE
 
-oauth2_token.refresh:
+oauth2_token.token:
   path: '/oauth/token'
   defaults:
     _controller: 'Drupal\simple_oauth\Controller\Oauth2Token::token'

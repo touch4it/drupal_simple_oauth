@@ -16,7 +16,7 @@ simple_oauth.oauth2_token.bundle.*:
       label: 'Locked'
 
 simple_oauth.settings:
-  type: mapping
+  type: config_object
   label: 'Simple OAuth Settings'
   mapping:
     expiration:
