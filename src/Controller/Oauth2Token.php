@@ -4,6 +4,7 @@ namespace Drupal\simple_oauth\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\simple_oauth\Plugin\Oauth2GrantManagerInterface;
+use Drupal\user\PermissionHandlerInterface;
 use GuzzleHttp\Psr7\Response;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -32,17 +33,24 @@ class Oauth2Token extends ControllerBase {
   protected $grantManager;
 
   /**
+   * @var \Drupal\user\PermissionHandlerInterface
+   */
+  protected $userPermissions;
+
+  /**
    * Oauth2Token constructor.
    *
    * @param \Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface $message_factory
    * @param \Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface $foundation_factory
    * @param \Drupal\simple_oauth\Plugin\Oauth2GrantManagerInterface $grant_manager
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   * @param \Drupal\user\PermissionHandlerInterface $user_permissions
    */
-  public function __construct(HttpMessageFactoryInterface $message_factory, HttpFoundationFactoryInterface $foundation_factory, Oauth2GrantManagerInterface $grant_manager) {
+  public function __construct(HttpMessageFactoryInterface $message_factory, HttpFoundationFactoryInterface $foundation_factory, Oauth2GrantManagerInterface $grant_manager, PermissionHandlerInterface $user_permissions) {
     $this->messageFactory = $message_factory;
     $this->foundationFactory = $foundation_factory;
     $this->grantManager = $grant_manager;
+    $this->userPermissions = $user_permissions;
   }
 
   /**
@@ -52,7 +60,8 @@ class Oauth2Token extends ControllerBase {
     return new static(
       $container->get('psr7.http_message_factory'),
       $container->get('psr7.http_foundation_factory'),
-      $container->get('plugin.manager.oauth2_grant.processor')
+      $container->get('plugin.manager.oauth2_grant.processor'),
+      $container->get('user.permissions')
     );
   }
 
@@ -96,8 +105,8 @@ class Oauth2Token extends ControllerBase {
    * Processes a GET request.
    */
   public function debug(Request $request) {
-    $user = \Drupal::currentUser();
-    $permissions_list = \Drupal::service('user.permissions')->getPermissions();
+    $user = $this->currentUser();
+    $permissions_list = $this->userPermissions->getPermissions();
     $permission_info = [];
     // Loop over all the permissions and check if the user has access or not.
     foreach ($permissions_list as $permission_id => $permission) {
