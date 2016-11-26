@@ -62,7 +62,7 @@ class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
   /**
    * Test invalid Password grant.
    */
-  public function testInvalidPasswordGrant() {
+  public function testMissingPasswordGrant() {
     $num_roles = mt_rand(1, count($this->additionalRoles));
     $requested_roles = array_slice($this->additionalRoles, 0, $num_roles);
     $valid_payload = [
@@ -101,6 +101,57 @@ class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
     foreach ($data as $key => $value) {
       $invalid_payload = $valid_payload;
       unset($invalid_payload[$key]);
+      $response = $this->request('POST', $this->url, [
+        'form_params' => $invalid_payload,
+      ]);
+      $parsed_response = Json::decode($response->getBody()->getContents());
+      $this->assertSame($value['code'], $response->getStatusCode());
+      $this->assertSame($value['error'], $parsed_response['error']);
+    }
+  }
+
+  /**
+   * Test invalid Password grant.
+   */
+  public function testInvalidPasswordGrant() {
+    $num_roles = mt_rand(1, count($this->additionalRoles));
+    $requested_roles = array_slice($this->additionalRoles, 0, $num_roles);
+    $valid_payload = [
+      'grant_type' => 'password',
+      'client_id' => $this->client->uuid(),
+      'client_secret' => $this->clientSecret,
+      'username' => $this->user->getAccountName(),
+      'password' => $this->user->pass_raw,
+      'scope' => implode(' ', array_map(function (RoleInterface $role) {
+        return $role->id();
+      }, $requested_roles)),
+    ];
+
+    $data = [
+      'grant_type' => [
+        'error' => 'invalid_grant',
+        'code' => 400,
+      ],
+      'client_id' => [
+        'error' => 'invalid_client',
+        'code' => 401,
+      ],
+      'client_secret' => [
+        'error' => 'invalid_client',
+        'code' => 401,
+      ],
+      'username' => [
+        'error' => 'invalid_credentials',
+        'code' => 401,
+      ],
+      'password' => [
+        'error' => 'invalid_credentials',
+        'code' => 401,
+      ],
+    ];
+    foreach ($data as $key => $value) {
+      $invalid_payload = $valid_payload;
+      $invalid_payload[$key] = $this->getRandomGenerator()->string();
       $response = $this->request('POST', $this->url, [
         'form_params' => $invalid_payload,
       ]);
