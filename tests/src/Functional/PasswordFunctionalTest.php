@@ -32,17 +32,13 @@ class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
    */
   public function testPasswordGrant() {
     // 1. Test the valid response.
-    $num_roles = mt_rand(1, count($this->additionalRoles));
-    $requested_roles = array_slice($this->additionalRoles, 0, $num_roles);
     $valid_payload = [
       'grant_type' => 'password',
       'client_id' => $this->client->uuid(),
       'client_secret' => $this->clientSecret,
       'username' => $this->user->getAccountName(),
       'password' => $this->user->pass_raw,
-      'scope' => implode(' ', array_map(function (RoleInterface $role) {
-        return $role->id();
-      }, $requested_roles)),
+      'scope' => $this->scope,
     ];
     $response = $this->request('POST', $this->url, [
       'form_params' => $valid_payload,
@@ -63,17 +59,13 @@ class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
    * Test invalid Password grant.
    */
   public function testMissingPasswordGrant() {
-    $num_roles = mt_rand(1, count($this->additionalRoles));
-    $requested_roles = array_slice($this->additionalRoles, 0, $num_roles);
     $valid_payload = [
       'grant_type' => 'password',
       'client_id' => $this->client->uuid(),
       'client_secret' => $this->clientSecret,
       'username' => $this->user->getAccountName(),
       'password' => $this->user->pass_raw,
-      'scope' => implode(' ', array_map(function (RoleInterface $role) {
-        return $role->id();
-      }, $requested_roles)),
+      'scope' => $this->scope,
     ];
 
     $data = [
@@ -114,17 +106,13 @@ class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
    * Test invalid Password grant.
    */
   public function testInvalidPasswordGrant() {
-    $num_roles = mt_rand(1, count($this->additionalRoles));
-    $requested_roles = array_slice($this->additionalRoles, 0, $num_roles);
     $valid_payload = [
       'grant_type' => 'password',
       'client_id' => $this->client->uuid(),
       'client_secret' => $this->clientSecret,
       'username' => $this->user->getAccountName(),
       'password' => $this->user->pass_raw,
-      'scope' => implode(' ', array_map(function (RoleInterface $role) {
-        return $role->id();
-      }, $requested_roles)),
+      'scope' => $this->scope,
     ];
 
     $data = [

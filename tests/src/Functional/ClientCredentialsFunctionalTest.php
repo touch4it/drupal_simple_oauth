@@ -32,15 +32,11 @@ class ClientCredentialsFunctionalTest extends TokenBearerFunctionalTestBase {
    */
   public function testClientCredentialsGrant() {
     // 1. Test the valid response.
-    $num_roles = mt_rand(1, count($this->additionalRoles));
-    $requested_roles = array_slice($this->additionalRoles, 0, $num_roles);
     $valid_payload = [
       'grant_type' => 'client_credentials',
       'client_id' => $this->client->uuid(),
       'client_secret' => $this->clientSecret,
-      'scope' => implode(' ', array_map(function (RoleInterface $role) {
-        return $role->id();
-      }, $requested_roles)),
+      'scope' => $this->scope,
     ];
     $response = $this->request('POST', $this->url, [
       'form_params' => $valid_payload,
@@ -61,15 +57,11 @@ class ClientCredentialsFunctionalTest extends TokenBearerFunctionalTestBase {
    * Test invalid ClientCredentials grant.
    */
   public function testMissingClientCredentialsGrant() {
-    $num_roles = mt_rand(1, count($this->additionalRoles));
-    $requested_roles = array_slice($this->additionalRoles, 0, $num_roles);
     $valid_payload = [
       'grant_type' => 'client_credentials',
       'client_id' => $this->client->uuid(),
       'client_secret' => $this->clientSecret,
-      'scope' => implode(' ', array_map(function (RoleInterface $role) {
-        return $role->id();
-      }, $requested_roles)),
+      'scope' => $this->scope,
     ];
 
     $data = [
@@ -102,15 +94,11 @@ class ClientCredentialsFunctionalTest extends TokenBearerFunctionalTestBase {
    * Test invalid ClientCredentials grant.
    */
   public function testInvalidClientCredentialsGrant() {
-    $num_roles = mt_rand(1, count($this->additionalRoles));
-    $requested_roles = array_slice($this->additionalRoles, 0, $num_roles);
     $valid_payload = [
       'grant_type' => 'client_credentials',
       'client_id' => $this->client->uuid(),
       'client_secret' => $this->clientSecret,
-      'scope' => implode(' ', array_map(function (RoleInterface $role) {
-        return $role->id();
-      }, $requested_roles)),
+      'scope' => $this->scope,
     ];
 
     $data = [

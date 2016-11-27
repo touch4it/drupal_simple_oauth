@@ -46,6 +46,21 @@ class TokenBearerFunctionalTestBase extends BrowserTestBase {
   protected $additionalRoles;
 
   /**
+   * @var string
+   */
+  protected $privateKeyPath;
+
+  /**
+   * @var string
+   */
+  protected $publicKeyPath;
+
+  /**
+   * @var string
+   */
+  protected $scope;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() {
@@ -97,12 +112,19 @@ class TokenBearerFunctionalTestBase extends BrowserTestBase {
 
     // Use the public and private keys.
     $path = $this->container->get('module_handler')->getModule('simple_oauth')->getPath();
-    $public_key_path = DRUPAL_ROOT . '/' . $path . '/tests/certificates/public.key';
-    $private_key_path = DRUPAL_ROOT . '/' . $path . '/tests/certificates/private.key';
+    $this->publicKeyPath = DRUPAL_ROOT . '/' . $path . '/tests/certificates/public.key';
+    $this->privateKeyPath = DRUPAL_ROOT . '/' . $path . '/tests/certificates/private.key';
     $settings = $this->config('simple_oauth.settings');
-    $settings->set('public_key', $public_key_path);
-    $settings->set('private_key', $private_key_path);
+    $settings->set('public_key', $this->publicKeyPath);
+    $settings->set('private_key', $this->privateKeyPath);
     $settings->save();
+
+    $num_roles = mt_rand(1, count($this->additionalRoles));
+    $requested_roles = array_slice($this->additionalRoles, 0, $num_roles);
+    $scopes = array_map(function (RoleInterface $role) {
+      return $role->id();
+    }, $requested_roles);
+    $this->scope = implode(' ', $scopes);
 
     drupal_flush_all_caches();
   }

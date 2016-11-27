@@ -121,7 +121,6 @@ class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
       ->setRevisionable(TRUE)
       ->setSetting('target_type', 'user_role')
       ->setSetting('handler', 'default')
-      ->setDefaultValue('default')
       ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
       ->setTranslatable(FALSE)
       ->setDisplayOptions('view', array(
