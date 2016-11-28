@@ -25,7 +25,7 @@ use Drupal\user\UserInterface;
  *       "default" = "Drupal\simple_oauth\Entity\Form\Oauth2ClientForm",
  *       "add" = "Drupal\simple_oauth\Entity\Form\Oauth2ClientForm",
  *       "edit" = "Drupal\simple_oauth\Entity\Form\Oauth2ClientForm",
- *       "delete" = "Drupal\simple_oauth\Entity\Form\Oauth2ClientDeleteForm",
+ *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
  *     },
  *     "access" = "Drupal\simple_oauth\AccessTokenAccessControlHandler",
  *   },
@@ -38,8 +38,9 @@ use Drupal\user\UserInterface;
  *   },
  *   links = {
  *     "canonical" = "/admin/content/simple_oauth/{oauth2_client}",
+ *     "collection" = "/admin/content/simple_oauth",
  *     "add-form" = "/admin/content/simple_oauth/{oauth2_client}/add",
- *     "edit-form" = "/admin/content/simple_oauth/{oauth2_client}",
+ *     "edit-form" = "/admin/content/simple_oauth/{oauth2_client}/edit",
  *     "delete-form" = "/admin/content/simple_oauth/{oauth2_client}/delete"
  *   }
  * )
