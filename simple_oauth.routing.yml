@@ -98,7 +98,7 @@ oauth2_token.token:
     _controller: 'Drupal\simple_oauth\Controller\Oauth2Token::token'
   methods: [POST]
   requirements:
-    _permission: 'access content'
+    _access: 'TRUE'
 
 oauth2_token.user_debug:
   path: '/oauth/debug'
@@ -110,4 +110,4 @@ oauth2_token.user_debug:
     _format: 'json'
   options:
     _admin_route: TRUE
-    _auth: [ 'oauth2' ]
+    _auth: ['oauth2']
