@@ -35,40 +35,50 @@ class RefreshFunctionalTest extends TokenBearerFunctionalTestBase {
   protected $refreshToken;
 
   /**
+   * @var \Drupal\simple_oauth\Entity\Oauth2TokenInterface
+   */
+  protected $accessTokenEntity;
+
+  /**
+   * @var \Drupal\simple_oauth\Entity\Oauth2TokenInterface
+   */
+  protected $refreshTokenEntity;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
 
     $expiration = (new \DateTime())->add(new \DateInterval('P1D'))->format('U');
-    $access_token_entity = Oauth2Token::create([
+    $this->accessTokenEntity = Oauth2Token::create([
       'bundle' => 'access_token',
-      'auth_user_id' => mt_rand(3, 20),
+      'auth_user_id' => $this->user->id(),
       'client' => ['target_id' => $this->client->id()],
       'scopes' => explode(' ', $this->scope),
-      'value' => $this->getRandomGenerator()->string(16),
+      'value' => base64_encode($this->getRandomGenerator()->string(16)),
       'expire' => $expiration,
       'status' => TRUE,
     ]);
-    $access_token_entity->save();
+    $this->accessTokenEntity->save();
 
-    $refresh_token_entity = Oauth2Token::create([
+    $this->refreshTokenEntity = Oauth2Token::create([
       'bundle' => 'refresh_token',
       'auth_user_id' => 0,
       'scopes' => explode(' ', $this->scope),
-      'value' => $this->getRandomGenerator()->string(16),
+      'value' => base64_encode($this->getRandomGenerator()->string(16)),
       'expire' => $expiration,
       'status' => TRUE,
     ]);
-    $refresh_token_entity->save();
+    $this->refreshTokenEntity->save();
 
     $refresh_token_plain = json_encode([
       'client_id' => $this->client->uuid(),
-      'refresh_token_id' => $refresh_token_entity->get('value')->value,
-      'access_token_id' => $access_token_entity->get('value')->value,
+      'refresh_token_id' => $this->refreshTokenEntity->get('value')->value,
+      'access_token_id' => $this->accessTokenEntity->get('value')->value,
       'scopes' => explode(' ', $this->scope),
-      'user_id' => $access_token_entity->get('auth_user_id')->target_id,
-      'expire_time' => $refresh_token_entity->get('expire')->value,
+      'user_id' => $this->accessTokenEntity->get('auth_user_id')->target_id,
+      'expire_time' => $this->refreshTokenEntity->get('expire')->value,
     ]);
 
     // Encrypt the token.
@@ -95,13 +105,35 @@ class RefreshFunctionalTest extends TokenBearerFunctionalTestBase {
     $this->assertValidTokenResponse($response, TRUE);
 
     // 2. Test the valid without scopes.
-    $payload_no_scope = $valid_payload;
-    unset($payload_no_scope['scope']);
+    // We need to use the new refresh token, the old one is revoked.
+    $response->getBody()->rewind();
+    $parsed_response = Json::decode($response->getBody()->getContents());
+    $valid_payload = [
+      'grant_type' => 'refresh_token',
+      'client_id' => $this->client->uuid(),
+      'client_secret' => $this->clientSecret,
+      'refresh_token' => $parsed_response['refresh_token'],
+      'scope' => $this->scope,
+    ];
     $response = $this->request('POST', $this->url, [
-      'form_params' => $payload_no_scope,
+      'form_params' => $valid_payload,
     ]);
     $this->assertValidTokenResponse($response, TRUE);
 
+    // 3. Test that the token token was revoked.
+    $valid_payload = [
+      'grant_type' => 'refresh_token',
+      'client_id' => $this->client->uuid(),
+      'client_secret' => $this->clientSecret,
+      'refresh_token' => $this->refreshToken,
+      'scope' => $this->scope,
+    ];
+    $response = $this->request('POST', $this->url, [
+      'form_params' => $valid_payload,
+    ]);
+    $parsed_response = Json::decode($response->getBody()->getContents());
+    $this->assertSame(400, $response->getStatusCode());
+    $this->assertSame('invalid_request', $parsed_response['error']);
   }
 
   /**
