@@ -106,7 +106,7 @@ oauth2_token.user_debug:
     _controller: 'Drupal\simple_oauth\Controller\Oauth2Token::debug'
   methods: [GET]
   requirements:
-    _permission: 'access content'
+    _access: 'TRUE'
     _format: 'json'
   options:
     _admin_route: TRUE

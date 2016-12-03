@@ -7,12 +7,4 @@ oauth2_token.authorize:
   requirements:
     _permission: 'access content'
   options:
-    _auth: [ 'cookie' ]
-
-oauth2_token.code_debug:
-  path: '/oauth/code-debug'
-  defaults:
-    _controller: 'Drupal\simple_oauth_3p\Controller\Oauth2Token3p::codeDebug'
-  methods: [ GET ]
-  requirements:
-    _permission: 'access content'
+    _auth: ['cookie']
