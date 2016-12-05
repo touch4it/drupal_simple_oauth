@@ -3,10 +3,7 @@
 namespace Drupal\Tests\simple_oauth\Functional;
 
 use Drupal\Component\Serialization\Json;
-use Drupal\Component\Uuid\Uuid;
-use Drupal\simple_oauth\Entities\RefreshTokenEntity;
 use Drupal\simple_oauth\Entity\Oauth2Token;
-use Drupal\user\RoleInterface;
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\CryptTrait;
 

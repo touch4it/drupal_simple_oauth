@@ -1,4 +1,4 @@
-oauth2_token.authorize:
+oauth2_token_3p.authorize:
   path: '/oauth/authorize'
   defaults:
    _form: '\Drupal\simple_oauth_3p\Controller\Oauth2AuthorizeForm'

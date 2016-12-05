@@ -205,7 +205,7 @@ class Oauth2AuthorizeForm extends FormBase {
     }
     elseif ($params = $form_state->getValue('redirect_params')) {
       $url = Url::fromRoute('user.login');
-      $destination = Url::fromRoute('oauth2_token.authorize', [], [
+      $destination = Url::fromRoute('oauth2_token_3p.authorize', [], [
         'query' => UrlHelper::parse('/?' . $params)['query'],
       ]);
       $url->setOption('query', [

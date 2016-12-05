@@ -1,8 +1,8 @@
 simple_oauth_3p.settings:
-  type: mapping
+  type: config_object
   label: 'Simple OAuth 3rd Party Settings'
   mapping:
     use_implicit:
-      type: integer
+      type: boolean
       label: 'Enable the implicit grant?'
       description: 'Only use the implicit grant if you understand the security implications of using it.'

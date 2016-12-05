@@ -3,7 +3,6 @@
 namespace Drupal\Tests\simple_oauth\Functional;
 
 use Drupal\Component\Serialization\Json;
-use Drupal\user\RoleInterface;
 
 /**
  * Class PasswordFunctionalTest

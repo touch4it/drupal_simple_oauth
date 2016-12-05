@@ -3,7 +3,6 @@
 namespace Drupal\Tests\simple_oauth\Functional;
 
 use Drupal\Component\Serialization\Json;
-use Drupal\user\RoleInterface;
 
 /**
  * Class ClientCredentialsFunctionalTest
@@ -21,11 +20,6 @@ class ClientCredentialsFunctionalTest extends TokenBearerFunctionalTestBase {
     'serialization',
     'text',
   ];
-
-  /**
-   * @var string
-   */
-  protected $path;
 
   /**
    * Test the valid ClientCredentials grant.

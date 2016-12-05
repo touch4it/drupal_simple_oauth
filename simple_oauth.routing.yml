@@ -109,5 +109,5 @@ oauth2_token.user_debug:
     _access: 'TRUE'
     _format: 'json'
   options:
-    _admin_route: TRUE
     _auth: ['oauth2']
+    no_cache: TRUE
