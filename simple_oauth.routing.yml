@@ -117,3 +117,11 @@ access_token.refresh:
     _controller: 'Drupal\simple_oauth\Controller\AccessTokenRefresh::refresh'
   requirements:
     _permission: 'refresh access token'
+
+access_token.issue:
+  path: '/simple-oauth'
+  defaults:
+    _controller: 'Drupal\simple_oauth\Controller\AccessTokenIssue::issue'
+  requirements:
+    _method: 'POST'
+    _access: 'TRUE'
