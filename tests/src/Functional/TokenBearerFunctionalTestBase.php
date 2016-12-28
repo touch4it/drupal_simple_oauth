@@ -13,7 +13,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use Psr\Http\Message\ResponseInterface;
 
-class TokenBearerFunctionalTestBase extends BrowserTestBase {
+abstract class TokenBearerFunctionalTestBase extends BrowserTestBase {
 
   /**
    * @var \Drupal\Core\Url
@@ -65,6 +65,8 @@ class TokenBearerFunctionalTestBase extends BrowserTestBase {
    */
   protected function setUp() {
     parent::setUp();
+
+    $this->htmlOutputEnabled = FALSE;
 
     $this->url = Url::fromRoute('oauth2_token.token');
 
