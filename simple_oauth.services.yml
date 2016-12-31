@@ -50,3 +50,6 @@ services:
       - '@simple_oauth.repositories.access_token'
       - '@simple_oauth.repositories.refresh_token'
       - '@config.factory'
+  simple_oauth.expired_collector:
+    class: Drupal\simple_oauth\ExpiredCollector
+    arguments: ['@entity_type.manager', '@datetime.time']

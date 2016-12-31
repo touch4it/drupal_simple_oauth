@@ -28,7 +28,9 @@ function simple_oauth_help($route_name, RouteMatchInterface $route_match) {
  * Implements hook_cron().
  */
 function simple_oauth_cron() {
-  // TODO: Remove revoked tokens from the storage.
+  // Collect all expired tokens and delete them.
+  $collector = \Drupal::service('simple_oauth.expired_collector');
+  $collector->deleteMultipleTokens($collector->collect());
 }
 
 /**
