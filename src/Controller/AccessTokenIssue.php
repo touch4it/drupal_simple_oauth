@@ -54,13 +54,13 @@ class AccessTokenIssue extends ControllerBase {
   public function issue(Request $request) {
     $body = Json::decode($request->getContent());
 
-    if (!$body->grant_type == 'password') {
+    if (!$body['grant_type'] == 'password') {
       throw new HttpException(422, 'Only grant_type=password is supported');
     }
 
     $scope = 'global';
-    if ($body->scope) {
-      $scope = $body->scope;
+    if (!empty($body['scope'])) {
+      $scope = $body['scope'];
       $resource = $this->entityManager->getStorage('access_token_resource')
         ->load($scope);
       if (!$resource) {
@@ -68,8 +68,10 @@ class AccessTokenIssue extends ControllerBase {
       }
     }
 
-    $uid = $this->userAuth->authenticate($body->username, $body->password);
-    if (!$uid) {
+    $uid = $this->userAuth->authenticate($body['username'], $body['password']);
+    /** @var \Drupal\user\UserInterface $user */
+    $user = $this->entityManager->getStorage('user')->load($uid);
+    if (!$user || $user->isBlocked()) {
       throw new HttpException(401, 'Authentication failed.');
     }
     $values = [
