@@ -7,7 +7,7 @@ use Drupal\user\EntityOwnerInterface;
 use Drupal\user\UserInterface;
 
 /**
- * Provides an interface for defining Access Token entities.
+ * Provides an interface defining Access Token entities.
  *
  * @ingroup simple_oauth
  */
