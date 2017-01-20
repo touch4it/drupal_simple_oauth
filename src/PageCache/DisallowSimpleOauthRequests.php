@@ -8,9 +8,7 @@ use Drupal\simple_oauth\Server\ResourceServerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class DisallowSimpleOauthRequests.
- *
- * @package Drupal\simple_oauth\PageCache
+ * @internal
  */
 class DisallowSimpleOauthRequests implements RequestPolicyInterface {
 

@@ -6,9 +6,7 @@ use Drupal\Core\Authentication\AuthenticationProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class SimpleOauthAuthenticationProviderInterface.
- *
- * @package Drupal\simple_oauth\Authentication\Provider
+ * @internal
  */
 interface SimpleOauthAuthenticationProviderInterface extends AuthenticationProviderInterface {
 

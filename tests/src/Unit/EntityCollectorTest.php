@@ -12,10 +12,6 @@ use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 
 /**
- * Class EntityCollectorTest.
- *
- * @package Drupal\Tests\simple_oauth\Unit
- *
  * @coversDefaultClass \Drupal\simple_oauth\ExpiredCollector
  * @group simple_oauth
  */

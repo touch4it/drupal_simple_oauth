@@ -25,8 +25,8 @@ class ClientEntity implements ClientEntityInterface {
     $this->entity = $entity;
     $this->setIdentifier($entity->uuid());
     $this->setName($entity->label());
-    if ($uri = $entity->get('redirect')) {
-      $this->setRedirectUri($uri->value);
+    if ($entity->hasField('redirect')) {
+      $this->redirectUri = $entity->get('redirect')->value;
     }
   }
 
@@ -35,13 +35,6 @@ class ClientEntity implements ClientEntityInterface {
    */
   public function setName($name) {
     $this->name = $name;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setRedirectUri($uri) {
-    $this->redirectUri = $uri;
   }
 
   /**

@@ -43,7 +43,7 @@ class ClientRepository implements ClientRepositoryInterface {
     $client_drupal_entity = reset($client_drupal_entities);
 
     if (
-      $must_validate_secret && $client_drupal_entity->get('confidential')->value &&
+      $must_validate_secret && $client_drupal_entity->isConfidential() &&
       $this->passwordChecker->check($client_secret, $client_drupal_entity->getSecret()) === FALSE
     ) {
       return NULL;

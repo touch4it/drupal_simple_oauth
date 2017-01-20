@@ -16,14 +16,6 @@ interface ClientEntityInterface extends LeagueClientEntityInterface {
   public function setName($name);
 
   /**
-   * Set the URI for the redirection.
-   *
-   * @param string $uri
-   *   The URI to set.
-   */
-  public function setRedirectUri($uri);
-
-  /**
    * Returns the associated Drupal entity.
    *
    * @return \Drupal\simple_oauth\Entity\Oauth2ClientInterface

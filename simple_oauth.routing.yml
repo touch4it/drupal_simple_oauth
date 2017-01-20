@@ -99,15 +99,3 @@ oauth2_token.token:
   methods: [POST]
   requirements:
     _access: 'TRUE'
-
-oauth2_token.user_debug:
-  path: '/oauth/debug'
-  defaults:
-    _controller: 'Drupal\simple_oauth\Controller\Oauth2Token::debug'
-  methods: [GET]
-  requirements:
-    _access: 'TRUE'
-    _format: 'json'
-  options:
-    _auth: ['oauth2']
-    no_cache: TRUE

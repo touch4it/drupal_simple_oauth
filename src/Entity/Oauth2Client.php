@@ -106,42 +106,6 @@ class Oauth2Client extends ContentEntityBase implements Oauth2ClientInterface {
       ))
       ->setDisplayConfigurable('form', TRUE);
 
-    $fields['description'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Description'))
-      ->setDescription(t('A description of the client. This text will be shown to the users to authorize sharing their data to create an access token.'))
-      ->setTranslatable(TRUE)
-      ->setDisplayOptions('view', array(
-        'label' => 'hidden',
-        'type' => 'text_default',
-        'weight' => 0,
-      ))
-      ->setDisplayConfigurable('view', TRUE)
-      ->setDisplayOptions('form', array(
-        'type' => 'text_textfield',
-        'weight' => 0,
-      ))
-      ->setDisplayConfigurable('form', TRUE);
-
-    $fields['image'] = BaseFieldDefinition::create('image')
-      ->setLabel(t('Logo'))
-      ->setDescription(t('Logo of the client. This text will be shown to the users to authorize sharing their data to create an access token.'))
-      ->setRevisionable(TRUE)
-      ->setDisplayOptions('view', array(
-        'label' => 'hidden',
-        'type' => 'image',
-        'weight' => -3,
-      ))
-      ->setDisplayOptions('form', array(
-        'type' => 'image',
-        'weight' => -3,
-        'settings' => array(
-          'preview_image_style' => 'thumbnail',
-          'progress_indicator' => 'throbber',
-        ),
-      ))
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
-
     $fields['secret'] = BaseFieldDefinition::create('password')
       ->setLabel(new TranslatableMarkup('Secret'))
       ->setDescription(new TranslatableMarkup('The secret key of this client (hashed).'));
@@ -160,46 +124,6 @@ class Oauth2Client extends ContentEntityBase implements Oauth2ClientInterface {
       ->setRevisionable(TRUE)
       ->setTranslatable(TRUE)
       ->setDefaultValue(TRUE);
-
-    $fields['redirect'] = BaseFieldDefinition::create('uri')
-      ->setLabel(new TranslatableMarkup('Redirect URI'))
-      ->setDescription(new TranslatableMarkup('The URI this client will redirect to when needed.'))
-      ->setDisplayOptions('view', [
-        'label' => 'inline',
-        'weight' => 4,
-      ])
-      ->setDisplayOptions('form', [
-        'weight' => 4,
-      ])
-      ->setDisplayConfigurable('view', TRUE)
-      ->setTranslatable(TRUE)
-      // URIs are not length limited by RFC 2616, but we can only store 255
-      // characters in our comment DB schema.
-      ->setSetting('max_length', 255);
-
-    $fields['user_id'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(new TranslatableMarkup('User'))
-      ->setDescription(new TranslatableMarkup('When no specific user is authenticated Drupal will use this user as the author of all the actions made.'))
-      ->setRevisionable(TRUE)
-      ->setSetting('target_type', 'user')
-      ->setSetting('handler', 'default')
-      ->setTranslatable(FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'inline',
-        'type' => 'entity_reference_label',
-        'weight' => 1,
-      ])
-      ->setCardinality(1)
-      ->setDisplayOptions('form', [
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 0,
-        'settings' => [
-          'match_operator' => 'CONTAINS',
-          'size' => '60',
-          'autocomplete_type' => 'tags',
-          'placeholder' => '',
-        ],
-      ]);
 
     $fields['roles'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(new TranslatableMarkup('Scopes'))
@@ -295,6 +219,13 @@ class Oauth2Client extends ContentEntityBase implements Oauth2ClientInterface {
    */
   public static function getCurrentUserId() {
     return [\Drupal::currentUser()->id()];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isConfidential() {
+    return (bool) $this->get('confidential')->value;
   }
 
 }

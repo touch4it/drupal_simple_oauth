@@ -9,10 +9,6 @@ use Drupal\Tests\UnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class SimpleOauthAuthenticationTest.
- *
- * @package Drupal\Tests\simple_oauth\Unit\Authentication\Provider
- *
  * @coversDefaultClass \Drupal\simple_oauth\Authentication\Provider\SimpleOauthAuthenticationProvider
  * @group simple_oauth
  */

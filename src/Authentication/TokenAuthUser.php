@@ -11,9 +11,7 @@ use Drupal\user\UserInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 
 /**
- * Class TokenAuthUser.
- *
- * @package Drupal\simple_oauth\Authentication
+ * @internal
  */
 class TokenAuthUser implements TokenAuthUserInterface {
 

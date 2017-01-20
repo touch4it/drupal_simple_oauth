@@ -5,25 +5,6 @@
  * Contains simple_oauth.module..
  */
 
-use Drupal\Core\Routing\RouteMatchInterface;
-use \Drupal\Core\Render\Element;
-
-/**
- * Implements hook_help().
- */
-function simple_oauth_help($route_name, RouteMatchInterface $route_match) {
-  switch ($route_name) {
-    // Main module help for the simple_oauth module.
-    case 'help.page.simple_oauth':
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('The OAuth 2.0 Authorization Framework: Bearer Token Usage') . '</p>';
-      return $output;
-
-    default:
-  }
-}
-
 /**
  * Implements hook_cron().
  */
@@ -31,40 +12,4 @@ function simple_oauth_cron() {
   // Collect all expired tokens and delete them.
   $collector = \Drupal::service('simple_oauth.expired_collector');
   $collector->deleteMultipleTokens($collector->collect());
-}
-
-/**
- * Implements hook_theme().
- */
-function simple_oauth_theme($existing, $type, $theme, $path) {
-  return array(
-    'oauth2_client' => [
-      'render element' => 'elements',
-    ]
-  );
-}
-
-/**
- * Prepares variables for oauth2_client templates.
- *
- * Default template: oauth2-client.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - elements: An array of elements to display in view mode.
- *   - node: The node object.
- *   - view_mode: View mode; e.g., 'full', 'teaser', etc.
- */
-function template_preprocess_oauth2_client(&$variables) {
-  $variables['client'] = $variables['elements']['#oauth2_client'];
-  $variables['view_mode'] = $variables['elements']['#view_mode'];
-  $variables['label'] = $variables['elements']['label'];
-  $variables['description'] = $variables['elements']['description'];
-  $variables['image'] = $variables['elements']['image'];
-
-  // Helpful $content variable for templates.
-  $variables += array('content' => array());
-  foreach (Element::children($variables['elements']) as $key) {
-    $variables['content'][$key] = $variables['elements'][$key];
-  }
 }

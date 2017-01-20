@@ -97,7 +97,6 @@ abstract class TokenBearerFunctionalTestBase extends BrowserTestBase {
     $this->client = Oauth2Client::create([
       'owner_id' => '',
       'label' => $this->getRandomGenerator()->name(),
-      'description' => $this->getRandomGenerator()->paragraphs(),
       'secret' => $this->clientSecret,
       'confidential' => TRUE,
       'roles' => [['target_id' => $client_role->id()]],

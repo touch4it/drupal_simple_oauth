@@ -1,26 +1,20 @@
 <?php
 
 
-namespace Drupal\simple_oauth\Plugin\Oauth2Grant;
+namespace Drupal\simple_oauth_extras\Plugin\Oauth2Grant;
 
 use Drupal\simple_oauth\Plugin\Oauth2GrantBase;
-use League\OAuth2\Server\Grant\PasswordGrant;
+use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @Oauth2Grant(
- *   id = "password",
- *   label = @Translation("Password")
+ *   id = "client_credentials",
+ *   label = @Translation("Client Credentials")
  * )
  */
-class Password extends Oauth2GrantBase {
-
-  /**
-   * @var \League\OAuth2\Server\Repositories\UserRepositoryInterface
-   */
-  protected $userRepository;
+class ClientCredentials extends Oauth2GrantBase {
 
   /**
    * @var \League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface
@@ -30,9 +24,8 @@ class Password extends Oauth2GrantBase {
   /**
    * Class constructor.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, UserRepositoryInterface $user_repository, RefreshTokenRepositoryInterface $refresh_token_repository) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RefreshTokenRepositoryInterface $refresh_token_repository) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->userRepository = $user_repository;
     $this->refreshTokenRepository = $refresh_token_repository;
   }
 
@@ -44,7 +37,6 @@ class Password extends Oauth2GrantBase {
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('simple_oauth.repositories.user'),
       $container->get('simple_oauth.repositories.refresh_token')
     );
   }
@@ -53,7 +45,7 @@ class Password extends Oauth2GrantBase {
    * {@inheritdoc}
    */
   public function getGrantType() {
-    return new PasswordGrant($this->userRepository, $this->refreshTokenRepository);
+    return new ClientCredentialsGrant();
   }
 
 }

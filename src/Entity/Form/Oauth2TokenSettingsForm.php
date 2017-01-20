@@ -6,11 +6,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Class Oauth2TokenSettingsForm.
- *
- * @package Drupal\simple_oauth\Form
- *
- * @ingroup simple_oauth
+ * @internal
  */
 class Oauth2TokenSettingsForm extends FormBase {
   /**
@@ -56,12 +52,6 @@ class Oauth2TokenSettingsForm extends FormBase {
       '#title' => $this->t('Expiration time'),
       '#description' => $this->t('The default value, in seconds, to be used as expiration time when creating new tokens.'),
       '#default_value' => $this->config('simple_oauth.settings')->get('expiration'),
-    ];
-    $form['use_implicit'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Enable the implicit grant?'),
-      '#description' => $this->t('The implicit grant has the potential to be used in an insecure way. Only enable this if you understand the risks. See https://tools.ietf.org/html/rfc6819#section-4.4.2 for more information.'),
-      '#default_value' => $this->config('simple_oauth.settings')->get('use_implicit'),
     ];
     $form['public_key'] = [
       '#type' => 'textfield',

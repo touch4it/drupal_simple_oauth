@@ -20,19 +20,12 @@ class Oauth2Token extends ControllerBase {
   protected $grantManager;
 
   /**
-   * @var \Drupal\user\PermissionHandlerInterface
-   */
-  protected $userPermissions;
-
-  /**
    * Oauth2Token constructor.
    *
    * @param \Drupal\simple_oauth\Plugin\Oauth2GrantManagerInterface $grant_manager
-   * @param \Drupal\user\PermissionHandlerInterface $user_permissions
    */
-  public function __construct(Oauth2GrantManagerInterface $grant_manager, PermissionHandlerInterface $user_permissions) {
+  public function __construct(Oauth2GrantManagerInterface $grant_manager) {
     $this->grantManager = $grant_manager;
-    $this->userPermissions = $user_permissions;
   }
 
   /**
@@ -40,8 +33,7 @@ class Oauth2Token extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('plugin.manager.oauth2_grant.processor'),
-      $container->get('user.permissions')
+      $container->get('plugin.manager.oauth2_grant.processor')
     );
   }
 
@@ -74,31 +66,6 @@ class Oauth2Token extends ControllerBase {
   protected function handleToken(ServerRequestInterface $psr7_request, AuthorizationServer $auth_server) {
     // Instantiate a new PSR-7 response object so the library can fill it.
     return $auth_server->respondToAccessTokenRequest($psr7_request, new Response());
-  }
-
-  /**
-   * Processes a GET request.
-   */
-  public function debug(ServerRequestInterface $request) {
-    $user = $this->currentUser();
-    $permissions_list = $this->userPermissions->getPermissions();
-    $permission_info = [];
-    // Loop over all the permissions and check if the user has access or not.
-    foreach ($permissions_list as $permission_id => $permission) {
-      $permission_info[$permission_id] = [
-        'title' => $permission['title'],
-        'access' => $user->hasPermission($permission_id),
-      ];
-      if (!empty($permission['description'])) {
-        $permission_info['description'] = $permission['description'];
-      }
-    }
-    return new JsonResponse([
-      'token' => str_replace('Bearer ', '', $request->getHeader('Authorization')),
-      'id' => $user->id(),
-      'roles' => $user->getRoles(),
-      'permissions' => $permission_info,
-    ]);
   }
 
 }

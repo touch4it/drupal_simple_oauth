@@ -1,44 +1,39 @@
 <?php
 
-namespace Drupal\Tests\simple_oauth\Functional;
+namespace Drupal\Tests\simple_oauth_extras\Functional;
 
 use Drupal\Component\Serialization\Json;
+use Drupal\Tests\simple_oauth\Functional\TokenBearerFunctionalTestBase;
 
 /**
- * @group simple_oauth
+ * @group simple_oauth_extras
  */
-class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
+class ClientCredentialsFunctionalTest extends TokenBearerFunctionalTestBase {
 
   public static $modules = [
     'image',
     'node',
-    'simple_oauth',
     'serialization',
+    'simple_oauth',
+    'simple_oauth_extras',
     'text',
   ];
 
   /**
-   * @var string
+   * Test the valid ClientCredentials grant.
    */
-  protected $path;
-
-  /**
-   * Test the valid Password grant.
-   */
-  public function testPasswordGrant() {
+  public function testClientCredentialsGrant() {
     // 1. Test the valid response.
     $valid_payload = [
-      'grant_type' => 'password',
+      'grant_type' => 'client_credentials',
       'client_id' => $this->client->uuid(),
       'client_secret' => $this->clientSecret,
-      'username' => $this->user->getAccountName(),
-      'password' => $this->user->pass_raw,
       'scope' => $this->scope,
     ];
     $response = $this->request('POST', $this->url, [
       'form_params' => $valid_payload,
     ]);
-    $this->assertValidTokenResponse($response, TRUE);
+    $this->assertValidTokenResponse($response, FALSE);
 
     // 2. Test the valid without scopes.
     $payload_no_scope = $valid_payload;
@@ -46,20 +41,18 @@ class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
     $response = $this->request('POST', $this->url, [
       'form_params' => $payload_no_scope,
     ]);
-    $this->assertValidTokenResponse($response, TRUE);
+    $this->assertValidTokenResponse($response, FALSE);
 
   }
 
   /**
-   * Test invalid Password grant.
+   * Test invalid ClientCredentials grant.
    */
-  public function testMissingPasswordGrant() {
+  public function testMissingClientCredentialsGrant() {
     $valid_payload = [
-      'grant_type' => 'password',
+      'grant_type' => 'client_credentials',
       'client_id' => $this->client->uuid(),
       'client_secret' => $this->clientSecret,
-      'username' => $this->user->getAccountName(),
-      'password' => $this->user->pass_raw,
       'scope' => $this->scope,
     ];
 
@@ -75,14 +68,6 @@ class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
       'client_secret' => [
         'error' => 'invalid_client',
         'code' => 401,
-      ],
-      'username' => [
-        'error' => 'invalid_request',
-        'code' => 400,
-      ],
-      'password' => [
-        'error' => 'invalid_request',
-        'code' => 400,
       ],
     ];
     foreach ($data as $key => $value) {
@@ -98,15 +83,13 @@ class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
   }
 
   /**
-   * Test invalid Password grant.
+   * Test invalid ClientCredentials grant.
    */
-  public function testInvalidPasswordGrant() {
+  public function testInvalidClientCredentialsGrant() {
     $valid_payload = [
-      'grant_type' => 'password',
+      'grant_type' => 'client_credentials',
       'client_id' => $this->client->uuid(),
       'client_secret' => $this->clientSecret,
-      'username' => $this->user->getAccountName(),
-      'password' => $this->user->pass_raw,
       'scope' => $this->scope,
     ];
 
@@ -121,14 +104,6 @@ class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
       ],
       'client_secret' => [
         'error' => 'invalid_client',
-        'code' => 401,
-      ],
-      'username' => [
-        'error' => 'invalid_credentials',
-        'code' => 401,
-      ],
-      'password' => [
-        'error' => 'invalid_credentials',
         'code' => 401,
       ],
     ];

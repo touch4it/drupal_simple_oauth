@@ -9,9 +9,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class SimpleOauthAuthenticationProvider.
- *
- * @package Drupal\simple_oauth\Authentication\Provider
+ * @internal
  */
 class SimpleOauthAuthenticationProvider implements SimpleOauthAuthenticationProviderInterface {
 

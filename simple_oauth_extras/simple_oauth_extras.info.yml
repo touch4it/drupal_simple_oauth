@@ -1,0 +1,7 @@
+name: Simple OAuth Extras
+type: module
+description: OAuth2 extra access grants.
+core: 8.x
+package: Authentication
+dependencies:
+  - simple_oauth

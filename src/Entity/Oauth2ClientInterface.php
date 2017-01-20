@@ -50,4 +50,14 @@ interface Oauth2ClientInterface extends ContentEntityInterface, EntityOwnerInter
    */
   public function setDefaultUser(UserInterface $account);
 
+  /**
+   * Checks if the current entity is confidential.
+   *
+   * A confidential client is one that requires the secret to be validated.
+   *
+   * @return bool
+   *   TRUE if it is confidential. FALSE otherwise.
+   */
+  public function isConfidential();
+
 }

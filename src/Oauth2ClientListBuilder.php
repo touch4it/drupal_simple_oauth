@@ -21,7 +21,7 @@ class Oauth2ClientListBuilder extends EntityListBuilder {
     $header['uuid'] = $this->t('UUID');
     $header['label'] = $this->t('Label');
     $header['confidential'] = $this->t('Confidentiality');
-    $header['redirect'] = $this->t('Redirect');
+//    $header['redirect'] = $this->t('Redirect');
     return $header + parent::buildHeader();
   }
 
@@ -34,14 +34,14 @@ class Oauth2ClientListBuilder extends EntityListBuilder {
     $row['label'] = Link::createFromRoute($entity->label(), 'entity.oauth2_client.edit_form', array(
       'oauth2_client' => $entity->id(),
     ));
-    $row['confidential'] = $entity->get('confidential')->value ?
+    $row['confidential'] = $entity->isConfidential() ?
       $this->t('Confidential') :
       $this->t('Not Confidential');
 
-    $row['redirect'] = NULL;
-    if ($redirect_url = $entity->get('redirect')->value) {
-      $row['redirect'] = Link::fromTextAndUrl($redirect_url, Url::fromUri($redirect_url));
-    }
+//    $row['redirect'] = NULL;
+//    if ($redirect_url = $entity->get('redirect')->value) {
+//      $row['redirect'] = Link::fromTextAndUrl($redirect_url, Url::fromUri($redirect_url));
+//    }
 
     return $row + parent::buildRow($entity);
   }
