@@ -53,3 +53,7 @@ services:
   simple_oauth.expired_collector:
     class: Drupal\simple_oauth\ExpiredCollector
     arguments: ['@entity_type.manager', '@datetime.time']
+  simple_oauth.http_middleware.basic_auth_swap:
+    class: Drupal\simple_oauth\HttpMiddleware\BasicAuthSwap
+    tags:
+      - { name: http_middleware }

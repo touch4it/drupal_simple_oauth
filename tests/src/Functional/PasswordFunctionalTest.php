@@ -26,7 +26,7 @@ class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
    * Test the valid Password grant.
    */
   public function testPasswordGrant() {
-    // 1. Test the valid response.
+    // 1. Test the valid request.
     $valid_payload = [
       'grant_type' => 'password',
       'client_id' => $this->client->uuid(),
@@ -40,7 +40,7 @@ class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
     ]);
     $this->assertValidTokenResponse($response, TRUE);
 
-    // 2. Test the valid without scopes.
+    // 2. Test the valid request without scopes.
     $payload_no_scope = $valid_payload;
     unset($payload_no_scope['scope']);
     $response = $this->request('POST', $this->url, [
@@ -48,6 +48,18 @@ class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
     ]);
     $this->assertValidTokenResponse($response, TRUE);
 
+    // 3. Test valid request using HTTP Basic Auth.
+    $payload_no_client = $valid_payload;
+    unset($payload_no_client['client_id']);
+    unset($payload_no_client['client_secret']);
+    $response = $this->request('POST', $this->url, [
+      'form_params' => $payload_no_scope,
+      'auth' => [
+        $this->client->uuid(),
+        $this->clientSecret,
+      ]
+    ]);
+    $this->assertValidTokenResponse($response, TRUE);
   }
 
   /**
