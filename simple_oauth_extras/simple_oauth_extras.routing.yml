@@ -5,7 +5,7 @@ oauth2_token_extras.authorize:
    _title: 'Grant Access to Client'
   methods: [GET, POST]
   requirements:
-    _permission: 'access content'
+    _access: 'TRUE'
   options:
     _auth: ['cookie']
 
