@@ -89,7 +89,7 @@ class Oauth2GrantManager extends DefaultPluginManager implements Oauth2GrantMana
     $this->refreshTokenRepository = $refresh_token_repository;
     $settings = $config_factory->get('simple_oauth.settings');
     $this->setKeyPaths($settings);
-    $this->expiration = new \DateInterval(sprintf('PT%dS', $settings->get('expiration')));
+    $this->expiration = new \DateInterval(sprintf('PT%dS', $settings->get('access_token_expiration')));
   }
 
   /**

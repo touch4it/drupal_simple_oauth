@@ -1,1 +1,2 @@
-expiration: 300
+access_token_expiration: 300
+refresh_token_expiration: 1209600

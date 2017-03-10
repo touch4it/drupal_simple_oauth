@@ -42,7 +42,7 @@ class AuthorizationCode extends Oauth2GrantBase {
     $this->authCodeRepository = $auth_code_repository;
     $this->refreshTokenRepository = $refresh_token_repository;
     // TODO: Make this configurable and not just the same as the access toke expiration.
-    $this->authCodeExpiration = new \DateInterval(sprintf('PT%dS', $settings->get('expiration')));
+    $this->authCodeExpiration = new \DateInterval(sprintf('PT%dS', $settings->get('access_token_expiration')));
   }
 
   /**

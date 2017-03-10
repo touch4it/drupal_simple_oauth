@@ -19,10 +19,14 @@ simple_oauth.settings:
   type: config_object
   label: 'Simple OAuth Settings'
   mapping:
-    expiration:
+    access_token_expiration:
       type: integer
-      label: 'Expiration Time'
-      description: 'The default period in seconds while a token is valid'
+      label: 'Access Token Expiration Time'
+      description: 'The default period in seconds while a access token is valid'
+    refresh_token_expiration:
+      type: integer
+      label: 'Refresh Token Expiration Time'
+      description: 'The default period in seconds while a refresh token is valid'
     public_key:
       type: path
       label: 'Public Key'

@@ -33,7 +33,7 @@ class Implicit extends Oauth2GrantBase {
     }
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $settings = $config_factory->get('simple_oauth.settings');
-    $this->expiration = new \DateInterval(sprintf('PT%dS', $settings->get('expiration')));
+    $this->expiration = new \DateInterval(sprintf('PT%dS', $settings->get('access_token_expiration')));
   }
 
   /**
