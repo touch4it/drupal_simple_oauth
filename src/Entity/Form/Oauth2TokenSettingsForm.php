@@ -2,13 +2,14 @@
 
 namespace Drupal\simple_oauth\Entity\Form;
 
-use Drupal\Core\Form\FormBase;
+use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
  * @internal
  */
-class Oauth2TokenSettingsForm extends FormBase {
+class Oauth2TokenSettingsForm extends ConfigFormBase {
+
   /**
    * Returns a unique string identifying the form.
    *
@@ -20,6 +21,13 @@ class Oauth2TokenSettingsForm extends FormBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected function getEditableConfigNames() {
+    return ['simple_oauth.settings'];
+  }
+
+  /**
    * Form submission handler.
    *
    * @param array $form
@@ -28,7 +36,7 @@ class Oauth2TokenSettingsForm extends FormBase {
    *   The current state of the form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $settings = $this->configFactory()->getEditable('simple_oauth.settings');
+    $settings = $this->config('simple_oauth.settings');
     $settings->set('access_token_expiration', $form_state->getValue('access_token_expiration'));
     $settings->set('refresh_token_expiration', $form_state->getValue('refresh_token_expiration'));
     $settings->set('public_key', $form_state->getValue('public_key'));
