@@ -77,8 +77,8 @@ class ClientCredentialsFunctionalTest extends TokenBearerFunctionalTestBase {
         'form_params' => $invalid_payload,
       ]);
       $parsed_response = Json::decode($response->getBody()->getContents());
-      $this->assertSame($value['code'], $response->getStatusCode(), sprintf('Correct status code %d for %s.', $value['code'], $key));
       $this->assertSame($value['error'], $parsed_response['error'], sprintf('Correct error code %s for %s.', $value['error'], $key));
+      $this->assertSame($value['code'], $response->getStatusCode(), sprintf('Correct status code %d for %s.', $value['code'], $key));
     }
   }
 
@@ -114,8 +114,8 @@ class ClientCredentialsFunctionalTest extends TokenBearerFunctionalTestBase {
         'form_params' => $invalid_payload,
       ]);
       $parsed_response = Json::decode($response->getBody()->getContents());
-      $this->assertSame($value['code'], $response->getStatusCode(), sprintf('Correct status code %d for %s.', $value['code'], $key));
       $this->assertSame($value['error'], $parsed_response['error'], sprintf('Correct error code %s for %s.', $value['error'], $key));
+      $this->assertSame($value['code'], $response->getStatusCode(), sprintf('Correct status code %d for %s.', $value['code'], $key));
     }
   }
 
