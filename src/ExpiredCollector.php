@@ -53,10 +53,7 @@ class ExpiredCollector {
     if (!$results = $query->execute()) {
       return [];
     }
-    /** @var \Drupal\simple_oauth\Entity\Oauth2TokenInterface[] $tokens */
-    $tokens = $this->tokenStorage->loadMultiple(array_values($results));
-
-    return $tokens;
+    return array_values($this->tokenStorage->loadMultiple(array_values($results)));
   }
 
   /**
@@ -70,9 +67,11 @@ class ExpiredCollector {
    */
   public function collectForAccount(AccountInterface $account) {
     $query = $this->tokenStorage->getQuery();
-    $entity_ids = $query->condition('auth_user_id', $account->id())->execute();
-    $results = $entity_ids ? $this->tokenStorage->loadMultiple($entity_ids) : [];
-    $output = array_values($results);
+    $query->condition('auth_user_id', $account->id());
+    $entity_ids = $query->execute();
+    $output = $entity_ids
+      ? array_values($this->tokenStorage->loadMultiple(array_values($entity_ids)))
+      : [];
     // Also collect the tokens of the clients that have this account as the
     // default user.
     $clients = array_values($this->clientStorage->loadByProperties([
@@ -80,9 +79,15 @@ class ExpiredCollector {
     ]));
     // Append all the tokens for each of the clients having this account as the
     // default.
-    return array_reduce($clients, function ($carry, $client) {
+    $tokens = array_reduce($clients, function ($carry, $client) {
       return array_merge($carry, $this->collectForClient($client));
     }, $output);
+    // Return a unique list.
+    $existing = [];
+    foreach ($tokens as $token) {
+      $existing[$token->id()] = $token;
+    }
+    return array_values($existing);
   }
 
   /**
@@ -96,8 +101,12 @@ class ExpiredCollector {
    */
   public function collectForClient(Oauth2ClientInterface $client) {
     $query = $this->tokenStorage->getQuery();
-    $entity_ids = $query->condition('client', $client->id())->execute();
-    $results = $entity_ids ? $this->tokenStorage->loadMultiple($entity_ids) : [];
+    $query->condition('client', $client->id());
+    if (!$entity_ids = $query->execute()) {
+      return [];
+    }
+    /** @var \Drupal\simple_oauth\Entity\Oauth2TokenInterface[] $results */
+    $results = $this->tokenStorage->loadMultiple(array_values($entity_ids));
     return array_values($results);
   }
 

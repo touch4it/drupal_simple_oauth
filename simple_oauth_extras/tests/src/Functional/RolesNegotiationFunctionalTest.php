@@ -10,7 +10,7 @@ use Drupal\Tests\simple_oauth\Functional\RequestHelperTrait;
 use Drupal\user\Entity\Role;
 
 /**
- * @group simple_oauth_extras_security
+ * @group simple_oauth_extras
  */
 class RolesNegotiationFunctionalTest extends BrowserTestBase {
 
