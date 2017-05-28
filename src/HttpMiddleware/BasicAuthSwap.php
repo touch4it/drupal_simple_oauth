@@ -3,9 +3,11 @@
 namespace Drupal\simple_oauth\HttpMiddleware;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+/**
+ * Uses the basic auth information to provide the client credentials for OAuth2.
+ */
 class BasicAuthSwap implements HttpKernelInterface {
 
   /**
@@ -33,14 +35,19 @@ class BasicAuthSwap implements HttpKernelInterface {
    * Basic Auth credentials from the request so that core authentication is
    * not performed later.
    *
-   * @param Request $request A Request instance
-   * @param int $type The type of the request
-   *   (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
-   * @param bool $catch Whether to catch exceptions or not
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The input request.
+   * @param int $type
+   *   The type of the request. One of HttpKernelInterface::MASTER_REQUEST or
+   *   HttpKernelInterface::SUB_REQUEST.
+   * @param bool $catch
+   *   Whether to catch exceptions or not.
    *
-   * @return Response A Response instance
+   * @throws \Exception
+   *   When an Exception occurs during processing.
    *
-   * @throws \Exception When an Exception occurs during processing
+   * @return \Symfony\Component\HttpFoundation\Response
+   *   A Response instance
    */
   public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = TRUE) {
     if (
@@ -59,4 +66,5 @@ class BasicAuthSwap implements HttpKernelInterface {
 
     return $this->httpKernel->handle($request, $type, $catch);
   }
+
 }

@@ -6,3 +6,4 @@ package: Authentication
 dependencies:
   - drupal:system (>=8.3)
   - serialization
+  - text

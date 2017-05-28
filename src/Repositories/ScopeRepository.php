@@ -47,18 +47,12 @@ class ScopeRepository implements ScopeRepositoryInterface {
    * add all the roles configured in the client.
    */
   public function finalizeScopes(array $scopes, $grant_type, ClientEntityInterface $client_entity, $user_identifier = NULL) {
-    if (!$user_identifier) {
-      // If there is no user identifier context then use the scopes unmodified.
-      return $scopes;
-    }
     /** @var \Drupal\user\UserInterface $user */
-    $user = $this->entityTypeManager->getStorage('user')
-      ->load($user_identifier);
+    $user = $user_identifier
+      ? $this->entityTypeManager->getStorage('user')->load($user_identifier)
+      : $client_entity->getDrupalEntity()->getDefaultUser();
     if (!$user) {
-      // Try to use the default user for the client.
-      if (!$user = $client_entity->getDrupalEntity()->getDefaultUser()) {
-        return [];
-      }
+      return [];
     }
 
     $role_ids = $user->getRoles();

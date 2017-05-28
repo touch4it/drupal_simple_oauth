@@ -133,7 +133,8 @@ class Oauth2GrantManager extends DefaultPluginManager implements Oauth2GrantMana
   }
 
   /**
-   * @throws
+   * @throws \League\OAuth2\Server\Exception\OAuthServerException
+   *   If one or both keys are not set properly.
    */
   protected function checkKeyPaths() {
     if (!file_exists($this->publicKeyPath) || !file_exists($this->privateKeyPath)) {
