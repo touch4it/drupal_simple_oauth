@@ -109,8 +109,8 @@ class Oauth2GrantManager extends DefaultPluginManager implements Oauth2GrantMana
       $this->clientRepository,
       $this->accessTokenRepository,
       $this->scopeRepository,
-      $this->privateKeyPath,
-      $this->publicKeyPath
+      realpath($this->privateKeyPath),
+      realpath($this->publicKeyPath)
     );
     // Enable the password grant on the server with a token TTL of X hours.
     $server->enableGrantType(

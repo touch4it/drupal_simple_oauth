@@ -39,7 +39,7 @@ class ResourceServer implements ResourceServerInterface {
     try {
       $this->subject = new LeageResourceServer(
         $access_token_repository,
-        $config_factory->get('simple_oauth.settings')->get('public_key')
+        realpath($config_factory->get('simple_oauth.settings')->get('public_key'))
       );
     }
     catch (\LogicException $exception) {}
