@@ -3,6 +3,7 @@ type: module
 description: 'The OAuth 2.0 Authorization Framework: Bearer Token Usage'
 core: 8.x
 package: Authentication
+configure: oauth2_token.settings
 dependencies:
   - drupal:system (>=8.3)
   - serialization
