@@ -42,6 +42,7 @@ class Oauth2TokenSettingsForm extends ConfigFormBase {
     $settings->set('public_key', $form_state->getValue('public_key'));
     $settings->set('private_key', $form_state->getValue('private_key'));
     $settings->save();
+    parent::submitForm($form, $form_state);
   }
 
   /**
@@ -84,11 +85,7 @@ class Oauth2TokenSettingsForm extends ConfigFormBase {
       '#element_validate' => ['::validateExistingFile'],
       '#required' => TRUE,
     ];
-    $form['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Save'),
-    ];
-    return $form;
+    return parent::buildForm($form, $form_state);
   }
 
   /**
@@ -104,8 +101,13 @@ class Oauth2TokenSettingsForm extends ConfigFormBase {
   public function validateExistingFile(&$element, FormStateInterface $form_state, &$complete_form) {
     if (!empty($element['#value'])) {
       $path = $element['#value'];
+      // Does the file exist?
       if (!file_exists($path)) {
         $form_state->setError($element, $this->t('The %field file does not exist.', ['%field' => $element['#title']]));
+      }
+      // Is the file readable?
+      if (!is_readable($path)) {
+        $form_state->setError($element, $this->t('The %field file at the specified location is not readable.', ['%field' => $element['#title']]));
       }
     }
   }
