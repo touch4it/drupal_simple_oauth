@@ -37,10 +37,12 @@ class ResourceServer implements ResourceServerInterface {
     HttpFoundationFactoryInterface $foundation_factory
   ) {
     try {
-      $this->subject = new LeageResourceServer(
-        $access_token_repository,
-        realpath($config_factory->get('simple_oauth.settings')->get('public_key'))
-      );
+      if ($public_key = $config_factory->get('simple_oauth.settings')->get('public_key')) {
+        $this->subject = new LeageResourceServer(
+          $access_token_repository,
+          realpath($public_key)
+        );
+      }
     }
     catch (\LogicException $exception) {}
     $this->messageFactory = $message_factory;
