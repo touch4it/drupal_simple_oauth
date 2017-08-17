@@ -23,13 +23,8 @@ class AuthCodeFunctionalTest extends TokenBearerFunctionalTestBase {
   protected $redirectUri;
 
   public static $modules = [
-    'image',
-    'node',
-    'simple_oauth',
     'simple_oauth_extras',
     'simple_oauth_extras_test',
-    'serialization',
-    'text',
   ];
 
   /**

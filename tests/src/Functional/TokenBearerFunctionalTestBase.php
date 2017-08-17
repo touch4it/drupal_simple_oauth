@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Drupal\Tests\simple_oauth\Functional;
 
 use Drupal\Component\Serialization\Json;
@@ -9,13 +8,19 @@ use Drupal\simple_oauth\Entity\Oauth2Client;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\user\Entity\Role;
 use Drupal\user\RoleInterface;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
 use Psr\Http\Message\ResponseInterface;
 
 abstract class TokenBearerFunctionalTestBase extends BrowserTestBase {
 
   use RequestHelperTrait;
+
+  public static $modules = [
+    'image',
+    'node',
+    'serialization',
+    'simple_oauth',
+    'text',
+  ];
 
   /**
    * @var \Drupal\Core\Url

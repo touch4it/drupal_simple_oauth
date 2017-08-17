@@ -51,6 +51,7 @@ class Oauth2Token extends ControllerBase {
       $response = $this->handleToken($request, $auth_server);
     }
     catch (OAuthServerException $exception) {
+      watchdog_exception('simple_oauth', $exception);
       $response = $exception->generateHttpResponse(new Response());
     }
     return $response;
