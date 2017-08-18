@@ -1,0 +1,5 @@
+entity.oauth2_client.collection:
+  title: 'Clients'
+  route_name: entity.oauth2_client.collection
+  description: 'List Clients'
+  base_route: oauth2_token.settings

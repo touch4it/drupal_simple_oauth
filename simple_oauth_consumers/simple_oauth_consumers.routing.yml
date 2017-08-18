@@ -1,0 +1,50 @@
+# Oauth2Client routing definition
+entity.oauth2_client.canonical:
+  path: '/admin/config/people/simple_oauth/oauth2_client/{oauth2_client}'
+  defaults:
+    _entity_view: 'oauth2_client'
+    _title: 'Oauth2 Client'
+  requirements:
+    _entity_access: 'oauth2_client.view'
+  options:
+    _admin_route: TRUE
+
+entity.oauth2_client.collection:
+  path: '/admin/config/people/simple_oauth/oauth2_client'
+  defaults:
+    _entity_list: 'oauth2_client'
+    _title: 'Client'
+  requirements:
+    _permission: 'administer simple_oauth entities'
+  options:
+    _admin_route: TRUE
+
+entity.oauth2_client.add_form:
+  path: '/admin/config/people/simple_oauth/oauth2_client/add'
+  defaults:
+    _entity_form: 'oauth2_client.add'
+    _title: 'Add Client'
+  requirements:
+    _permission: 'administer simple_oauth entities'
+  options:
+    _admin_route: TRUE
+
+entity.oauth2_client.edit_form:
+  path: '/admin/config/people/simple_oauth/oauth2_client/{oauth2_client}/edit'
+  defaults:
+    _entity_form: 'oauth2_client.edit'
+    _title: 'Edit Client'
+  requirements:
+    _permission: 'administer simple_oauth entities'
+  options:
+    _admin_route: TRUE
+
+entity.oauth2_client.delete_form:
+  path: '/admin/config/people/simple_oauth/oauth2_client/{oauth2_client}/delete'
+  defaults:
+    _entity_form: 'oauth2_client.delete'
+    _title: 'Delete Client'
+  requirements:
+    _permission: 'administer simple_oauth entities'
+  options:
+    _admin_route: TRUE

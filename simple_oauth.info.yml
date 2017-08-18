@@ -8,3 +8,4 @@ dependencies:
   - drupal:system (>=8.3)
   - serialization
   - text
+  - simple_oauth_consumers

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\simple_oauth\Entity;
+namespace Drupal\simple_oauth_consumers\Entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\user\EntityOwnerInterface;
@@ -27,7 +27,7 @@ interface Oauth2ClientInterface extends ContentEntityInterface, EntityOwnerInter
    * @param string $secret
    *   The new unhashed secret.
    *
-   * @return \Drupal\simple_oauth\Entity\Oauth2ClientInterface
+   * @return \Drupal\simple_oauth_consumers\Entity\Oauth2ClientInterface
    *   The called client entity.
    */
   public function setSecret($secret);

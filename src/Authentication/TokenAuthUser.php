@@ -39,7 +39,7 @@ class TokenAuthUser implements TokenAuthUserInterface {
    */
   public function __construct(Oauth2TokenInterface $token) {
     if (!$this->subject = $token->get('auth_user_id')->entity) {
-      /** @var \Drupal\simple_oauth\Entity\Oauth2ClientInterface $client */
+      /** @var \Drupal\simple_oauth_consumers\Entity\Oauth2ClientInterface $client */
       if ($client = $token->get('client')->entity) {
         $this->subject = $client->getDefaultUser();
       }

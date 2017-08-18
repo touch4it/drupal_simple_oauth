@@ -1,0 +1,15 @@
+add client entities:
+  title: 'Create new Client entities'
+
+administer client entities:
+  title: 'Administer Client entities'
+  description: 'Allow to access the administration form to configure Client entities.'
+
+delete own client entities:
+  title: 'Delete Client entities'
+
+update own client entities:
+  title: 'Edit Client entities'
+
+view own client entities:
+  title: 'View Client entities'

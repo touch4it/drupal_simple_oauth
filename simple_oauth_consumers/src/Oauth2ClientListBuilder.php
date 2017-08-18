@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\simple_oauth;
+namespace Drupal\simple_oauth_consumers;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
@@ -29,7 +29,7 @@ class Oauth2ClientListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /* @var $entity \Drupal\simple_oauth\Entity\Oauth2ClientInterface */
+    /* @var $entity \Drupal\simple_oauth_consumers\Entity\Oauth2ClientInterface */
     $row['uuid'] = $entity->uuid();
     $row['label'] = Link::createFromRoute($entity->label(), 'entity.oauth2_client.edit_form', array(
       'oauth2_client' => $entity->id(),

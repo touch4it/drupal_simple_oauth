@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Module installation file.
+ */
+
+/**
+ * Enable the Simple OAuth Consumers module.
+ */
+function simple_oauth_update_8200() {
+  \Drupal::service('module_installer')->install(['simple_oauth_consumers']);
+}

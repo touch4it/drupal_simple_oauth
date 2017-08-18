@@ -1,0 +1,8 @@
+name: Simple OAuth Consumers
+type: module
+description: 'Declare all the consumers of your API'
+core: 8.x
+package: Authentication
+configure: entity.oauth2_client.collection
+dependencies:
+  - text
