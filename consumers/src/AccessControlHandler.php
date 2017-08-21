@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\simple_oauth_consumers;
+namespace Drupal\consumers;
 
 use Drupal\Core\Entity\EntityAccessControlHandler;
 use Drupal\Core\Entity\EntityInterface;
@@ -10,7 +10,7 @@ use Drupal\Core\Access\AccessResult;
 /**
  * Access controller for the Access Token entity.
  *
- * @see \Drupal\simple_oauth_consumers\Entity\Oauth2Client.
+ * @see \Drupal\consumers\Entity\Oauth2Client.
  */
 class AccessControlHandler extends EntityAccessControlHandler {
 

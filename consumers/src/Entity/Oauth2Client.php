@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\simple_oauth_consumers\Entity;
+namespace Drupal\consumers\Entity;
 
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -20,14 +20,14 @@ use Drupal\user\UserInterface;
  *   id = "oauth2_client",
  *   label = @Translation("OAuth2 client"),
  *   handlers = {
- *     "list_builder" = "Drupal\simple_oauth_consumers\Oauth2ClientListBuilder",
+ *     "list_builder" = "Drupal\consumers\Oauth2ClientListBuilder",
  *     "form" = {
- *       "default" = "Drupal\simple_oauth_consumers\Entity\Form\Oauth2ClientForm",
- *       "add" = "Drupal\simple_oauth_consumers\Entity\Form\Oauth2ClientForm",
- *       "edit" = "Drupal\simple_oauth_consumers\Entity\Form\Oauth2ClientForm",
+ *       "default" = "Drupal\consumers\Entity\Form\Oauth2ClientForm",
+ *       "add" = "Drupal\consumers\Entity\Form\Oauth2ClientForm",
+ *       "edit" = "Drupal\consumers\Entity\Form\Oauth2ClientForm",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
  *     },
- *     "access" = "Drupal\simple_oauth_consumers\AccessControlHandler",
+ *     "access" = "Drupal\consumers\AccessControlHandler",
  *   },
  *   base_table = "oauth2_client",
  *   admin_permission = "administer simple_oauth entities",
@@ -76,7 +76,7 @@ class Oauth2Client extends ContentEntityBase implements Oauth2ClientInterface {
       ->setDescription(new TranslatableMarkup('The username of the client author.'))
       ->setRevisionable(TRUE)
       ->setSetting('target_type', 'user')
-      ->setDefaultValueCallback('Drupal\simple_oauth_consumers\Entity\Oauth2Client::getCurrentUserId')
+      ->setDefaultValueCallback('Drupal\consumers\Entity\Oauth2Client::getCurrentUserId')
       ->setTranslatable(TRUE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',

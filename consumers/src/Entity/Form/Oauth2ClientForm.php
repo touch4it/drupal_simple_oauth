@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\simple_oauth_consumers\Entity\Form;
+namespace Drupal\consumers\Entity\Form;
 
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
@@ -19,7 +19,7 @@ class Oauth2ClientForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    /* @var $entity \Drupal\simple_oauth_consumers\Entity\Oauth2ClientInterface */
+    /* @var $entity \Drupal\consumers\Entity\Oauth2ClientInterface */
     $form = parent::buildForm($form, $form_state);
     $entity = $this->entity;
 
