@@ -39,7 +39,7 @@ class ClientRepository implements ClientRepositoryInterface {
     if (empty($client_drupal_entities)) {
       return NULL;
     }
-    /** @var \Drupal\simple_oauth_consumers\Entity\Oauth2ClientInterface $client_drupal_entity */
+    /** @var \Drupal\consumers\Entity\Oauth2ClientInterface $client_drupal_entity */
     $client_drupal_entity = reset($client_drupal_entities);
 
     if (

@@ -2,7 +2,7 @@
 
 namespace Drupal\simple_oauth;
 
-use Drupal\simple_oauth_consumers\AccessControlHandler;
+use Drupal\consumers\AccessControlHandler;
 
 /**
  * Access controller for the Access Token entity.

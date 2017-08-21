@@ -6,7 +6,7 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Query\QueryException;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\simple_oauth_consumers\Entity\Oauth2ClientInterface;
+use Drupal\consumers\Entity\Oauth2ClientInterface;
 
 /**
  * Service in charge of deleting or expiring tokens that cannot be used anymore.
@@ -101,7 +101,7 @@ class ExpiredCollector {
   /**
    * Collect all the tokens associated a particular client.
    *
-   * @param \Drupal\simple_oauth_consumers\Entity\Oauth2ClientInterface $client
+   * @param \Drupal\consumers\Entity\Oauth2ClientInterface $client
    *   The account.
    *
    * @return \Drupal\simple_oauth\Entity\Oauth2TokenInterface[]

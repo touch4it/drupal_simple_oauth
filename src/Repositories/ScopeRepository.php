@@ -65,7 +65,7 @@ class ScopeRepository implements ScopeRepositoryInterface {
     // Make sure that the Authenticated role is added as well.
     $scopes = $this->addRoleToScopes($scopes, RoleInterface::AUTHENTICATED_ID);
     // Make sure that the client roles are added to the scopes as well.
-    /** @var \Drupal\simple_oauth_consumers\Entity\Oauth2ClientInterface $client_drupal_entity */
+    /** @var \Drupal\consumers\Entity\Oauth2ClientInterface $client_drupal_entity */
     $client_drupal_entity = $client_entity->getDrupalEntity();
     $scopes = array_reduce($client_drupal_entity->get('roles')->getValue(), function ($scopes, $role_id) {
       return $this->addRoleToScopes($scopes, $role_id['target_id']);

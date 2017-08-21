@@ -4,7 +4,7 @@ namespace Drupal\Tests\simple_oauth\Functional;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Url;
-use Drupal\simple_oauth_consumers\Entity\Oauth2Client;
+use Drupal\consumers\Entity\Oauth2Client;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\user\Entity\Role;
 use Drupal\user\RoleInterface;
@@ -35,7 +35,7 @@ abstract class TokenBearerFunctionalTestBase extends BrowserTestBase {
   protected $url;
 
   /**
-   * @var \Drupal\simple_oauth_consumers\Entity\Oauth2ClientInterface
+   * @var \Drupal\consumers\Entity\Oauth2ClientInterface
    */
   protected $client;
 

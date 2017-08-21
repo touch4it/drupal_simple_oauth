@@ -7,7 +7,7 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\simple_oauth_consumers\Entity\Oauth2ClientInterface;
+use Drupal\consumers\Entity\Oauth2ClientInterface;
 
 /**
  * Implements hook_cron().
