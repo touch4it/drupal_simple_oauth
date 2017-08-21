@@ -49,7 +49,7 @@ class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
       'auth' => [
         $this->client->uuid(),
         $this->clientSecret,
-      ]
+      ],
     ]);
     $this->assertValidTokenResponse($response, TRUE);
   }

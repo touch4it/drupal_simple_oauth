@@ -13,7 +13,7 @@ use Drupal\user\RoleInterface;
 class AuthCodeFunctionalTest extends TokenBearerFunctionalTestBase {
 
   /**
-   * @var \Drupal\Core\Url;
+   * @var \Drupal\Core\Url
    */
   protected $authorizeUrl;
 

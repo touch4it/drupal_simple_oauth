@@ -88,7 +88,7 @@ class RefreshFunctionalTest extends TokenBearerFunctionalTestBase {
       'form_params' => $valid_payload,
     ]);
     $parsed_response = Json::decode($response->getBody()->getContents());
-    $this->assertSame(400, $response->getStatusCode());
+    $this->assertSame(401, $response->getStatusCode());
     $this->assertSame('invalid_request', $parsed_response['error']);
   }
 
@@ -161,7 +161,7 @@ class RefreshFunctionalTest extends TokenBearerFunctionalTestBase {
       ],
       'refresh_token' => [
         'error' => 'invalid_request',
-        'code' => 400,
+        'code' => 401,
       ],
     ];
     foreach ($data as $key => $value) {
