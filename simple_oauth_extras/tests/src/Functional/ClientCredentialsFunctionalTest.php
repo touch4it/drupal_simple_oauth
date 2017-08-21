@@ -11,12 +11,7 @@ use Drupal\Tests\simple_oauth\Functional\TokenBearerFunctionalTestBase;
 class ClientCredentialsFunctionalTest extends TokenBearerFunctionalTestBase {
 
   public static $modules = [
-    'image',
-    'node',
-    'serialization',
-    'simple_oauth',
     'simple_oauth_extras',
-    'text',
   ];
 
   /**

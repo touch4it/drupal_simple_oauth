@@ -2,20 +2,20 @@
 
 namespace Drupal\simple_oauth\Plugin;
 
+use Defuse\Crypto\Core;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Site\Settings;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
-use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 
 /**
  * Provides the OAuth2 Grant plugin manager.
@@ -105,12 +105,13 @@ class Oauth2GrantManager extends DefaultPluginManager implements Oauth2GrantMana
     }
 
     $this->checkKeyPaths();
+    $salt = Settings::getHashSalt();
     $server = new AuthorizationServer(
       $this->clientRepository,
       $this->accessTokenRepository,
       $this->scopeRepository,
       realpath($this->privateKeyPath),
-      realpath($this->publicKeyPath)
+      Core::ourSubstr($salt, 0, 32)
     );
     // Enable the password grant on the server with a token TTL of X hours.
     $server->enableGrantType(

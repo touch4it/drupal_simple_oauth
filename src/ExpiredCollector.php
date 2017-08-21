@@ -4,6 +4,7 @@ namespace Drupal\simple_oauth;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\Query\QueryException;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\simple_oauth\Entity\Oauth2ClientInterface;
 
@@ -74,9 +75,16 @@ class ExpiredCollector {
       : [];
     // Also collect the tokens of the clients that have this account as the
     // default user.
-    $clients = array_values($this->clientStorage->loadByProperties([
-      'user_id' => $account->id(),
-    ]));
+    try {
+      $clients = array_values($this->clientStorage->loadByProperties([
+        'user_id' => $account->id(),
+      ]));
+    }
+    catch (QueryException $exception) {
+      // This happens when simple_oauth_extras is not enabled because the
+      // 'user_id' field is not available.
+      return $output;
+    }
     // Append all the tokens for each of the clients having this account as the
     // default.
     $tokens = array_reduce($clients, function ($carry, $client) {

@@ -9,14 +9,6 @@ use Drupal\Component\Serialization\Json;
  */
 class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
 
-  public static $modules = [
-    'image',
-    'node',
-    'simple_oauth',
-    'serialization',
-    'text',
-  ];
-
   /**
    * @var string
    */
@@ -57,7 +49,7 @@ class PasswordFunctionalTest extends TokenBearerFunctionalTestBase {
       'auth' => [
         $this->client->uuid(),
         $this->clientSecret,
-      ]
+      ],
     ]);
     $this->assertValidTokenResponse($response, TRUE);
   }

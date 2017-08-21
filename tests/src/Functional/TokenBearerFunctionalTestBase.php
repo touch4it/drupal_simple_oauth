@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Drupal\Tests\simple_oauth\Functional;
 
 use Drupal\Component\Serialization\Json;
@@ -9,13 +8,26 @@ use Drupal\simple_oauth\Entity\Oauth2Client;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\user\Entity\Role;
 use Drupal\user\RoleInterface;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class TokenBearerFunctionalTestBase
+ *
+ * Base class that handles common logic and config for the token tests.
+ *
+ * @package Drupal\Tests\simple_oauth\Functional
+ */
 abstract class TokenBearerFunctionalTestBase extends BrowserTestBase {
 
   use RequestHelperTrait;
+
+  public static $modules = [
+    'image',
+    'node',
+    'serialization',
+    'simple_oauth',
+    'text',
+  ];
 
   /**
    * @var \Drupal\Core\Url
@@ -115,8 +127,15 @@ abstract class TokenBearerFunctionalTestBase extends BrowserTestBase {
 
     // Use the public and private keys.
     $path = $this->container->get('module_handler')->getModule('simple_oauth')->getPath();
-    $this->publicKeyPath = DRUPAL_ROOT . '/' . $path . '/tests/certificates/public.key';
-    $this->privateKeyPath = DRUPAL_ROOT . '/' . $path . '/tests/certificates/private.key';
+    $temp_dir = sys_get_temp_dir();
+    $public_path = '/' . $path . '/tests/certificates/public.key';
+    $private_path = '/' . $path . '/tests/certificates/private.key';
+    file_put_contents($temp_dir . '/public.key', file_get_contents(DRUPAL_ROOT . $public_path));
+    file_put_contents($temp_dir . '/private.key', file_get_contents(DRUPAL_ROOT . $private_path));
+    chmod($temp_dir . '/public.key', 0660);
+    chmod($temp_dir . '/private.key', 0660);
+    $this->publicKeyPath = $temp_dir . '/public.key';
+    $this->privateKeyPath = $temp_dir . '/private.key';
     $settings = $this->config('simple_oauth.settings');
     $settings->set('public_key', $this->publicKeyPath);
     $settings->set('private_key', $this->privateKeyPath);
