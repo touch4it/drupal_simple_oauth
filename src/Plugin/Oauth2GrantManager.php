@@ -113,7 +113,6 @@ class Oauth2GrantManager extends DefaultPluginManager implements Oauth2GrantMana
       realpath($this->privateKeyPath),
       Core::ourSubstr($salt, 0, 32)
     );
-    $server->setEncryptionKey(Core::ourSubstr($salt, 0, 32));
     // Enable the password grant on the server with a token TTL of X hours.
     $server->enableGrantType(
       $plugin->getGrantType(),
