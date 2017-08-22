@@ -2,7 +2,7 @@
 
 namespace Drupal\simple_oauth\Entities;
 
-use Drupal\consumers\Entity\Oauth2ClientInterface;
+use Drupal\consumers\Entity\Consumer;
 use League\OAuth2\Server\Entities\Traits\ClientTrait;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 
@@ -11,17 +11,17 @@ class ClientEntity implements ClientEntityInterface {
   use EntityTrait, ClientTrait;
 
   /**
-   * @var \Drupal\consumers\Entity\Oauth2ClientInterface
+   * @var \Drupal\consumers\Entity\Consumer
    */
   protected $entity;
 
   /**
    * ClientEntity constructor.
    *
-   * @param \Drupal\consumers\Entity\Oauth2ClientInterface $entity
+   * @param \Drupal\consumers\Entity\Consumer $entity
    *   The Drupal entity.
    */
-  public function __construct(Oauth2ClientInterface $entity) {
+  public function __construct(Consumer $entity) {
     $this->entity = $entity;
     $this->setIdentifier($entity->uuid());
     $this->setName($entity->label());

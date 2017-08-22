@@ -32,19 +32,20 @@ class ClientRepository implements ClientRepositoryInterface {
    */
   public function getClientEntity($client_identifier, $grant_type, $client_secret = NULL, $must_validate_secret = TRUE) {
     $client_drupal_entities = $this->entityTypeManager
-      ->getStorage('oauth2_client')
+      ->getStorage('consumer')
       ->loadByProperties(['uuid' => $client_identifier]);
 
     // Check if the client is registered.
     if (empty($client_drupal_entities)) {
       return NULL;
     }
-    /** @var \Drupal\consumers\Entity\Oauth2ClientInterface $client_drupal_entity */
+    /** @var \Drupal\consumers\Entity\Consumer $client_drupal_entity */
     $client_drupal_entity = reset($client_drupal_entities);
 
+    $secret = $client_drupal_entity->get('secret')->value;
     if (
-      $must_validate_secret && $client_drupal_entity->isConfidential() &&
-      $this->passwordChecker->check($client_secret, $client_drupal_entity->getSecret()) === FALSE
+      $must_validate_secret && $client_drupal_entity->get('confidential')->value &&
+      $this->passwordChecker->check($client_secret, $secret) === FALSE
     ) {
       return NULL;
     }

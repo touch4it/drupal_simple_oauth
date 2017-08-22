@@ -102,7 +102,7 @@ class Oauth2Token extends ContentEntityBase implements Oauth2TokenInterface {
       ->setLabel(t('Client'))
       ->setDescription(t('The consumer client for this Access Token.'))
       ->setRevisionable(TRUE)
-      ->setSetting('target_type', 'oauth2_client')
+      ->setSetting('target_type', 'consumer')
       ->setSetting('handler', 'default')
       ->setTranslatable(FALSE)
       ->setDisplayOptions('view', array(

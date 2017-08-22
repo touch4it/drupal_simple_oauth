@@ -22,7 +22,7 @@ openssl rsa -in private.key -pubout > public.key
 ```
 3. Save the path to your keys in: `/admin/config/people/simple_oauth`.
 3. Go to [REST UI](https://drupal.org/project/restui) and enable the _oauth2_ authentication in your resource.
-4. Create a Client Application by going to: `/admin/config/people/simple_oauth/oauth2_client/add`.
+4. Create a Client Application by going to: `/admin/config/services/consumer/add`.
 5. Create a token with your credentials by making a `POST` request to `/oauth/token`. See [the documentation](http://oauth2.thephpleague.com/authorization-server/resource-owner-password-credentials-grant/) about what fields your request should contain.
 6.  (Not shown) Permissions are set to only allow to view nodes via REST with the authenticated user.
 7.  Request a node via REST without authentication and watch it fail.

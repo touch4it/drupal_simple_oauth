@@ -11,6 +11,6 @@ use Drupal\consumers\AccessControlHandler;
  */
 class AccessTokenAccessControlHandler extends AccessControlHandler {
 
-  protected static $name = 'simple_oauth';
+  public static $name = 'simple_oauth';
 
 }

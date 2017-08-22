@@ -133,7 +133,7 @@ class Oauth2AuthorizeForm extends FormBase {
     ];
 
     $client_uuid = $request->get('client_id');
-    $client_drupal_entities = $manager->getStorage('oauth2_client')->loadByProperties([
+    $client_drupal_entities = $manager->getStorage('consumer')->loadByProperties([
       'uuid' => $client_uuid,
     ]);
     if (empty($client_drupal_entities)) {
@@ -149,7 +149,7 @@ class Oauth2AuthorizeForm extends FormBase {
       }, $client_drupal_entity->get('roles')->getValue())
     );
     $user_roles = $manager->getStorage('user_role')->loadMultiple($scope_ids);
-    $form['client'] = $manager->getViewBuilder('oauth2_client')->view($client_drupal_entity);
+    $form['client'] = $manager->getViewBuilder('consumer')->view($client_drupal_entity);
     $client_drupal_entity->addCacheableDependency($form['client']);
     $form['scopes'] = [
       '#title' => $this->t('Permissions'),

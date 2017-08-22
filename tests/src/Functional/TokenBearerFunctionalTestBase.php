@@ -4,7 +4,7 @@ namespace Drupal\Tests\simple_oauth\Functional;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Url;
-use Drupal\consumers\Entity\Oauth2Client;
+use Drupal\consumers\Entity\Consumer;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\user\Entity\Role;
 use Drupal\user\RoleInterface;
@@ -35,7 +35,7 @@ abstract class TokenBearerFunctionalTestBase extends BrowserTestBase {
   protected $url;
 
   /**
-   * @var \Drupal\consumers\Entity\Oauth2ClientInterface
+   * @var \Drupal\consumers\Entity\Consumer
    */
   protected $client;
 
@@ -108,7 +108,7 @@ abstract class TokenBearerFunctionalTestBase extends BrowserTestBase {
 
     $this->clientSecret = $this->getRandomGenerator()->string();
 
-    $this->client = Oauth2Client::create([
+    $this->client = Consumer::create([
       'owner_id' => '',
       'label' => $this->getRandomGenerator()->name(),
       'secret' => $this->clientSecret,
