@@ -47,7 +47,13 @@ class ScopeRepository implements ScopeRepositoryInterface {
    * add all the roles configured in the client.
    */
   public function finalizeScopes(array $scopes, $grant_type, ClientEntityInterface $client_entity, $user_identifier = NULL) {
-    $default_user = $client_entity->getDrupalEntity()->get('user_id')->entity;
+    $default_user = NULL;
+    try {
+      $default_user = $client_entity->getDrupalEntity()->get('user_id')->entity;
+    }
+    catch (\InvalidArgumentException $e) {
+      // Do nothing. This means that simple_oauth_extras is not enabled.
+    }
     /** @var \Drupal\user\UserInterface $user */
     $user = $user_identifier
       ? $this->entityTypeManager->getStorage('user')->load($user_identifier)
