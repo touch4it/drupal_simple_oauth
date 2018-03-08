@@ -4,6 +4,7 @@
  * @file
  * Contains simple_oauth.module..
  */
+ require __DIR__.'/vendor/autoload.php';
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
